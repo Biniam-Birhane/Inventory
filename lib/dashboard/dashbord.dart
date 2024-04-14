@@ -27,18 +27,18 @@ class DashboardState extends State<Dashboard> {
         backgroundColor: Color(0xFF151D26),
         title: Row(
           children: [
-            SizedBox(width: size.width * 0.08),
-            const Text(
+            
+             Text(
               "Board Inventory",
-              style: TextStyle(fontFamily: 'Lato-Black', color: Colors.white),
+              style: TextStyle(fontFamily: 'Lato-Black', color: Colors.white,fontSize: size.width*0.06),
             ),
           ],
         ),
         actions: [
           Image.asset(
             'assets/images/logo.png',
-            height: size.height * 0.05,
-            width: size.height * 0.05,
+            height: size.width * 0.12,
+            width: size.width * 0.12,
           ),
         ],
         iconTheme: IconThemeData(color: Colors.white),
@@ -113,7 +113,7 @@ class DashboardState extends State<Dashboard> {
                       amount.toString(),
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                          color: Colors.white, fontSize: size.height * 0.04),
+                          color: Colors.white, fontSize: size.width * 0.06),
                     )
                   ],
                 ),
