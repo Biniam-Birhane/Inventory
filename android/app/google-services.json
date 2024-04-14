@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "140149397285",
+    "project_id": "boardinventory-56b60",
+    "storage_bucket": "boardinventory-56b60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140149397285:android:17fb3f8532fbbf0b84eccc",
+        "android_client_info": {
+          "package_name": "InventoryBoard.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnBMsKcbOf_TI-7vi_RPR5aBJ0TsvL2mo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

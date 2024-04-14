@@ -4,7 +4,9 @@ allprojects {
         mavenCentral()
     }
 }
-
+plugins {
+    id("com.google.gms.google-services") version "4.4.1"
+ }
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
