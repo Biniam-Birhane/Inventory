@@ -136,8 +136,8 @@ class Customer extends StatelessWidget {
             ElevatedButton(
                 onPressed: () async {
                   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
                   try {
+                    print('right');
                     await firebaseAuth.createUserWithEmailAndPassword(
                         email: "bini@gmail.com", password: 'passpass');
                     print("added successfuly");

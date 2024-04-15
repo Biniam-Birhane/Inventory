@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "140149397285",
-    "project_id": "boardinventory-56b60",
-    "storage_bucket": "boardinventory-56b60.appspot.com"
+    "project_number": "961256701262",
+    "project_id": "simple-inventory-10154",
+    "storage_bucket": "simple-inventory-10154.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:140149397285:android:17fb3f8532fbbf0b84eccc",
+        "mobilesdk_app_id": "1:961256701262:android:94c6aee63c16cc257eb21f",
         "android_client_info": {
-          "package_name": "InventoryBoard.com"
+          "package_name": "com.example.simple_inventory"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBnBMsKcbOf_TI-7vi_RPR5aBJ0TsvL2mo"
+          "current_key": "AIzaSyB4pT6CnP2ceb_Y5UTV7xG1H82vdvoPmJs"
         }
       ],
       "services": {
