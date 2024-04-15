@@ -1,8 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_inventory/dashboard/drawer.dart';
-import 'package:uuid/uuid.dart';
 
 class CustomerModel {
   CustomerModel({required this.name, required this.phoneNumber});
@@ -23,77 +19,80 @@ class Customer extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: const Color(0xFF151D26),
-      appBar: AppBar(
         backgroundColor: const Color(0xFF151D26),
-        title: const Text(
-          "customers",
-          style: TextStyle(color: Colors.white),
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF151D26),
+          title: const Text(
+            "Customers",
+            style: TextStyle(
+                color: Colors.white, fontFamily: "Quicksand", fontSize: 20),
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      drawer: DrawerPage(size, context),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: customers.length,
-          itemBuilder: (context, index) {
-            final customer = customers[index];
-            return Container(
-              height: 75,
-              child: Card(
-                color: const Color.fromARGB(255, 27, 63, 92),
-                elevation: 9,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: customers.length,
+            itemBuilder: (context, index) {
+              final customer = customers[index];
+              return Container(
                 child: ListTile(
                   dense: false,
                   leading: Text((1 + index).toString(),
-                      style: const TextStyle(color: Colors.white)),
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Quicksand",
+                          fontSize: 20)),
                   title: Text(
                     customer.name,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Quicksand",
+                        fontSize: 20),
                   ),
                   subtitle: Text(
                     customer.phoneNumber,
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.white),
+                        color: Colors.white,
+                        fontFamily: "Quicksand",
+                        fontSize: 20),
                   ),
-                  trailing: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.edit,
-                        color: Colors.green,
-                      )),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.green,
+                          )),
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          )),
+                    ],
+                  ),
 
                   //  Row(children: [
                   //   // IconButton(onPressed: (){}, icon: const Icon(Icons.delete, color: Colors.red,))
                   // ],),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
-      ),
-      floatingActionButton: Container(
-        color: const Color(0xFFFE8A00),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFE8A00)),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return addCustomer();
-                });
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => {
+            showDialog(context: context, builder: (context) => addCustomer())
           },
-          child: const Icon(Icons.add),
-        ),
-      ),
-    );
+          backgroundColor: const Color(0xFFFE8A00),
+          elevation: 20,
+          child: const Icon(
+            Icons.add,
+          ),
+        ));
   }
 
   Material addCustomer() {
@@ -110,13 +109,26 @@ class Customer extends StatelessWidget {
             TextField(
               controller: fullNameController,
               style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                  labelText: "Full Name",
+              decoration: InputDecoration(
                   hintText: "Enter Full Name",
-                  hintStyle: TextStyle(color: Colors.white),
-                  labelStyle: TextStyle(color: Colors.white),
+                  labelText: "Name",
+                  hintStyle: TextStyle(color: Colors.grey),
+                  labelStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)))),
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey.withOpacity(0.5),
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.green, width: 2),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.always),
             ),
             const SizedBox(
               height: 10,
@@ -124,58 +136,55 @@ class Customer extends StatelessWidget {
             TextField(
               controller: phoneNumberController,
               style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                  hintText: "Enter Mobile Number",
                   labelText: "Phone Number",
-                  hintText: 'Enter phone number',
-                  hintStyle: TextStyle(color: Colors.white),
-                  labelStyle: TextStyle(color: Colors.white),
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  labelStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)))),
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey.withOpacity(0.5),
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.green, width: 2),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.always),
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
-            ElevatedButton(
-                onPressed: () async {
-                  // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-                  // try {
-                  //   print('right');
-                  //   await firebaseAuth.createUserWithEmailAndPassword(
-                  //       email: "biniam@gmail.com", password: 'passpass');
-                  //   print("added successfuly");
-                  // } catch (e) {
-                  //   print(e.toString);
-                  // var uuid = const Uuid();
-                  // String id = uuid.v4();
-                  // try {
-                  //   final data = {
-                  //     'id': id,
-                  //     'name': 'bini',
-                  //     "phoneNumber": "0987654312",
-                  //   };
-
-                  //   final FirebaseFirestore firestore =
-                  //       FirebaseFirestore.instance;
-                  //   CollectionReference productRef =
-                  //       firestore.collection('customers');
-                  //   await productRef.doc(id).set(data);
-                  //   print('added successfully');
-                  // } catch (e) {
-                  //   print("response error: $e");
-                  // }
-                  // }
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFE8A00)),
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Quicksand",
-                  ),
-                ))
+            submitButton()
           ],
+        ),
+      ),
+    );
+  }
+
+  ElevatedButton submitButton() {
+    return ElevatedButton(
+      onPressed: () => {},
+      style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFFFE8A00),
+          padding: const EdgeInsetsDirectional.symmetric(
+            vertical: 10,
+            horizontal: 60,
+          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+      child: const Text(
+        "Submit",
+        style: TextStyle(
+          fontFamily: "Quicksand",
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
         ),
       ),
     );

@@ -44,7 +44,7 @@ Drawer DrawerPage(Size size, BuildContext context) {
                         leading:
                             const Icon(Icons.category, color: Colors.white),
                         title: const Text(
-                          "Add Product Category ",
+                          "Product Categories ",
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: "Quicksand",
@@ -70,7 +70,7 @@ Drawer DrawerPage(Size size, BuildContext context) {
                           color: Colors.white,
                         ),
                         title: const Text(
-                          "Add Customer",
+                          "Customers",
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: "Quicksand",
@@ -78,7 +78,7 @@ Drawer DrawerPage(Size size, BuildContext context) {
                           ),
                         ),
                         onTap: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Customer()));
