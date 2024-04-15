@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_inventory/dashboard/drawer.dart';
+import 'package:uuid/uuid.dart';
 
 class CustomerModel {
   CustomerModel({required this.name, required this.phoneNumber});
@@ -135,15 +137,33 @@ class Customer extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-                  try {
-                    print('right');
-                    await firebaseAuth.createUserWithEmailAndPassword(
-                        email: "bini@gmail.com", password: 'passpass');
-                    print("added successfuly");
-                  } catch (e) {
-                    print(e.toString);
-                  }
+                  // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+                  // try {
+                  //   print('right');
+                  //   await firebaseAuth.createUserWithEmailAndPassword(
+                  //       email: "biniam@gmail.com", password: 'passpass');
+                  //   print("added successfuly");
+                  // } catch (e) {
+                  //   print(e.toString);
+                  // var uuid = const Uuid();
+                  // String id = uuid.v4();
+                  // try {
+                  //   final data = {
+                  //     'id': id,
+                  //     'name': 'bini',
+                  //     "phoneNumber": "0987654312",
+                  //   };
+
+                  //   final FirebaseFirestore firestore =
+                  //       FirebaseFirestore.instance;
+                  //   CollectionReference productRef =
+                  //       firestore.collection('customers');
+                  //   await productRef.doc(id).set(data);
+                  //   print('added successfully');
+                  // } catch (e) {
+                  //   print("response error: $e");
+                  // }
+                  // }
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFE8A00)),
