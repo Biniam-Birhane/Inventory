@@ -145,10 +145,11 @@ class DashboardState extends State<Dashboard> {
             child: Row(
               children: [
                 Icon(
-                  Icons.add,
+                  Icons.sell,
                   color: Colors.black,
                   size: size.width * 0.05,
                 ),
+                SizedBox(width:  2),
                 Text(
                   "Sell Product",
                   style: TextStyle(

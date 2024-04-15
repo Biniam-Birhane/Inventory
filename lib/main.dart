@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:simple_inventory/dashboard/dashbord.dart';
+import "package:simple_inventory/customers/presentation/pages/add_customer.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
