@@ -10,18 +10,18 @@ void main() async {
   //     await path_provider.getDApplicationDocumentDirectory();
   // Hive.init(appDocumentdirectory.path);
 
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: "AIzaSyCR6OZyt70_Nq2o6xCXKApWkmiuVZWA9Kk",
-        appId: "1:140149397285:web:ec7e73c461f2083984eccc",
-        messagingSenderId: "140149397285",
-        projectId: "boardinventory-56b60",
-      ),
-    );
-  } else {
-    await Firebase.initializeApp();
-  }
+  // if (kIsWeb) {
+  //   await Firebase.initializeApp(
+  //     options: const FirebaseOptions(
+  //       apiKey: "AIzaSyCR6OZyt70_Nq2o6xCXKApWkmiuVZWA9Kk",
+  //       appId: "1:140149397285:web:ec7e73c461f2083984eccc",
+  //       messagingSenderId: "140149397285",
+  //       projectId: "boardinventory-56b60",
+  //     ),
+  //   );
+  // } else {
+  //   await Firebase.initializeApp();
+  // }
   runApp(const MyApp());
 }
 

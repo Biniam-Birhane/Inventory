@@ -37,8 +37,8 @@ class DashboardState extends State<Dashboard> {
         actions: [
           Image.asset(
             'assets/images/logo.png',
-            height: size.width * 0.12,
-            width: size.width * 0.12,
+            height: size.width * 0.1,
+            width: size.width * 0.1,
           ),
         ],
         iconTheme: IconThemeData(color: Colors.white),
