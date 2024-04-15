@@ -1,11 +1,12 @@
 import "package:flutter/material.dart";
+import "package:simple_inventory/customers/presentation/pages/add_customer.dart";
 import "package:simple_inventory/product_category/presentation/pages/product_category.dart";
 
 Drawer DrawerPage(Size size, BuildContext context) {
   return Drawer(
     backgroundColor: Color(0xFF151D26),
     child: Padding(
-      padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
+      padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 0),
       child: Container(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -18,8 +19,8 @@ Drawer DrawerPage(Size size, BuildContext context) {
                     Container(
                       child: ListTile(
                         horizontalTitleGap: size.width * 0.06,
-                        leading:
-                            const Icon(Icons.shopping_cart, color: Colors.white),
+                        leading: const Icon(Icons.shopping_cart,
+                            color: Colors.white),
                         title: const Text(
                           "Add Products",
                           style: TextStyle(
@@ -40,7 +41,8 @@ Drawer DrawerPage(Size size, BuildContext context) {
                     Container(
                       child: ListTile(
                         horizontalTitleGap: size.width * 0.06,
-                        leading: const Icon(Icons.category, color: Colors.white),
+                        leading:
+                            const Icon(Icons.category, color: Colors.white),
                         title: const Text(
                           "Add Product Category ",
                           style: TextStyle(
@@ -75,10 +77,15 @@ Drawer DrawerPage(Size size, BuildContext context) {
                             fontSize: 15,
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Customer()));
+                        },
                       ),
                     ),
-                    Divider(
+                    const Divider(
                       height: 10,
                     ),
                     SizedBox(
