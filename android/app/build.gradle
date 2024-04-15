@@ -1,7 +1,6 @@
 plugins {
-    // id("com.android.application")
-    id "com.android.application"
     id("com.google.gms.google-services")
+    id("com.android.application")
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -67,6 +66,13 @@ flutter {
 }
 
 dependencies {
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.guava:guava:27.0.1-jre'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10'
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-analytics")
 }
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'

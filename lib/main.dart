@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -9,10 +9,10 @@ void main() async {
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
-        apiKey: "AIzaSyCR6OZyt70_Nq2o6xCXKApWkmiuVZWA9Kk",
-        appId: "1:140149397285:web:ec7e73c461f2083984eccc",
-        messagingSenderId: "140149397285",
-        projectId: "boardinventory-56b60",
+        apiKey: "AIzaSyCqgURIOg7aqVIn_IXz76ygbFw0nyJHzoU",
+        appId: "1:961256701262:web:7e7a6ca28784dce97eb21f",
+        messagingSenderId: "961256701262",
+        projectId: "simple-inventory-10154",
       ),
     );
   } else {
