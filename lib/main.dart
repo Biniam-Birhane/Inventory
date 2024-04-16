@@ -18,10 +18,10 @@ void main() async {
         projectId: "simple-inventory-10154",
       ),
     );
-  } else {
-    await Firebase.initializeApp();
   }
-  await init();
+  // } else {
+  //   await Firebase.initializeApp();
+  // }
   runApp(MyApp());
 }
 

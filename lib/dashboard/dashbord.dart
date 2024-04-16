@@ -81,7 +81,7 @@ class DashboardState extends State<Dashboard> {
           child: Container(
             padding: const EdgeInsets.all(10),
             alignment: Alignment.topLeft,
-            height: size.height * 0.15,
+            
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
                 color: const Color.fromARGB(255, 27, 63, 92)),

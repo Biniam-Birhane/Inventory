@@ -8,7 +8,7 @@ class AddCustomer extends UsecaseWithParams<void, AddCustomerParams> {
   final CustomerRepository _repository;
 
   @override
-  ResultVoid call(AddCustomerParams params) async => _repository.addCustomer(
+  ResultVoid call(AddCustomerParams params) async => await _repository.addCustomer(
         name: params.name,
         phoneNumber: params.phoneNumber,
       );
