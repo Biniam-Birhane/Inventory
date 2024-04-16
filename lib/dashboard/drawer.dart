@@ -81,7 +81,7 @@ Drawer DrawerPage(Size size, BuildContext context) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Customer()));
+                                  builder: (context) => const Customers()));
                         },
                       ),
                     ),
