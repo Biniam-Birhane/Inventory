@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:simple_inventory/customers/domain/entities/customer_entity.dart';
@@ -22,7 +23,7 @@ class EditCustomer extends StatelessWidget {
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(5),
           decoration: const BoxDecoration(
-              color: Colors.black,
+              color: Color.fromARGB(255, 86, 111, 140),
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Container(
             padding: const EdgeInsets.all(10),
@@ -60,6 +61,8 @@ class EditCustomer extends StatelessWidget {
                 ),
                 TextField(
                   controller: phoneNumberController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText: "Enter Mobile Number",
@@ -105,7 +108,7 @@ class EditCustomer extends StatelessWidget {
       }
     }, builder: (context, state) {
       return state.updateCustomerstatus.isInProgress
-          ? const CircularProgressIndicator()
+          ? const CircularProgressIndicator(color: Colors.white)
           : ElevatedButton(
               onPressed: () {
                 context.read<CustomersBloc>().add(UpdateCustomerEvent(

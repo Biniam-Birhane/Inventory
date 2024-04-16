@@ -1,8 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:simple_inventory/core/utils/typedef.dart';
 import 'package:simple_inventory/customers/domain/entities/customer_entity.dart';
 import 'package:simple_inventory/customers/domain/usecases/add_customer.dart';
 import 'package:simple_inventory/customers/domain/usecases/delete_customer.dart';

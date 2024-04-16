@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:simple_inventory/customers/domain/entities/customer_entity.dart';
@@ -133,7 +134,7 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(5),
           decoration: const BoxDecoration(
-              color: Colors.black,
+              color: Color.fromARGB(255, 86, 111, 140),
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Container(
             padding: const EdgeInsets.all(10),
@@ -147,7 +148,7 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                   decoration: InputDecoration(
                       hintText: "Enter Full Name",
                       labelText: "Name",
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -171,6 +172,8 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                 ),
                 TextField(
                   controller: phoneNumberController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText: "Enter Mobile Number",
@@ -213,7 +216,7 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
           return AlertDialog(
             title: const Text("Confirm deletion"),
             content: Text(
-              "Are you sure to delete ${customer.name}",
+              "Are you sure you want to delete ${customer.name}?",
               textAlign: TextAlign.center,
             ),
             actions: <Widget>[

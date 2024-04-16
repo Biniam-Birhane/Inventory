@@ -5,7 +5,10 @@ class CommonBottomBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
   const CommonBottomBar(
-      {required this.items, required this.currentIndex, required this.onTap});
+      {required this.items,
+      required this.currentIndex,
+      required this.onTap,
+      super.key});
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -17,7 +20,7 @@ class CommonBottomBar extends StatelessWidget {
       selectedItemColor: Colors.green, // Customize colors
       unselectedItemColor: Colors.grey,
       iconSize: 20,
-      backgroundColor: Color(0xFF151D26),
+      backgroundColor: const Color(0xFF151D26),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddProductCategory extends StatelessWidget {
@@ -15,7 +14,6 @@ class AddProductCategory extends StatelessWidget {
             color: Colors.black.withOpacity(0.5),
             borderRadius: BorderRadius.circular(20),
             child: Container(
-              
               padding: EdgeInsets.all(10),
               child: Form(
                   child: Column(
@@ -26,7 +24,8 @@ class AddProductCategory extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Quicksand",
-                        fontSize: 20,fontWeight: FontWeight.bold),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   )),
                   SizedBox(
                     height: size.height * 0.03,
@@ -76,7 +75,8 @@ class AddProductCategory extends StatelessWidget {
           hintText: "Enter Product Name",
           labelText: "Name",
           hintStyle: TextStyle(color: Colors.grey),
-          labelStyle: TextStyle(color: Colors.white, fontSize: 18,fontWeight: FontWeight.bold),
+          labelStyle: TextStyle(
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide(

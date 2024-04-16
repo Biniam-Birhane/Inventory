@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:simple_inventory/bottomPage/bottom_items_list.dart';
 import 'package:simple_inventory/bottomPage/bottom_logic.dart';
 import 'package:simple_inventory/bottomPage/common_bottom_bar.dart';
 import 'package:simple_inventory/dashboard/drawer.dart';
 
 class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
+  @override
   State<Dashboard> createState() => DashboardState();
 }
 
@@ -19,18 +19,21 @@ class DashboardState extends State<Dashboard> {
     bottomLogic(selectedIndex, context);
   }
 
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color(0xFF151D26),
+      backgroundColor: const Color(0xFF151D26),
       appBar: AppBar(
-        backgroundColor: Color(0xFF151D26),
+        backgroundColor: const Color(0xFF151D26),
         title: Row(
           children: [
-            
-             Text(
+            Text(
               "Board Inventory",
-              style: TextStyle(fontFamily: 'Lato-Black', color: Colors.white,fontSize: size.width*0.06),
+              style: TextStyle(
+                  fontFamily: 'Lato-Black',
+                  color: Colors.white,
+                  fontSize: size.width * 0.06),
             ),
           ],
         ),
@@ -41,7 +44,7 @@ class DashboardState extends State<Dashboard> {
             width: size.width * 0.1,
           ),
         ],
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       drawer: DrawerPage(size, context),
       body: Padding(
@@ -76,12 +79,12 @@ class DashboardState extends State<Dashboard> {
           elevation: 4,
           borderRadius: BorderRadius.circular(25),
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             alignment: Alignment.topLeft,
             height: size.height * 0.15,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
-                color: Color.fromARGB(255, 27, 63, 92)),
+                color: const Color.fromARGB(255, 27, 63, 92)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -149,7 +152,7 @@ class DashboardState extends State<Dashboard> {
                   color: Colors.black,
                   size: size.width * 0.05,
                 ),
-                SizedBox(width:  2),
+                const SizedBox(width: 2),
                 Text(
                   "Sell Product",
                   style: TextStyle(
