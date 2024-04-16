@@ -1,36 +1,45 @@
 part of 'customers_bloc.dart';
 
-abstract class CustomersState extends Equatable {
-  const CustomersState();
+class CustomersState extends Equatable {
+  const CustomersState(
+      {this.addCustomerstatus = FormzSubmissionStatus.initial,
+      this.updateCustomerstatus = FormzSubmissionStatus.initial,
+      this.deleteCustomerStatus = FormzSubmissionStatus.initial,
+      this.getCustomerStatus = FormzSubmissionStatus.initial,
+      this.customers = const <CustomerEntity>[],
+      this.errorMessage = ''});
 
-  @override
-  List<Object> get props => [];
-}
-
-class CustomersInitial extends CustomersState {}
-
-class AddingCustomer extends CustomersState {}
-
-class GettingCustomers extends CustomersState {}
-
-class CustomerAdded extends CustomersState {}
-
-class DeletingCustomer extends CustomersState {}
-
-class CustomerDeleted extends CustomersState {}
-
-class CustomersLoaded extends CustomersState {
-  const CustomersLoaded({required this.customers});
+  final FormzSubmissionStatus addCustomerstatus;
+  final FormzSubmissionStatus updateCustomerstatus;
+  final FormzSubmissionStatus deleteCustomerStatus;
+  final FormzSubmissionStatus getCustomerStatus;
   final List<CustomerEntity> customers;
-  @override
-  List<Object> get props => [customers];
-}
-
-class CustomerError extends CustomersState {
-  const CustomerError({required this.errorMessage, required this.statusCode});
   final String errorMessage;
-  final int statusCode;
+
+  CustomersState copyWith({
+    FormzSubmissionStatus? addCustomerstatus,
+    FormzSubmissionStatus? updateCustomerstatus,
+    FormzSubmissionStatus? deleteCustomerStatus,
+    FormzSubmissionStatus? getCustomerStatus,
+    List<CustomerEntity>? customers,
+    String? errorMessage,
+  }) {
+    return CustomersState(
+        addCustomerstatus: addCustomerstatus ?? this.addCustomerstatus,
+        updateCustomerstatus: updateCustomerstatus ?? this.updateCustomerstatus,
+        deleteCustomerStatus: deleteCustomerStatus ?? this.deleteCustomerStatus,
+        getCustomerStatus: getCustomerStatus ?? this.getCustomerStatus,
+        customers: customers ?? this.customers,
+        errorMessage: errorMessage ?? this.errorMessage);
+  }
 
   @override
-  List<Object> get props => [errorMessage, statusCode];
+  List<Object> get props => [
+        addCustomerstatus,
+        updateCustomerstatus,
+        deleteCustomerStatus,
+        getCustomerStatus,
+        customers,
+        errorMessage
+      ];
 }

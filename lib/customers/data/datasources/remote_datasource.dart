@@ -5,10 +5,20 @@ import 'package:simple_inventory/customers/data/models/customer_model.dart';
 import 'package:simple_inventory/customers/domain/entities/customer_entity.dart';
 import 'package:uuid/uuid.dart';
 
-class RemoteDataSource {
-  RemoteDataSource();
+abstract class RemoteDataSource {
+  const RemoteDataSource();
+  Future<void> addCustomer({required String name, required String phoneNumber});
+  Future<void> deleteCustomer({required String id});
+  Future<void> updateCustomer(
+      {required String id, required String name, required String phoneNumber});
+  Future<List<CustomerEntity>> getCustomers();
+}
+
+class RemoteCustomerDatasource implements RemoteDataSource {
+  RemoteCustomerDatasource();
   CollectionReference customerRef =
       FirebaseFirestore.instance.collection('customers');
+  @override
   Future<void> addCustomer(
       {required String name, required String phoneNumber}) async {
     try {
@@ -22,6 +32,7 @@ class RemoteDataSource {
     }
   }
 
+  @override
   Future<void> updateCustomer(
       {required String id,
       required String name,
@@ -35,6 +46,7 @@ class RemoteDataSource {
     }
   }
 
+  @override
   Future<void> deleteCustomer({required String id}) async {
     try {
       await customerRef.doc(id).delete();
@@ -44,6 +56,7 @@ class RemoteDataSource {
     }
   }
 
+  @override
   Future<List<CustomerEntity>> getCustomers() async {
     try {
       QuerySnapshot querySnapshot = await customerRef.get();

@@ -21,49 +21,73 @@ class CustomersBloc extends Bloc<CustomersEvent, CustomersState> {
   })  : _addCustomer = addCustomer,
         _getCustomers = getCustomers,
         _deleteCustomer = deleteCustomer,
-        // _updateCustomer = updateCustomer,
-        super(CustomersInitial()) {
+        _updateCustomer = updateCustomer,
+        super(const CustomersState()) {
     on<AddCustomerEvent>(_addCustomerHandler);
     on<GetCustomersEvent>(_getCustomersHandler);
     on<DeleteCustomerEvent>(_deleteCustomerHandler);
+    on<UpdateCustomerEvent>(_updateCustomerHandler);
   }
   final AddCustomer _addCustomer;
   final GetCustomers _getCustomers;
   final DeleteCustomer _deleteCustomer;
-  // final UpdateCustomer _updateCustomer;
+  final UpdateCustomer _updateCustomer;
 
   void _addCustomerHandler(
       AddCustomerEvent event, Emitter<CustomersState> emit) async {
-    emit(AddingCustomer());
+    emit(state.copyWith(addCustomerstatus: FormzSubmissionStatus.inProgress));
 
     final result = await _addCustomer(
         AddCustomerParams(name: event.name, phoneNumber: event.phoneNumber));
     result.fold(
-        (failure) => emit(CustomerError(
-            errorMessage: failure.errorMessage,
-            statusCode: failure.statusCode)),
-        (_) => emit(CustomerAdded()));
+        (failure) => emit(state.copyWith(
+            addCustomerstatus: FormzSubmissionStatus.failure,
+            errorMessage: failure.errorMessage)),
+        (_) => emit(
+            state.copyWith(addCustomerstatus: FormzSubmissionStatus.success)));
   }
 
   void _deleteCustomerHandler(
       DeleteCustomerEvent event, Emitter<CustomersState> emit) async {
-    emit(DeletingCustomer());
+    emit(
+        state.copyWith(deleteCustomerStatus: FormzSubmissionStatus.inProgress));
     final result = await _deleteCustomer(DeleteCustomerParams(id: event.id));
     result.fold(
-        (l) => emit(CustomerError(
-            errorMessage: l.errorMessage, statusCode: l.statusCode)),
-        (r) => emit(CustomerDeleted()));
+        (failure) => emit(state.copyWith(
+            deleteCustomerStatus: FormzSubmissionStatus.failure,
+            errorMessage: failure.errorMessage)),
+        (r) => emit(state.copyWith(
+            deleteCustomerStatus: FormzSubmissionStatus.success)));
   }
 
   Future<void> _getCustomersHandler(
       GetCustomersEvent event, Emitter<CustomersState> emit) async {
-    emit(GettingCustomers());
+    emit(state.copyWith(getCustomerStatus: FormzSubmissionStatus.inProgress));
 
     final result = await _getCustomers();
     result.fold(
-        (failure) => emit(CustomerError(
+        (failure) => emit(state.copyWith(
             errorMessage: failure.errorMessage,
-            statusCode: failure.statusCode)),
-        (customers) => emit(CustomersLoaded(customers: customers)));
+            getCustomerStatus: FormzSubmissionStatus.failure)),
+        (customers) => emit(state.copyWith(
+            getCustomerStatus: FormzSubmissionStatus.success,
+            customers: customers,
+            addCustomerstatus: FormzSubmissionStatus.initial,
+            updateCustomerstatus: FormzSubmissionStatus.initial,
+            deleteCustomerStatus: FormzSubmissionStatus.initial)));
+  }
+
+  Future<void> _updateCustomerHandler(
+      UpdateCustomerEvent event, Emitter<CustomersState> emit) async {
+    emit(
+        state.copyWith(updateCustomerstatus: FormzSubmissionStatus.inProgress));
+    final result = await _updateCustomer(UpdateCustomerParams(
+        id: event.id, name: event.name, phoneNumber: event.phoneNumber));
+    result.fold(
+        (failure) => emit(state.copyWith(
+            errorMessage: failure.errorMessage,
+            updateCustomerstatus: FormzSubmissionStatus.failure)),
+        (_) => emit(state.copyWith(
+            updateCustomerstatus: FormzSubmissionStatus.success)));
   }
 }
