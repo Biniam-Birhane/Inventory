@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_inventory/dashboard/drawer.dart';
 
 class CustomerModel {
   CustomerModel({required this.name, required this.phoneNumber});
@@ -26,7 +24,7 @@ class Customer extends StatelessWidget {
           backgroundColor: const Color(0xFF151D26),
           title: const Text(
             "Customers",
-            style: const TextStyle(
+            style: TextStyle(
                 color: Colors.white, fontFamily: "Quicksand", fontSize: 20),
           ),
           iconTheme: const IconThemeData(color: Colors.white),
@@ -42,16 +40,22 @@ class Customer extends StatelessWidget {
                   dense: false,
                   leading: Text((1 + index).toString(),
                       style: const TextStyle(
-                color: Colors.white, fontFamily: "Quicksand", fontSize: 20)),
+                          color: Colors.white,
+                          fontFamily: "Quicksand",
+                          fontSize: 20)),
                   title: Text(
                     customer.name,
                     style: const TextStyle(
-                color: Colors.white, fontFamily: "Quicksand", fontSize: 20),
+                        color: Colors.white,
+                        fontFamily: "Quicksand",
+                        fontSize: 20),
                   ),
                   subtitle: Text(
                     customer.phoneNumber,
                     style: const TextStyle(
-                color: Colors.white, fontFamily: "Quicksand", fontSize: 20),
+                        color: Colors.white,
+                        fontFamily: "Quicksand",
+                        fontSize: 20),
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -83,7 +87,7 @@ class Customer extends StatelessWidget {
           onPressed: () => {
             showDialog(context: context, builder: (context) => addCustomer())
           },
-          backgroundColor: Color(0xFFFE8A00),
+          backgroundColor: const Color(0xFFFE8A00),
           elevation: 20,
           child: const Icon(
             Icons.add,
@@ -127,7 +131,7 @@ class Customer extends StatelessWidget {
                   floatingLabelBehavior: FloatingLabelBehavior.always),
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             TextField(
               controller: phoneNumberController,
