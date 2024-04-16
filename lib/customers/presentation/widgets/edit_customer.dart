@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:simple_inventory/customers/domain/entities/customer_entity.dart';
 import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
+import 'package:simple_inventory/customers/presentation/pages/add_customer.dart';
 
 class EditCustomer extends StatelessWidget {
-  EditCustomer({required this.customer});
+  EditCustomer({required this.customer, super.key});
   final CustomerEntity customer;
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class EditCustomer extends StatelessWidget {
                   decoration: InputDecoration(
                       hintText: "Enter Full Name",
                       labelText: "Name",
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -99,7 +100,8 @@ class EditCustomer extends StatelessWidget {
         listener: (context, state) {
       print(state.updateCustomerstatus);
       if (state.updateCustomerstatus.isSuccess) {
-        Navigator.pop(context);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const Customers()));
       }
     }, builder: (context, state) {
       return state.updateCustomerstatus.isInProgress
@@ -118,7 +120,6 @@ class EditCustomer extends StatelessWidget {
                         "Added successfuly",
                         style: TextStyle(color: Colors.white),
                       )));
-                  Navigator.pop(context);
                 } else if (state.updateCustomerstatus.isFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     backgroundColor: Colors.red,

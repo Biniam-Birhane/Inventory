@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:simple_inventory/customers/domain/entities/customer_entity.dart';
 import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
 import 'package:simple_inventory/customers/presentation/widgets/edit_customer.dart';
 
@@ -91,22 +92,7 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                                     )),
                                 IconButton(
                                     onPressed: () {
-                                      context.read<CustomersBloc>().add(
-                                          DeleteCustomerEvent(id: customer.id));
-                                      if (state
-                                          .deleteCustomerStatus.isSuccess) {
-                                        getCustomers();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                          duration: Duration(seconds: 5),
-                                          backgroundColor: Colors.green,
-                                          content: Text(
-                                            "Deleted successfully",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ));
-                                      }
+                                      alertDelete(customer);
                                     },
                                     icon: const Icon(
                                       Icons.delete,
@@ -218,6 +204,46 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  Future<dynamic> alertDelete(CustomerEntity customer) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Confirm deletion"),
+            content: Text(
+              "Are you sure to delete ${customer.name}",
+              textAlign: TextAlign.center,
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  context
+                      .read<CustomersBloc>()
+                      .add(DeleteCustomerEvent(id: customer.id));
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Yes",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Cancel",
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)))
+            ],
+          );
+        });
   }
 
   BlocConsumer submitButton() {
