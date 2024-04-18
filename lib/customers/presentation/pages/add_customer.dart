@@ -27,6 +27,7 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
   final TextEditingController companyNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return BlocConsumer<CustomersBloc, CustomersState>(
         listener: (context, state) {
       print(state.getCustomerStatus);
@@ -37,7 +38,7 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
       }
     }, builder: (context, state) {
       return Scaffold(
-          backgroundColor: const Color.fromARGB(255, 86, 111, 140),
+          backgroundColor: const Color(0xFF151D26),
           appBar: AppBar(
             backgroundColor: const Color(0xFF151D26),
             title: const Text(
@@ -57,11 +58,15 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                         return Container(
                           child: ListTile(
                             dense: false,
-                            leading: Text((1 + index).toString(),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Quicksand",
-                                    fontSize: 20)),
+
+                            leading: Container(
+                              width: size.width * 0.2,
+                              child: Text((1 + index).toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Quicksand",
+                                      fontSize: 20)),
+                            ),
                             title: Text(
                               customer.name,
                               style: const TextStyle(
@@ -227,7 +232,7 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                 child: const Text(
                   "Yes",
                   style: TextStyle(
-                      color: Colors.blue,
+                      color: Colors.red,
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
                 ),
@@ -266,9 +271,10 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                         "Added successfuly",
                         style: TextStyle(color: Colors.white),
                       )));
+                  Navigator.of(context);
                 } else if (state.addCustomerstatus.isFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.red,
                     content: Text(
                       state.errorMessage,
                       style: const TextStyle(color: Colors.white),

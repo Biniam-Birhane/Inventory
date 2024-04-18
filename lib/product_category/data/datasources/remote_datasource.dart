@@ -4,10 +4,27 @@ import 'package:simple_inventory/core/utils/typedef.dart';
 import 'package:simple_inventory/product_category/data/models/product_category_model.dart';
 import 'package:simple_inventory/product_category/domain/entities/product_category.dart';
 
-class ProductCategoryRemoteDataSource {
-  ProductCategoryRemoteDataSource();
+abstract class ProductCategoryRemoteDataSource {
+  const ProductCategoryRemoteDataSource();
+  Future<void> addProductCategory(
+      {required String id,
+      required String productName,
+      required double availableAmount});
+  Future<void> updateProductCategory(
+      {required String id,
+      required String productName,
+      required double availableAmount});
+  Future<void> deleteProductCategory({
+    required String id,
+  });
+  Future<List<ProductCategoryEntity>> getProductCategory();
+}
+
+class ProductCategoryRemoteDataSourceImp
+    implements ProductCategoryRemoteDataSource {
+  ProductCategoryRemoteDataSourceImp();
   CollectionReference customerRef =
-      FirebaseFirestore.instance.collection('customers');
+      FirebaseFirestore.instance.collection('products');
   Future<void> addProductCategory(
       {required String id,
       required String productName,

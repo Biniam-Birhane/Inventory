@@ -22,6 +22,7 @@ Future<void> init() async {
     ..registerLazySingleton(() => GetCustomers(sl()))
     ..registerLazySingleton(() => DeleteCustomer(sl()))
     ..registerLazySingleton(() => UpdateCustomer(sl()))
+    
     ..registerLazySingleton<CustomerRepository>(
         () => CustomerRepositoryImpl(sl()))
     ..registerLazySingleton<RemoteDataSource>(() => RemoteCustomerDatasource());

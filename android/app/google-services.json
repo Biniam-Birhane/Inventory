@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "961256701262",
-    "project_id": "simple-inventory-10154",
-    "storage_bucket": "simple-inventory-10154.appspot.com"
+    "project_number": "554272763565",
+    "project_id": "simpleinventory-88d20",
+    "storage_bucket": "simpleinventory-88d20.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:961256701262:android:94c6aee63c16cc257eb21f",
+        "mobilesdk_app_id": "1:554272763565:android:50434184d201cf01802024",
         "android_client_info": {
           "package_name": "com.example.simple_inventory"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB4pT6CnP2ceb_Y5UTV7xG1H82vdvoPmJs"
+          "current_key": "AIzaSyA6d_XISeI6L2hI1Kwv4TJ9QVFKPnZVIWc"
         }
       ],
       "services": {

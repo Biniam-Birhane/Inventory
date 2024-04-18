@@ -15,7 +15,7 @@ class ProductCategoryModel extends ProductCategoryEntity {
       : this(
             id: map['id'],
             productName: map['productName'],
-            availableAmount: map['availableAmount']);
+            availableAmount:double.parse( map['availableAmount'].toString()));
   ProductCategoryModel copyWith(
       {String? id, String? productName, double? availableAmount}) {
     return ProductCategoryModel(
