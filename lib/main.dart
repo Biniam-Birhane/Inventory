@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_inventory/core/services/injection_container.dart';
 import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
 import 'package:simple_inventory/dashboard/dashbord.dart';
+import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,11 +23,12 @@ void main() async {
   // } else {
   //   await Firebase.initializeApp();
   // }
-  runApp(MyApp());
+  await init();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<CustomersBloc>(
             create: (context) => sl<CustomersBloc>(),
           ),
+          BlocProvider<ProductsSalesBloc>(
+              create: (context) => sl<ProductsSalesBloc>())
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,

@@ -101,10 +101,6 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                                     )),
                               ],
                             ),
-
-                            //  Row(children: [
-                            //   // IconButton(onPressed: (){}, icon: const Icon(Icons.delete, color: Colors.red,))
-                            // ],),
                           ),
                         );
                       },
