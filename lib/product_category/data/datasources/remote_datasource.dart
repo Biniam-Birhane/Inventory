@@ -24,7 +24,7 @@ class ProductCategoryRemoteDataSourceImp
     implements ProductCategoryRemoteDataSource {
   ProductCategoryRemoteDataSourceImp();
   CollectionReference customerRef =
-      FirebaseFirestore.instance.collection('products');
+      FirebaseFirestore.instance.collection('product_category');
   Future<void> addProductCategory(
       {required String id,
       required String productName,
