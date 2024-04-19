@@ -35,7 +35,7 @@ class ProductsSalesBloc extends Bloc<ProductsSalesEvent, ProductsSalesState> {
   void _addSaleHandler(
       AddSalesEvent event, Emitter<ProductsSalesState> emit) async {
     emit(state.copyWith(addSalesStatus: FormzSubmissionStatus.inProgress));
-
+    print(state.addSalesStatus);
     final result =
         await _addSale(AddSaleParams(productSale: event.productSale));
     result.fold(
@@ -75,16 +75,20 @@ class ProductsSalesBloc extends Bloc<ProductsSalesEvent, ProductsSalesState> {
   Future<void> _getSalesHandler(
       GetSalesEvent event, Emitter<ProductsSalesState> emit) async {
     emit(state.copyWith(getSalesStatus: FormzSubmissionStatus.inProgress));
+
     final result = await _getSales();
-    result.fold(
-        (failure) => emit(state.copyWith(
-            getSalesStatus: FormzSubmissionStatus.failure,
-            errorMessage: failure.errorMessage)),
-        (sales) => emit(state.copyWith(
-            getSalesStatus: FormzSubmissionStatus.success,
-            deleteSalesStatus: FormzSubmissionStatus.initial,
-            updateSalesStatus: FormzSubmissionStatus.initial,
-            addSalesStatus: FormzSubmissionStatus.initial,
-            sales: sales)));
+    result.fold((failure) {
+      emit(state.copyWith(
+          getSalesStatus: FormzSubmissionStatus.failure,
+          errorMessage: failure.errorMessage));
+    }, (sales) {
+      emit(state.copyWith(
+          getSalesStatus: FormzSubmissionStatus.success,
+          sales: sales,
+          addSalesStatus: FormzSubmissionStatus.initial,
+          deleteSalesStatus: FormzSubmissionStatus.initial,
+          updateSalesStatus: FormzSubmissionStatus.initial,
+          errorMessage: ''));
+    });
   }
 }

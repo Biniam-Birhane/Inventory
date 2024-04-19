@@ -20,6 +20,17 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   sl
+    ..registerFactory(() => ProductsSalesBloc(
+        addSale: sl(), getSales: sl(), deleteSale: sl(), updateSale: sl()))
+    ..registerLazySingleton(() => AddSale(sl()))
+    ..registerLazySingleton(() => DeleteSale(sl()))
+    ..registerLazySingleton(() => UpdateSale(sl()))
+    ..registerLazySingleton(() => GetSales(sl()))
+    ..registerLazySingleton<SalesRepository>(() => SalesRepositoryImpl(sl()))
+    ..registerLazySingleton<RemoteSalesDatasource>(
+        () => RemoteSalesDataSourceImpl());
+
+  sl
     ..registerFactory(() => CustomersBloc(
           addCustomer: sl(),
           getCustomers: sl(),
@@ -30,19 +41,7 @@ Future<void> init() async {
     ..registerLazySingleton(() => GetCustomers(sl()))
     ..registerLazySingleton(() => DeleteCustomer(sl()))
     ..registerLazySingleton(() => UpdateCustomer(sl()))
-    
     ..registerLazySingleton<CustomerRepository>(
         () => CustomerRepositoryImpl(sl()))
     ..registerLazySingleton<RemoteDataSource>(() => RemoteCustomerDatasource());
-
-  sl
-    ..registerFactory(() => ProductsSalesBloc(
-        addSale: sl(), getSales: sl(), deleteSale: sl(), updateSale: sl()))
-    ..registerLazySingleton(() => AddSale(sl()))
-    ..registerLazySingleton(() => DeleteSale(sl()))
-    ..registerLazySingleton(() => UpdateSale(sl()))
-    ..registerLazySingleton(() => GetSales(sl()))
-    ..registerLazySingleton<SalesRepository>(() => SalesRepositoryImpl(sl()))
-    ..registerLazySingleton<RemoteSalesDatasource>(
-        () => RemoteSalesDataSourceImpl());
 }

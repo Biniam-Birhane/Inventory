@@ -59,7 +59,6 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                         return Container(
                           child: ListTile(
                             dense: false,
-
                             leading: Container(
                               width: size.width * 0.2,
                               child: Text((1 + index).toString(),

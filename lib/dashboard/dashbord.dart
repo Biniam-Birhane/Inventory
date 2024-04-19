@@ -3,7 +3,7 @@ import 'package:simple_inventory/bottomPage/bottom_items_list.dart';
 import 'package:simple_inventory/bottomPage/bottom_logic.dart';
 import 'package:simple_inventory/bottomPage/common_bottom_bar.dart';
 import 'package:simple_inventory/dashboard/drawer.dart';
-import 'package:simple_inventory/products_sales/presentation/pages/sell.dart';
+import 'package:simple_inventory/products_sales/presentation/pages/product_sales.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -139,10 +139,10 @@ class DashboardState extends State<Dashboard> {
                 color: Colors.white)),
         ElevatedButton(
             onPressed: () => {
-                  // Navigator.pushReplacement(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const SellScreen()))
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductSales()))
                 },
             style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFFE8A00),
@@ -159,7 +159,7 @@ class DashboardState extends State<Dashboard> {
                 ),
                 const SizedBox(width: 2),
                 Text(
-                  "Sell Product",
+                  "Product Sales",
                   style: TextStyle(
                     fontFamily: "Quicksand",
                     fontSize: size.width * 0.045,

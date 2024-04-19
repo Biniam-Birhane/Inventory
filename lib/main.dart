@@ -9,13 +9,14 @@ import 'package:simple_inventory/core/services/product_category_injection_contai
 import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
 import 'package:simple_inventory/dashboard/dashbord.dart';
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
+import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await init();
     await productCategoryInjection();
-    
+
     if (kIsWeb) {
       await Firebase.initializeApp(
           options: const FirebaseOptions(
@@ -26,13 +27,17 @@ void main() async {
               messagingSenderId: "554272763565",
               appId: "1:554272763565:web:1e5e7cf87313ff8b802024"));
     } else {
-      await Firebase.initializeApp(options:FirebaseOptions(apiKey:'AIzaSyA6d_XISeI6L2hI1Kwv4TJ9QVFKPnZVIWc',appId:'1:554272763565:android:50434184d201cf01802024',messagingSenderId:'554272763565',projectId:'simpleinventory-88d20') );
+      await Firebase.initializeApp(
+          options: const FirebaseOptions(
+              apiKey: 'AIzaSyA6d_XISeI6L2hI1Kwv4TJ9QVFKPnZVIWc',
+              appId: '1:554272763565:android:50434184d201cf01802024',
+              messagingSenderId: '554272763565',
+              projectId: 'simpleinventory-88d20'));
     }
-    
   } catch (e) {
     print('Error initializing Firebase: $e');
   }
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -44,6 +49,9 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<CustomersBloc>(
             create: (context) => sl<CustomersBloc>(),
+          ),
+          BlocProvider<ProductsSalesBloc>(
+            create: (context) => sl<ProductsSalesBloc>(),
           ),
           BlocProvider<ProductCategoryBloc>(
               create: (context) => pr<ProductCategoryBloc>())
