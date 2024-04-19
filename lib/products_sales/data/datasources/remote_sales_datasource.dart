@@ -20,6 +20,8 @@ class RemoteSalesDataSourceImpl implements RemoteSalesDatasource {
   Future<void> addSale({required ProductSale productSale}) async {
     try {
       final String id = productSale.id;
+      DateTime dateTime = DateTime.now();
+      Timestamp timestamp = Timestamp.fromDate(dateTime);
       final data = {
         'id': productSale.id,
         'buyerName': productSale.buyerName,
@@ -29,6 +31,7 @@ class RemoteSalesDataSourceImpl implements RemoteSalesDatasource {
         'paidAmount': productSale.paidAmount,
         'unPaidAmount': productSale.unPaidAmount
       };
+      data['createdAt'] = timestamp;
       await salesRef.doc(id).set(data);
     } on APIException catch (e) {
       print("response error: ${e.message}");
@@ -59,8 +62,12 @@ class RemoteSalesDataSourceImpl implements RemoteSalesDatasource {
         'paidAmount': productSale.paidAmount,
         'unPaidAmount': productSale.unPaidAmount
       };
+      DateTime dateTime = DateTime.now();
+      Timestamp timestamp = Timestamp.fromDate(dateTime);
+      print('DateTime $dateTime TimeStamp $timestamp');
+
       // if (productSale.createdAt == null) {
-      //   data['createdAt'] = DateTime.now();
+      data['createdAt'] = timestamp;
       // } else {
       //   data['createdAt'] = productSale.createdAt!;
       // }

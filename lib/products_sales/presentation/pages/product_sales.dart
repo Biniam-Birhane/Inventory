@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
+import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
 import 'package:simple_inventory/products_sales/presentation/widgets/edit_sales.dart';
@@ -14,10 +16,18 @@ class ProductSales extends StatefulWidget {
   State<ProductSales> createState() => _ProductSaleScreen();
 }
 
-class _ProductSaleScreen extends State<ProductSales>
-    with TickerProviderStateMixin {
+class _ProductSaleScreen extends State<ProductSales> {
+  final List<String> sections = ["A", "B", "C"];
   void getProductSale() {
     context.read<ProductsSalesBloc>().add(GetSalesEvent());
+  }
+
+  void getProductCategories() {
+    context.read<ProductCategoryBloc>().add(const GetProductCategoryEvent());
+  }
+
+  void getCustomers() {
+    context.read<CustomersBloc>().add(GetCustomersEvent());
   }
 
   @override
@@ -33,6 +43,7 @@ class _ProductSaleScreen extends State<ProductSales>
   final TextEditingController totalCostController = TextEditingController();
   final TextEditingController paidAmountController = TextEditingController();
   final TextEditingController unPaidAmountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -139,12 +150,17 @@ class _ProductSaleScreen extends State<ProductSales>
                                             fontSize: 16),
                                       ),
                                       Text(
-                                        'unpaid: ${soldProduct.unPaidAmount}',
-                                        style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontFamily: "Quicksand",
-                                            fontSize: 16),
-                                      ),
+                                          'unpaid: ${soldProduct.unPaidAmount}',
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontFamily: "Quicksand",
+                                              fontSize: 16)),
+                                      Text(
+                                          soldProduct.createdAt
+                                              .toString()
+                                              .substring(0, 10),
+                                          style: const TextStyle(
+                                              color: Colors.grey))
                                     ],
                                   ),
                                   trailing: Row(
@@ -191,6 +207,7 @@ class _ProductSaleScreen extends State<ProductSales>
   }
 
   Material addSale() {
+    String selectedSection = sections[0];
     return Material(
       type: MaterialType.transparency,
       child: Center(
@@ -355,6 +372,24 @@ class _ProductSaleScreen extends State<ProductSales>
                 ),
                 const SizedBox(
                   height: 20,
+                ),
+                DropdownButton<String>(
+                  value: selectedSection,
+                  items: sections
+                      .map((section) => DropdownMenuItem<String>(
+                            value: section,
+                            child: Text(
+                              "Section $section",
+                            ),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    print(value!);
+                    setState(() {
+                      selectedSection = value;
+                      print(selectedSection);
+                    });
+                  },
                 ),
                 submitButton()
               ],
