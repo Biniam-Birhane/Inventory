@@ -14,10 +14,10 @@ class ProductCategoryRepImplimentation implements ProductCategoryRepository {
   ResultVoid addProductCategory(
       {required String id,
       required String productName,
-      required double availableAmount}) async {
+      required double availableAmount,required double unitPrice}) async {
     try {
       await _productCategoryRemotedatasource.addProductCategory(
-          id: id, productName: productName, availableAmount: availableAmount);
+          id: id, productName: productName, availableAmount: availableAmount,unitPrice:unitPrice);
       return const Right(null);
     } on APIException catch (e) {
       return Left(APIFailure.fromException(e));
@@ -27,10 +27,10 @@ class ProductCategoryRepImplimentation implements ProductCategoryRepository {
   ResultVoid updateProductCategory(
       {required String id,
       required String productName,
-      required double availableAmount}) async {
+      required double availableAmount,required double unitPrice}) async {
     try {
       await _productCategoryRemotedatasource.updateProductCategory(
-          id: id, productName: productName, availableAmount: availableAmount);
+          id: id, productName: productName, availableAmount: availableAmount,unitPrice:unitPrice);
       return const Right(null);
     } on APIException catch (e) {
       return Left(APIFailure.fromException(e));

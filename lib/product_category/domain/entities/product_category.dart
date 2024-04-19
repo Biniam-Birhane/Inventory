@@ -4,10 +4,10 @@ class ProductCategoryEntity extends Equatable {
   ProductCategoryEntity(
       {required this.id,
       required this.productName,
-      required this.availableAmount});
+      required this.availableAmount,required this.unitPrice});
   final String id;
   final String productName;
   final double availableAmount;
-
-  List<Object> get props => [id, productName, availableAmount];
+  final double unitPrice;
+  List<Object> get props => [id, productName, availableAmount,unitPrice];
 }

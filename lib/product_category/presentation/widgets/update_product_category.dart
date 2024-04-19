@@ -11,10 +11,12 @@ class UpdateProductCategory extends StatelessWidget {
       {required this.id,
       required this.productName,
       required this.availableAmount,
+      required this.unitPrice,
       super.key});
   final String productName;
   final String id;
   final double availableAmount;
+  final double unitPrice;
 
   TextEditingController productNameController = TextEditingController();
   @override
@@ -89,13 +91,13 @@ class UpdateProductCategory extends StatelessWidget {
             ? const CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: () {
-                  double availableAmount = 0.0;
                   final productNameController2 = productNameController.text;
                   context.read<ProductCategoryBloc>().add(
                       UpdateProductCategoryEvent(
                           id: id,
                           productName: productNameController2,
-                          availableAmount: availableAmount));
+                          availableAmount: availableAmount,
+                          unitPrice: unitPrice));
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(254, 138, 0, 1),

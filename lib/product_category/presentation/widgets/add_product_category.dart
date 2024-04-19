@@ -63,8 +63,6 @@ class AddProductCategory extends StatelessWidget {
                 "Added successfuly",
                 style: TextStyle(color: Colors.white),
               )));
-
-          
         } else if (state.addProductCategoryStatus.isFailure) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
@@ -83,11 +81,13 @@ class AddProductCategory extends StatelessWidget {
                 onPressed: () {
                   String id = uuid.v4();
                   double availableAmount = 0.0;
+                  double unitPrice = 0.0;
                   context.read<ProductCategoryBloc>().add(
                       AddProductCategoryEvent(
                           id: id,
                           productName: productName.text,
-                          availableAmount: availableAmount));
+                          availableAmount: availableAmount,
+                          unitPrice: unitPrice));
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFE8A00),

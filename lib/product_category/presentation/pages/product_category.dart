@@ -96,6 +96,7 @@ class _ProductCategoryState extends State<ProductCategory> {
                                                     availableAmount:
                                                         productCategory
                                                             .availableAmount,
+                                                    unitPrice:productCategory.unitPrice
                                                   );
                                                 })
                                           },

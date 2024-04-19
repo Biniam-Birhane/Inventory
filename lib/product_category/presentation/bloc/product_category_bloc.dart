@@ -26,6 +26,7 @@ class ProductCategoryBloc
     on<AddProductCategoryEvent>(addProductCategoryHandler);
     on<UpdateProductCategoryEvent>(updateProductCategoryHandler);
     on<DeleteProductCategoryEvent>(deleteProductCategoryHandler);
+    
   }
 
   final GetProductCategoryUsecase _getProductCategoryUsecase;
@@ -57,7 +58,8 @@ class ProductCategoryBloc
     final result = await _addProductCategoryUsecase(AddProductCategoryParams(
         id: event.id,
         productName: event.productName,
-        availableAmount: event.availableAmount));
+        availableAmount: event.availableAmount,
+        unitPrice: event.unitPrice));
     result.fold(
         (failure) => emit(state.copyWith(
             errorMessage: failure.errorMessage,
@@ -74,7 +76,8 @@ class ProductCategoryBloc
         UpdateProductCategoryParam(
             id: event.id,
             productName: event.productName,
-            availableAmount: event.availableAmount));
+            availableAmount: event.availableAmount,
+            unitPrice: event.unitPrice));
     result.fold(
         (failure) => emit(state.copyWith(
             errorMessage: failure.errorMessage,
