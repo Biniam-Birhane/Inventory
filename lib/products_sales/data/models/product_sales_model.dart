@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:simple_inventory/core/utils/typedef.dart';
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 
@@ -7,10 +8,11 @@ class ProductSalesModel extends ProductSale {
   const ProductSalesModel(
       {required super.id,
       required super.buyerName,
-      required super.item,
+      required super.productName,
       required super.amount,
       required super.totalCost,
       required super.paidAmount,
+      required super.unPaidAmount,
       super.createdAt});
 
   factory ProductSalesModel.fromJson(String source) =>
@@ -20,38 +22,42 @@ class ProductSalesModel extends ProductSale {
       : this(
             id: map['id'],
             buyerName: map['buyerName'],
-            item: map['item'],
+            productName: map['productName'],
             amount: map['amount'],
             totalCost: map['totalCost'],
             paidAmount: map['paidAmount'],
-            createdAt: map['createdAt']);
+            unPaidAmount: map['unPaidAmount'],
+            createdAt: (map['createdAt'] as Timestamp)?.toDate());
 
   ProductSalesModel copyWith(
       {String? id,
       String? buyerName,
-      String? item,
+      String? productName,
       int? amount,
       double? totalCost,
       double? paidAmount,
+      double? unPaidAmount,
       DateTime? createdAt}) {
     return ProductSalesModel(
         id: id ?? this.id,
         buyerName: buyerName ?? this.buyerName,
-        item: item ?? this.item,
+        productName: productName ?? this.productName,
         amount: amount ?? this.amount,
         totalCost: totalCost ?? this.totalCost,
         paidAmount: paidAmount ?? this.paidAmount,
+        unPaidAmount: unPaidAmount ?? this.unPaidAmount,
         createdAt: createdAt ?? this.createdAt);
   }
 
   DataMap toMap() => {
         'id': id,
         'buyerName': buyerName,
-        'item': item,
+        'productName': productName,
         'amount': amount,
         'totalCost': totalCost,
         'paidAmount': paidAmount,
-        'createdAt': createdAt
+        'unPaidAmount': unPaidAmount,
+        'createdAt': Timestamp.fromDate(createdAt ?? DateTime.now()),
       };
 
   String toJson() => jsonEncode(toMap());

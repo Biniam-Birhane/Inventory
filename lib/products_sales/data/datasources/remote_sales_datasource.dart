@@ -20,7 +20,19 @@ class RemoteSalesDataSourceImpl implements RemoteSalesDatasource {
   Future<void> addSale({required ProductSale productSale}) async {
     try {
       final String id = productSale.id;
-      await salesRef.doc(id).set(productSale);
+      DateTime dateTime = DateTime.now();
+      Timestamp timestamp = Timestamp.fromDate(dateTime);
+      final data = {
+        'id': productSale.id,
+        'buyerName': productSale.buyerName,
+        'productName': productSale.productName,
+        'amount': productSale.amount,
+        'totalCost': productSale.totalCost,
+        'paidAmount': productSale.paidAmount,
+        'unPaidAmount': productSale.unPaidAmount
+      };
+      data['createdAt'] = timestamp;
+      await salesRef.doc(id).set(data);
     } on APIException catch (e) {
       print("response error: ${e.message}");
       throw APIException(message: e.message, statusCode: e.statusCode);
@@ -44,16 +56,21 @@ class RemoteSalesDataSourceImpl implements RemoteSalesDatasource {
       final data = {
         'id': productSale.id,
         'buyerName': productSale.buyerName,
-        'item': productSale.item,
+        'productName': productSale.productName,
         'amount': productSale.amount,
         'totalCost': productSale.totalCost,
-        'paidAmount': productSale.paidAmount
+        'paidAmount': productSale.paidAmount,
+        'unPaidAmount': productSale.unPaidAmount
       };
-      if (productSale.createdAt == null) {
-        data['createdAt'] = DateTime.now();
-      } else {
-        data['createdAt'] = productSale.createdAt!;
-      }
+      DateTime dateTime = DateTime.now();
+      Timestamp timestamp = Timestamp.fromDate(dateTime);
+      print('DateTime $dateTime TimeStamp $timestamp');
+
+      // if (productSale.createdAt == null) {
+      data['createdAt'] = timestamp;
+      // } else {
+      //   data['createdAt'] = productSale.createdAt!;
+      // }
       await salesRef.doc(id).update(data);
     } on APIException catch (e) {
       print("response error: ${e.message}");
@@ -68,6 +85,7 @@ class RemoteSalesDataSourceImpl implements RemoteSalesDatasource {
       List<ProductSale> sales = querySnapshot.docs.map((doc) {
         return ProductSalesModel.fromMap(doc.data() as DataMap);
       }).toList();
+
       return sales;
     } on APIException {
       rethrow;

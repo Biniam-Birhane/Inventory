@@ -32,5 +32,12 @@ class ProductsSalesState extends Equatable {
   }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [
+        sales,
+        addSalesStatus,
+        getSalesStatus,
+        deleteSalesStatus,
+        updateSalesStatus,
+        errorMessage
+      ];
 }
