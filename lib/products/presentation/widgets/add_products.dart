@@ -1,9 +1,8 @@
-import 'dart:js_interop';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:simple_inventory/core/services/product_category_injection_container.dart';
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/products/domain/entities/product_entitiy.dart';
 import 'package:simple_inventory/products/presentation/bloc/products_bloc.dart';
@@ -70,7 +69,7 @@ class _AddProductState extends State<AddProduct> {
                             isExpanded: true,
                             underline: SizedBox(),
                             style: const TextStyle(
-                                color: Colors.black, fontSize: 22),
+                                color: Colors.black, fontSize: 18),
                             value: valueChoose,
                             onChanged: (newValue) {
                               setState(() {

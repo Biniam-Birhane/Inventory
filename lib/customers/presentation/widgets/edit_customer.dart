@@ -23,7 +23,7 @@ class EditCustomer extends StatelessWidget {
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(5),
           decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 86, 111, 140),
+              
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Container(
             padding: const EdgeInsets.all(10),

@@ -75,12 +75,12 @@ class ProductsScreenState extends State<Products> {
                                     children: [
                                       const Text("added amount",
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            color: Colors.blue,
                                             fontFamily: "Quicksand",
                                           )),
                                       Text(product.amount.toString(),
                                           style: const TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.blue,
                                               fontFamily: "Quicksand",
                                               fontSize: 20)),
                                     ],
@@ -92,12 +92,12 @@ class ProductsScreenState extends State<Products> {
                                     children: [
                                       const Text("unit Price",
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            color: Colors.green,
                                             fontFamily: "Quicksand",
                                           )),
                                       Text(product.unitPrice.toString(),
                                           style: const TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.green,
                                               fontFamily: "Quicksand",
                                               fontSize: 20)),
                                     ],

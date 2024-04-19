@@ -62,20 +62,16 @@ class _UpdateProductState extends State<UpdateProduct> {
           children: [
             BlocConsumer<ProductCategoryBloc, ProductCategoryState>(
               buildWhen: (previous, current) {
-                
                 return previous.getProductCategoryStatus !=
                     current.getProductCategoryStatus;
               },
               listener: (context, state) {
                 if (state.getProductCategoryStatus.isSuccess) {
-                  
-                  
                   for (var i = 0; i < state.productCategories.length; i++) {
                     String productName = state.productCategories[i].productName;
-                    
+
                     listItem.add(productName);
                   }
-                  
                 }
               },
               builder: (context, state) {
@@ -91,7 +87,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                             isExpanded: true,
                             underline: SizedBox(),
                             style: const TextStyle(
-                                color: Colors.black, fontSize: 22),
+                                color: Colors.black, fontSize: 18),
                             value: valueChoose,
                             onChanged: (newValue) {
                               setState(() {
