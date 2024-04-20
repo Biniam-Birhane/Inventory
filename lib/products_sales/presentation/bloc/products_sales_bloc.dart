@@ -75,7 +75,6 @@ class ProductsSalesBloc extends Bloc<ProductsSalesEvent, ProductsSalesState> {
   Future<void> _getSalesHandler(
       GetSalesEvent event, Emitter<ProductsSalesState> emit) async {
     emit(state.copyWith(getSalesStatus: FormzSubmissionStatus.inProgress));
-
     final result = await _getSales();
     result.fold((failure) {
       emit(state.copyWith(

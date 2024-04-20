@@ -7,6 +7,7 @@ import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
+import 'package:simple_inventory/products_sales/presentation/widgets/add_product_sale.dart';
 import 'package:simple_inventory/products_sales/presentation/widgets/edit_sales.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,14 +36,6 @@ class _ProductSaleScreen extends State<ProductSales> {
     super.initState();
     getProductSale();
   }
-
-  final TextEditingController buyerNameController = TextEditingController();
-  final TextEditingController productNameController = TextEditingController();
-  final TextEditingController amountController = TextEditingController();
-
-  final TextEditingController totalCostController = TextEditingController();
-  final TextEditingController paidAmountController = TextEditingController();
-  final TextEditingController unPaidAmountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +98,9 @@ class _ProductSaleScreen extends State<ProductSales> {
                                     fontSize: 16))
                           ],
                         ),
+                        const Divider(
+                          height: 10,
+                        ),
                         Expanded(
                           child: ListView.builder(
                             itemCount: state.sales.length,
@@ -144,6 +140,7 @@ class _ProductSaleScreen extends State<ProductSales> {
                                     children: [
                                       Text(
                                         'paid: ${soldProduct.paidAmount}',
+                                        textAlign: TextAlign.left,
                                         style: const TextStyle(
                                             color: Colors.grey,
                                             fontFamily: "Quicksand",
@@ -151,6 +148,7 @@ class _ProductSaleScreen extends State<ProductSales> {
                                       ),
                                       Text(
                                           'unpaid: ${soldProduct.unPaidAmount}',
+                                          textAlign: TextAlign.left,
                                           style: const TextStyle(
                                               color: Colors.grey,
                                               fontFamily: "Quicksand",
@@ -159,6 +157,7 @@ class _ProductSaleScreen extends State<ProductSales> {
                                           soldProduct.createdAt
                                               .toString()
                                               .substring(0, 10),
+                                          textAlign: TextAlign.left,
                                           style: const TextStyle(
                                               color: Colors.grey))
                                     ],
@@ -195,8 +194,12 @@ class _ProductSaleScreen extends State<ProductSales> {
                       ],
                     )),
           floatingActionButton: FloatingActionButton(
-            onPressed: () =>
-                {showDialog(context: context, builder: (context) => addSale())},
+            onPressed: () => {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AddProductSale()))
+            },
             backgroundColor: const Color(0xFFFE8A00),
             elevation: 20,
             child: const Icon(
@@ -204,200 +207,6 @@ class _ProductSaleScreen extends State<ProductSales> {
             ),
           ));
     });
-  }
-
-  Material addSale() {
-    String selectedSection = sections[0];
-    return Material(
-      type: MaterialType.transparency,
-      child: Center(
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          padding: const EdgeInsets.all(5),
-          decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 86, 111, 140),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  controller: buyerNameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      hintText: "Enter buyer name",
-                      labelText: "Buyer Name",
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      labelStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey.withOpacity(0.5),
-                          width: 1.5,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.green, width: 2),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  controller: productNameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      hintText: "Enter product name",
-                      labelText: "product name",
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      labelStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey.withOpacity(0.5),
-                          width: 1.5,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.green, width: 2),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextField(
-                  controller: amountController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      hintText: "Enter amount",
-                      labelText: "amount",
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      labelStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey.withOpacity(0.5),
-                          width: 1.5,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.green, width: 2),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextField(
-                  controller: totalCostController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
-                  ],
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      hintText: "Enter total cost",
-                      labelText: "Total Cost",
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      labelStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey.withOpacity(0.5),
-                          width: 1.5,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.green, width: 2),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextField(
-                  controller: paidAmountController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
-                  ],
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      hintText: "Enter paid amount",
-                      labelText: "Paid amount",
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      labelStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey.withOpacity(0.5),
-                          width: 1.5,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.green, width: 2),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                DropdownButton<String>(
-                  value: selectedSection,
-                  items: sections
-                      .map((section) => DropdownMenuItem<String>(
-                            value: section,
-                            child: Text(
-                              "Section $section",
-                            ),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    print(value!);
-                    setState(() {
-                      selectedSection = value;
-                      print(selectedSection);
-                    });
-                  },
-                ),
-                submitButton()
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   Future<dynamic> alertDelete(ProductSale sale) {
@@ -438,66 +247,5 @@ class _ProductSaleScreen extends State<ProductSales> {
             ],
           );
         });
-  }
-
-  BlocConsumer submitButton() {
-    return BlocConsumer<ProductsSalesBloc, ProductsSalesState>(
-        listener: (context, state) {
-      print(state.addSalesStatus);
-    }, builder: (context, state) {
-      return state.addSalesStatus.isInProgress
-          ? const CircularProgressIndicator(
-              color: Colors.white,
-            )
-          : ElevatedButton(
-              onPressed: () {
-                double totalCost =
-                    double.tryParse(totalCostController.text) ?? 0;
-                double paidAmount =
-                    double.tryParse(paidAmountController.text) ?? 0;
-                double unpaidAmount = totalCost - paidAmount;
-                ProductSale productSale = ProductSale(
-                    id: const Uuid().v4(),
-                    buyerName: buyerNameController.text,
-                    productName: productNameController.text,
-                    amount: int.tryParse(amountController.text) ?? 0,
-                    totalCost: totalCost,
-                    paidAmount: paidAmount,
-                    unPaidAmount: unpaidAmount);
-                context
-                    .read<ProductsSalesBloc>()
-                    .add(AddSalesEvent(productSale: productSale));
-                if (state.addSalesStatus.isSuccess) {
-                  Navigator.pop(context);
-                } else if (state.addSalesStatus.isFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Colors.red,
-                    content: Text(
-                      state.errorMessage,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    duration: const Duration(seconds: 5),
-                  ));
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFE8A00),
-                  padding: const EdgeInsetsDirectional.symmetric(
-                    vertical: 10,
-                    horizontal: 60,
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10))),
-              child: const Text(
-                "Submit",
-                style: TextStyle(
-                  fontFamily: "Quicksand",
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-            );
-    });
   }
 }

@@ -2,13 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:simple_inventory/customers/domain/entities/customer_entity.dart';
+import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
+import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
-import 'package:simple_inventory/products_sales/presentation/pages/product_sales.dart';
+import 'package:uuid/uuid.dart';
 
-class EditSale extends StatelessWidget {
-  EditSale({required this.soldProduct, super.key});
-  final ProductSale soldProduct;
+class AddProductSale extends StatefulWidget {
+  const AddProductSale({super.key});
+  @override
+  State<AddProductSale> createState() => _AddSaleScreen();
+}
+
+class _AddSaleScreen extends State<AddProductSale> {
+  void getCustomers() {
+    context.read<CustomersBloc>().add(GetCustomersEvent());
+  }
+
+  void getProductCategories() {
+    context.read<ProductCategoryBloc>().add(const GetProductCategoryEvent());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCustomers();
+    getProductCategories();
+  }
 
   final TextEditingController buyerNameController = TextEditingController();
   final TextEditingController productNameController = TextEditingController();
@@ -20,16 +41,17 @@ class EditSale extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    buyerNameController.text = soldProduct.buyerName;
-    productNameController.text = soldProduct.productName;
-    amountController.text = soldProduct.amount.toString();
-    totalCostController.text = soldProduct.totalCost.toString();
-    paidAmountController.text = soldProduct.paidAmount.toString();
-    unPaidAmountController.text = soldProduct.unPaidAmount.toString();
-
-    return Material(
-      type: MaterialType.transparency,
-      child: Center(
+    return Scaffold(
+      backgroundColor: const Color(0xFF151D26),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF151D26),
+        title: const Text(
+          'Add sold Materials',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: Center(
         child: Container(
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(5),
@@ -75,7 +97,7 @@ class EditSale extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText: "Enter product name",
-                      labelText: "Product Name",
+                      labelText: "product name",
                       hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(
                           color: Colors.white,
@@ -96,7 +118,7 @@ class EditSale extends StatelessWidget {
                       floatingLabelBehavior: FloatingLabelBehavior.always),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 TextField(
                   controller: amountController,
@@ -105,7 +127,7 @@ class EditSale extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText: "Enter amount",
-                      labelText: "Amount",
+                      labelText: "amount",
                       hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(
                           color: Colors.white,
@@ -136,7 +158,7 @@ class EditSale extends StatelessWidget {
                   ],
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                      hintText: "Total cost ",
+                      hintText: "Enter total cost",
                       labelText: "Total Cost",
                       hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(
@@ -168,8 +190,8 @@ class EditSale extends StatelessWidget {
                   ],
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                      hintText: "Paid amount in Birr",
-                      labelText: "Paid Amount",
+                      hintText: "Enter paid amount",
+                      labelText: "Paid amount",
                       hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(
                           color: Colors.white,
@@ -192,6 +214,25 @@ class EditSale extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
+                // DropdownButton<String>(
+                //   value: selectedSection,
+                //   items: sections
+                //       .map((section) => DropdownMenuItem<String>(
+                //             value: section,
+                //             child: Text(
+                //               "Section $section",
+                //             ),
+                //           ))
+                //       .toList(),
+                //   onChanged: (value) {
+                //     print(value!);
+                //     setState(() {
+                //       selectedSection = value;
+                //       print(selectedSection);
+                //     });
+                //   },
+                // ),
+
                 submitButton()
               ],
             ),
@@ -204,42 +245,41 @@ class EditSale extends StatelessWidget {
   BlocConsumer submitButton() {
     return BlocConsumer<ProductsSalesBloc, ProductsSalesState>(
         listener: (context, state) {
-      print(state.updateSalesStatus);
-      if (state.updateSalesStatus.isSuccess) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const ProductSales()));
-      }
+      print(state.addSalesStatus);
     }, builder: (context, state) {
-      return state.updateSalesStatus.isInProgress
-          ? const CircularProgressIndicator(color: Colors.white)
+      return state.addSalesStatus.isInProgress
+          ? const CircularProgressIndicator(
+              color: Colors.white,
+            )
           : ElevatedButton(
               onPressed: () {
-                int amount = int.tryParse(amountController.text) ?? 0;
                 double totalCost =
                     double.tryParse(totalCostController.text) ?? 0;
                 double paidAmount =
                     double.tryParse(paidAmountController.text) ?? 0;
-                double unPaidAmount = totalCost - paidAmount;
-                final ProductSale productSale = ProductSale(
-                    id: soldProduct.id,
+                double unpaidAmount = totalCost - paidAmount;
+                ProductSale productSale = ProductSale(
+                    id: const Uuid().v4(),
                     buyerName: buyerNameController.text,
                     productName: productNameController.text,
-                    amount: amount,
+                    amount: int.tryParse(amountController.text) ?? 0,
                     totalCost: totalCost,
                     paidAmount: paidAmount,
-                    unPaidAmount: unPaidAmount);
+                    unPaidAmount: unpaidAmount);
                 context
                     .read<ProductsSalesBloc>()
-                    .add(UpdateSaleEvent(productSale: productSale));
-                if (state.updateSalesStatus.isSuccess) {
+                    .add(AddSalesEvent(productSale: productSale));
+                if (state.getSalesStatus.isSuccess &&
+                    state.errorMessage.isEmpty &&
+                    state.addSalesStatus.isInitial) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.white,
                       duration: Duration(seconds: 5),
                       content: Text(
-                        "Added successfuly",
-                        style: TextStyle(color: Colors.white),
+                        'Registered successfuly',
+                        style: TextStyle(color: Colors.green),
                       )));
-                } else if (state.updateSalesStatus.isFailure) {
+                } else if (state.addSalesStatus.isFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     backgroundColor: Colors.red,
                     content: Text(
