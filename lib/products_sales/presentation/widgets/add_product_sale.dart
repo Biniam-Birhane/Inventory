@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:simple_inventory/customers/domain/entities/customer_entity.dart';
 import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
@@ -16,6 +15,11 @@ class AddProductSale extends StatefulWidget {
 }
 
 class _AddSaleScreen extends State<AddProductSale> {
+  String? selectedProduct;
+  List<String> products = [];
+
+  String? selectedCustomer;
+  List<String> customers = [];
   void getCustomers() {
     context.read<CustomersBloc>().add(GetCustomersEvent());
   }
@@ -64,62 +68,163 @@ class _AddSaleScreen extends State<AddProductSale> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextField(
-                  controller: buyerNameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      hintText: "Enter buyer name",
-                      labelText: "Buyer Name",
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      labelStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey.withOpacity(0.5),
-                          width: 1.5,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.green, width: 2),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  controller: productNameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      hintText: "Enter product name",
-                      labelText: "product name",
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      labelStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey.withOpacity(0.5),
-                          width: 1.5,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.green, width: 2),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                BlocConsumer<ProductCategoryBloc, ProductCategoryState>(
+                  listener: (context, state) {
+                    if (state.getProductCategoryStatus.isSuccess) {
+                      for (var i = 0; i < state.productCategories.length; i++) {
+                        String productName =
+                            state.productCategories[i].productName;
+                        products.add(productName);
+                      }
+                    }
+                  },
+                  builder: (context, state) {
+                    return state.getProductCategoryStatus.isSuccess
+                        ? Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: DropdownButton(
+                                dropdownColor:
+                                    const Color.fromARGB(255, 49, 72, 101),
+                                hint: const Text(
+                                  "Select product :",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 36,
+                                isExpanded: true,
+                                underline: const SizedBox(),
+                                style: const TextStyle(
+                                    color: Colors.black, fontSize: 18),
+                                value: selectedProduct,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedProduct = newValue;
+                                  });
+                                },
+                                items: products.map((product) {
+                                  return DropdownMenuItem(
+                                      value: product,
+                                      child: Text(product,
+                                          style: const TextStyle(
+                                              color: Colors.white)));
+                                }).toList()),
+                          )
+                        : const CircularProgressIndicator();
+                  },
                 ),
                 const SizedBox(
                   height: 20,
                 ),
+                BlocConsumer<CustomersBloc, CustomersState>(
+                  listener: (context, state) {
+                    if (state.getCustomerStatus.isSuccess) {
+                      for (var i = 0; i < state.customers.length; i++) {
+                        String customerName = state.customers[i].name;
+                        customers.add(customerName);
+                      }
+                    }
+                  },
+                  builder: (context, state) {
+                    return state.getCustomerStatus.isSuccess
+                        ? Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: DropdownButton(
+                                dropdownColor:
+                                    const Color.fromARGB(255, 49, 72, 101),
+                                hint: const Text("Select Customer :",
+                                    style: TextStyle(color: Colors.white)),
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 36,
+                                isExpanded: true,
+                                underline: const SizedBox(),
+                                style: const TextStyle(
+                                    color: Colors.white10, fontSize: 18),
+                                value: selectedCustomer,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedCustomer = newValue;
+                                  });
+                                },
+                                items: customers.map((customer) {
+                                  return DropdownMenuItem(
+                                      value: customer,
+                                      child: Text(
+                                        customer,
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ));
+                                }).toList()),
+                          )
+                        : const CircularProgressIndicator();
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                // TextField(
+                //   controller: buyerNameController,
+                //   style: const TextStyle(color: Colors.white),
+                //   decoration: InputDecoration(
+                //       hintText: "Enter buyer name",
+                //       labelText: "Buyer Name",
+                //       hintStyle: const TextStyle(color: Colors.grey),
+                //       labelStyle: const TextStyle(
+                //           color: Colors.white,
+                //           fontSize: 18,
+                //           fontWeight: FontWeight.bold),
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(10.0),
+                //         borderSide: BorderSide(
+                //           color: Colors.grey.withOpacity(0.5),
+                //           width: 1.5,
+                //         ),
+                //       ),
+                //       focusedBorder: OutlineInputBorder(
+                //         borderSide:
+                //             const BorderSide(color: Colors.green, width: 2),
+                //         borderRadius: BorderRadius.circular(10.0),
+                //       ),
+                //       floatingLabelBehavior: FloatingLabelBehavior.always),
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // TextField(
+                //   controller: productNameController,
+                //   style: const TextStyle(color: Colors.white),
+                //   decoration: InputDecoration(
+                //       hintText: "Enter product name",
+                //       labelText: "product name",
+                //       hintStyle: const TextStyle(color: Colors.grey),
+                //       labelStyle: const TextStyle(
+                //           color: Colors.white,
+                //           fontSize: 18,
+                //           fontWeight: FontWeight.bold),
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(10.0),
+                //         borderSide: BorderSide(
+                //           color: Colors.grey.withOpacity(0.5),
+                //           width: 1.5,
+                //         ),
+                //       ),
+                //       focusedBorder: OutlineInputBorder(
+                //         borderSide:
+                //             const BorderSide(color: Colors.green, width: 2),
+                //         borderRadius: BorderRadius.circular(10.0),
+                //       ),
+                //       floatingLabelBehavior: FloatingLabelBehavior.always),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
                 TextField(
                   controller: amountController,
                   keyboardType: TextInputType.number,
@@ -260,9 +365,9 @@ class _AddSaleScreen extends State<AddProductSale> {
                 double unpaidAmount = totalCost - paidAmount;
                 ProductSale productSale = ProductSale(
                     id: const Uuid().v4(),
-                    buyerName: buyerNameController.text,
-                    productName: productNameController.text,
-                    amount: int.tryParse(amountController.text) ?? 0,
+                    buyerName: selectedCustomer ?? '',
+                    productName: selectedProduct ?? '',
+                    amount: double.tryParse(amountController.text) ?? 0,
                     totalCost: totalCost,
                     paidAmount: paidAmount,
                     unPaidAmount: unpaidAmount);
@@ -273,11 +378,11 @@ class _AddSaleScreen extends State<AddProductSale> {
                     state.errorMessage.isEmpty &&
                     state.addSalesStatus.isInitial) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.green,
                       duration: Duration(seconds: 5),
                       content: Text(
                         'Registered successfuly',
-                        style: TextStyle(color: Colors.green),
+                        style: TextStyle(color: Colors.white),
                       )));
                 } else if (state.addSalesStatus.isFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(

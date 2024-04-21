@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:simple_inventory/customers/presentation/pages/add_customer.dart';
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/product_category/presentation/pages/product_category.dart';
 
@@ -18,7 +16,7 @@ class UpdateProductCategory extends StatelessWidget {
   final double availableAmount;
   final double unitPrice;
 
-  TextEditingController productNameController = TextEditingController();
+  final TextEditingController productNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -31,7 +29,7 @@ class UpdateProductCategory extends StatelessWidget {
             color: Colors.black.withOpacity(0.5),
             borderRadius: BorderRadius.circular(20),
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Form(
                   child: Column(
                 children: [
@@ -100,7 +98,7 @@ class UpdateProductCategory extends StatelessWidget {
                           unitPrice: unitPrice));
                 },
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(254, 138, 0, 1),
+                    backgroundColor: const Color.fromRGBO(254, 138, 0, 1),
                     padding: const EdgeInsetsDirectional.symmetric(
                       vertical: 10,
                       horizontal: 60,
@@ -124,7 +122,7 @@ class UpdateProductCategory extends StatelessWidget {
   TextFormField productNameField() {
     return TextFormField(
       controller: productNameController,
-      style: TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
           hintText: "Enter Product Name",
           labelText: "Name",

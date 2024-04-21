@@ -13,7 +13,7 @@ class ProductSale extends Equatable {
   final String id;
   final String buyerName;
   final String productName;
-  final int amount;
+  final double amount;
   final double totalCost;
 
   final double paidAmount;

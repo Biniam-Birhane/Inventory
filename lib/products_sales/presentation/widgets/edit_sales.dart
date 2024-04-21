@@ -214,7 +214,7 @@ class EditSale extends StatelessWidget {
           ? const CircularProgressIndicator(color: Colors.white)
           : ElevatedButton(
               onPressed: () {
-                int amount = int.tryParse(amountController.text) ?? 0;
+                double amount = double.tryParse(amountController.text) ?? 0;
                 double totalCost =
                     double.tryParse(totalCostController.text) ?? 0;
                 double paidAmount =

@@ -46,7 +46,7 @@ class _UpdateProductState extends State<UpdateProduct> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xFF151D26),
+          backgroundColor: const Color(0xFF151D26),
           title: const Text(
             "Update Products",
             style: TextStyle(
@@ -55,7 +55,7 @@ class _UpdateProductState extends State<UpdateProduct> {
               fontSize: 20,
             ),
           ),
-          iconTheme: IconThemeData(color: Colors.white)),
+          iconTheme: const IconThemeData(color: Colors.white)),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(

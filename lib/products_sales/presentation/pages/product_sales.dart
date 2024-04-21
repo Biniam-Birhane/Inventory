@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
@@ -9,7 +7,6 @@ import 'package:simple_inventory/products_sales/domain/entities/product_sales.da
 import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
 import 'package:simple_inventory/products_sales/presentation/widgets/add_product_sale.dart';
 import 'package:simple_inventory/products_sales/presentation/widgets/edit_sales.dart';
-import 'package:uuid/uuid.dart';
 
 class ProductSales extends StatefulWidget {
   const ProductSales({super.key});

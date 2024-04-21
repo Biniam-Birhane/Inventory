@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -10,20 +8,20 @@ import 'package:simple_inventory/products/presentation/pages/products.dart';
 import 'package:uuid/uuid.dart';
 
 class AddProduct extends StatefulWidget {
-  @override
-  const AddProduct({required this.amount, required this.unitPrice});
+  const AddProduct({required this.amount, required this.unitPrice, super.key});
   final TextEditingController amount;
   final TextEditingController unitPrice;
+  @override
   State<AddProduct> createState() => _AddProductState();
 }
 
 class _AddProductState extends State<AddProduct> {
   String? valueChoose;
   List<String> listItem = [];
-  var uuid = Uuid();
+  var uuid = const Uuid();
   @override
   void initState() {
-    context.read<ProductCategoryBloc>().add(GetProductCategoryEvent());
+    context.read<ProductCategoryBloc>().add(const GetProductCategoryEvent());
     super.initState();
   }
 
@@ -32,7 +30,7 @@ class _AddProductState extends State<AddProduct> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xFF151D26),
+          backgroundColor: const Color(0xFF151D26),
           title: const Text(
             "Add Products",
             style: TextStyle(
@@ -41,7 +39,7 @@ class _AddProductState extends State<AddProduct> {
               fontSize: 20,
             ),
           ),
-          iconTheme: IconThemeData(color: Colors.white)),
+          iconTheme: const IconThemeData(color: Colors.white)),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -58,16 +56,16 @@ class _AddProductState extends State<AddProduct> {
               builder: (context, state) {
                 return state.getProductCategoryStatus.isSuccess
                     ? Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1),
                             borderRadius: BorderRadius.circular(10)),
                         child: DropdownButton(
-                            hint: Text("Select product :"),
-                            icon: Icon(Icons.arrow_drop_down),
+                            hint: const Text("Select product :"),
+                            icon: const Icon(Icons.arrow_drop_down),
                             iconSize: 36,
                             isExpanded: true,
-                            underline: SizedBox(),
+                            underline: const SizedBox(),
                             style: const TextStyle(
                                 color: Colors.black, fontSize: 18),
                             value: valueChoose,
@@ -106,7 +104,7 @@ class _AddProductState extends State<AddProduct> {
   TextFormField productNameField(controllerName, hintText, labelText) {
     return TextFormField(
       controller: controllerName,
-      style: TextStyle(color: Colors.black),
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
           hintText: hintText,
           labelText: labelText,
@@ -139,8 +137,8 @@ class _AddProductState extends State<AddProduct> {
                 "Added successfuly",
                 style: TextStyle(color: Colors.white),
               )));
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Products()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const Products()));
         } else if (state.addProductStatus.isFailure) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,

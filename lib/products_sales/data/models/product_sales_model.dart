@@ -33,7 +33,7 @@ class ProductSalesModel extends ProductSale {
       {String? id,
       String? buyerName,
       String? productName,
-      int? amount,
+      double? amount,
       double? totalCost,
       double? paidAmount,
       double? unPaidAmount,
