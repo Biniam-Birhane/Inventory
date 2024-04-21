@@ -5,7 +5,6 @@ import 'package:simple_inventory/product_category/presentation/bloc/product_cate
 import 'package:simple_inventory/products/domain/entities/product_entitiy.dart';
 import 'package:simple_inventory/products/presentation/bloc/products_bloc.dart';
 import 'package:simple_inventory/products/presentation/pages/products.dart';
-import 'package:uuid/uuid.dart';
 
 class UpdateProduct extends StatefulWidget {
   @override

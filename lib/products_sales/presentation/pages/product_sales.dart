@@ -39,7 +39,6 @@ class _ProductSaleScreen extends State<ProductSales> {
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<ProductsSalesBloc, ProductsSalesState>(
         listener: (context, state) {
-      print(state.getSalesStatus);
       if (state.addSalesStatus.isSuccess ||
           state.updateSalesStatus.isSuccess ||
           state.deleteSalesStatus.isSuccess) {
@@ -166,7 +165,7 @@ class _ProductSaleScreen extends State<ProductSales> {
                                           onPressed: () {
                                             showDialog(
                                                 context: context,
-                                                builder: (context) => EditSale(
+                                                builder: (context) => EditSales(
                                                     soldProduct: soldProduct));
                                           },
                                           icon: const Icon(

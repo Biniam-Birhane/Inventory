@@ -27,7 +27,7 @@ class ProductSalesModel extends ProductSale {
             totalCost: map['totalCost'],
             paidAmount: map['paidAmount'],
             unPaidAmount: map['unPaidAmount'],
-            createdAt: (map['createdAt'] as Timestamp)?.toDate());
+            createdAt: (map['createdAt'] as Timestamp).toDate());
 
   ProductSalesModel copyWith(
       {String? id,
