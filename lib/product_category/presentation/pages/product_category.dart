@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class ProductCategory extends StatefulWidget {
 class _ProductCategoryState extends State<ProductCategory> {
   late BuildContext dialogContext;
   TextEditingController _productName = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   void getProductCategories() {
     context.read<ProductCategoryBloc>().add(GetProductCategoryEvent());
   }
@@ -54,62 +56,106 @@ class _ProductCategoryState extends State<ProductCategory> {
               iconTheme: IconThemeData(color: Colors.white)),
           body: state.getProductCategoryStatus.isSuccess
               ? Column(children: [
+                  searchField(size),
                   Expanded(
                       child: ListView.builder(
                           itemCount: state.productCategories.length,
                           itemBuilder: ((context, index) {
                             final productCategory =
                                 state.productCategories[index];
-                            return ListTile(
-                              leading: Container(
-                                width: size.width * 0.2,
-                                child: Text("${index + 1}",
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 5.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey)),
+                                child: ExpansionTile(
+                                  iconColor: Colors.white,
+                                  dense: false,
+                                  title: Text(
+                                    productCategory.productName,
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontFamily: "Quicksand",
-                                        fontSize: 20)),
-                              ),
-                              title: Text(productCategory.productName,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Quicksand",
-                                      fontSize: 20)),
-                              subtitle: Text(
-                                  productCategory.availableAmount.toString(),
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Quicksand",
-                                      fontSize: 20)),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                      onPressed: () => {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return UpdateProductCategory(
-                                                    id: productCategory.id,
-                                                    productName: productCategory
-                                                        .productName,
-                                                    availableAmount:
-                                                        productCategory
-                                                            .availableAmount,
-                                                    unitPrice:productCategory.unitPrice
-                                                  );
-                                                })
-                                          },
-                                      color: Colors.green,
-                                      icon: Icon(Icons.edit)),
-                                  IconButton(
-                                      onPressed: () {
-                                        confirmDeletion(
-                                            context, productCategory);
-                                      },
-                                      color: Colors.red,
-                                      icon: Icon(Icons.delete))
-                                ],
+                                        fontSize: 20),
+                                  ),
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15.0, 0, 0, 0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: const Text(
+                                              "Product name: ",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Quicksand",
+                                                  fontSize: 16),
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              productCategory.productName
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Quicksand",
+                                                  fontSize: 16),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        'Unit Price:  ${productCategory.unitPrice}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Quicksand",
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () => {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return UpdateProductCategory(
+                                                            id: productCategory
+                                                                .id,
+                                                            productName:
+                                                                productCategory
+                                                                    .productName,
+                                                            availableAmount:
+                                                                productCategory
+                                                                    .availableAmount,
+                                                            unitPrice:
+                                                                productCategory
+                                                                    .unitPrice);
+                                                      })
+                                                },
+                                            color: Colors.green,
+                                            icon: Icon(Icons.edit)),
+                                        IconButton(
+                                            onPressed: () {
+                                              confirmDeletion(
+                                                  context, productCategory);
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            )),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           })))
@@ -177,5 +223,52 @@ class _ProductCategoryState extends State<ProductCategory> {
             ],
           );
         });
+  }
+
+  Padding searchField(Size size) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              width: size.width * 0.78,
+              child: TextFormField(
+                controller: searchController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    hintText: "Search product category",
+                    prefixIcon: Icon(Icons.search),
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.green, width: 2),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Icon(
+                Icons.search,
+                color: Colors.black,
+              ),
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(20),
+                  backgroundColor: const Color(0xFFFE8A00),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+            )
+          ]),
+    );
   }
 }

@@ -15,6 +15,8 @@ class Products extends StatefulWidget {
 class ProductsScreenState extends State<Products> {
   TextEditingController unitPrice = TextEditingController();
   TextEditingController amount = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+
   @override
   void initState() {
     getProducts();
@@ -51,88 +53,100 @@ class ProductsScreenState extends State<Products> {
               iconTheme: const IconThemeData(color: Colors.white)),
           body: state.getProductsStatus.isSuccess
               ? Column(children: [
+                  searchField(size),
                   Expanded(
                       child: ListView.builder(
                           itemCount: state.products.length,
                           itemBuilder: ((context, index) {
                             final product = state.products[index];
-                            return ListTile(
-                              leading: Text("${index + 1}",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Quicksand",
-                                      fontSize: 20)),
-                              title: Text(product.productName,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Quicksand",
-                                      fontSize: 20)),
-                              subtitle: Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text("added amount",
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                            fontFamily: "Quicksand",
-                                          )),
-                                      Text(product.amount.toString(),
-                                          style: const TextStyle(
-                                              color: Colors.blue,
-                                              fontFamily: "Quicksand",
-                                              fontSize: 20)),
-                                    ],
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey)),
+                                child: ExpansionTile(
+                                  iconColor: Colors.white,
+                                  dense: false,
+                                  title: Text(
+                                    product.productName,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Quicksand",
+                                        fontSize: 20),
                                   ),
-                                  SizedBox(
-                                    width: size.width * 0.02,
-                                  ),
-                                  Column(
-                                    children: [
-                                      const Text("unit Price",
-                                          style: TextStyle(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15.0, 0, 0, 0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: const Text(
+                                              "Amount: ",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Quicksand",
+                                                  fontSize: 16),
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              product.amount.toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Quicksand",
+                                                  fontSize: 16),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        'Unit Price:  ${product.unitPrice}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Quicksand",
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () => {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => UpdateProduct(
+                                                              id: product.id,
+                                                              productId: product
+                                                                  .productId,
+                                                              productName: product
+                                                                  .productName,
+                                                              amount: product
+                                                                  .amount,
+                                                              unitPrice: product
+                                                                  .unitPrice)))
+                                                },
                                             color: Colors.green,
-                                            fontFamily: "Quicksand",
-                                          )),
-                                      Text(product.unitPrice.toString(),
-                                          style: const TextStyle(
-                                              color: Colors.green,
-                                              fontFamily: "Quicksand",
-                                              fontSize: 20)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                      onPressed: () => {
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        UpdateProduct(
-                                                            id: product.id,
-                                                            productId: product
-                                                                .productId,
-                                                            productName: product
-                                                                .productName,
-                                                            amount:
-                                                                product.amount,
-                                                            unitPrice: product
-                                                                .unitPrice)))
-                                          },
-                                      color: Colors.green,
-                                      icon: const Icon(Icons.edit)),
-                                  IconButton(
-                                      onPressed: () {
-                                        confirmDeletion(context, product.id,product.productName);
-                                      },
-                                      color: Colors.red,
-                                      icon: const Icon(Icons.delete))
-                                ],
+                                            icon: const Icon(Icons.edit)),
+                                        IconButton(
+                                            onPressed: () {
+                                              confirmDeletion(
+                                                  context,
+                                                  product.id,
+                                                  product.productName);
+                                            },
+                                            color: Colors.red,
+                                            icon: const Icon(Icons.delete))
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           })))
@@ -157,7 +171,47 @@ class ProductsScreenState extends State<Products> {
     });
   }
 
-  Future<dynamic> confirmDeletion(BuildContext context, id,productName) {
+  Padding searchField(Size size) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,mainAxisSize: MainAxisSize.max, children: [
+        Container(
+          width: size.width * 0.78,
+          child: TextFormField(
+            controller: searchController,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+                hintText: "Search product",
+                prefixIcon: Icon(Icons.search),
+                hintStyle: const TextStyle(color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey.withOpacity(0.5),
+                    width: 1.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.green, width: 2),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {},
+          child: Icon(Icons.search,color: Colors.black,),
+          style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(20),
+              backgroundColor: const Color(0xFFFE8A00),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10))),
+        )
+      ]),
+    );
+  }
+
+  Future<dynamic> confirmDeletion(BuildContext context, id, productName) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
