@@ -10,11 +10,11 @@ Drawer DrawerPage(Size size, BuildContext context) {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-         const Padding(
+          const Padding(
               padding: const EdgeInsets.fromLTRB(10.0, 30.0, 30.0, 10.0),
               child: Row(
                 children: [
-                   CircleAvatar(
+                  CircleAvatar(
                     backgroundColor: Color(0xFF151D26),
                     foregroundImage: AssetImage('assets/images/logo.png'),
                     radius: 30,
@@ -22,7 +22,7 @@ Drawer DrawerPage(Size size, BuildContext context) {
                   SizedBox(
                     width: 10,
                   ),
-                   Text(
+                  Text(
                     "Board Inventory",
                     style: TextStyle(
                         color: Colors.white,
@@ -46,7 +46,7 @@ Drawer DrawerPage(Size size, BuildContext context) {
                       leading:
                           const Icon(Icons.shopping_cart, color: Colors.white),
                       title: const Text(
-                        "Add Products",
+                        "Products",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Quicksand',

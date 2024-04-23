@@ -36,12 +36,7 @@ void main() async {
               appId: '1:554272763565:android:50434184d201cf01802024',
               messagingSenderId: '554272763565',
               projectId: 'simpleinventory-88d20'));
-      await Firebase.initializeApp(
-          options: const FirebaseOptions(
-              apiKey: 'AIzaSyA6d_XISeI6L2hI1Kwv4TJ9QVFKPnZVIWc',
-              appId: '1:554272763565:android:50434184d201cf01802024',
-              messagingSenderId: '554272763565',
-              projectId: 'simpleinventory-88d20'));
+      
     }
   } catch (e) {
     print('Error initializing Firebase: $e');
