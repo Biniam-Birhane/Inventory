@@ -84,7 +84,6 @@ class ProductsSalesBloc extends Bloc<ProductsSalesEvent, ProductsSalesState> {
       emit(state.copyWith(
           getSalesStatus: FormzSubmissionStatus.success,
           sales: sales,
-          addSalesStatus: FormzSubmissionStatus.initial,
           deleteSalesStatus: FormzSubmissionStatus.initial,
           updateSalesStatus: FormzSubmissionStatus.initial,
           errorMessage: ''));

@@ -39,8 +39,7 @@ class _ProductSaleScreen extends State<ProductSales> {
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<ProductsSalesBloc, ProductsSalesState>(
         listener: (context, state) {
-      if (state.addSalesStatus.isSuccess ||
-          state.updateSalesStatus.isSuccess ||
+      if (state.updateSalesStatus.isSuccess ||
           state.deleteSalesStatus.isSuccess) {
         getProductSale();
       }
@@ -103,7 +102,8 @@ class _ProductSaleScreen extends State<ProductSales> {
                             itemBuilder: (context, index) {
                               final soldProduct = state.sales[index];
                               return Container(
-                                child: ListTile(
+                                child: ExpansionTile(
+                                  iconColor: Colors.white,
                                   dense: false,
                                   leading: Container(
                                     width: size.width * 0.2,
@@ -113,75 +113,80 @@ class _ProductSaleScreen extends State<ProductSales> {
                                             fontFamily: "Quicksand",
                                             fontSize: 16)),
                                   ),
-                                  title: Row(
-                                    children: [
-                                      Text(
-                                        '${soldProduct.amount} ',
-                                        style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontFamily: "Quicksand",
-                                            fontSize: 16),
-                                      ),
-                                      Text(
-                                        soldProduct.productName,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: "Quicksand",
-                                            fontSize: 20),
-                                      ),
-                                    ],
+                                  title: Text(
+                                    soldProduct.productName,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Quicksand",
+                                        fontSize: 20),
                                   ),
-                                  subtitle: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'paid: ${soldProduct.paidAmount}',
-                                        textAlign: TextAlign.left,
+                                  subtitle: Text(
+                                    '${soldProduct.amount} ',
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: "Quicksand",
+                                        fontSize: 16),
+                                  ),
+                                  children: [
+                                    Text(
+                                      soldProduct.createdAt.toString(),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontFamily: "Quicksand",
+                                          fontSize: 16),
+                                    ),
+                                    ListTile(
+                                      leading: Text(
+                                        'Total Cost:   ${soldProduct.totalCost}',
+                                        textAlign: TextAlign.center,
                                         style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontFamily: "Quicksand",
-                                            fontSize: 16),
+                                          color: Colors.grey,
+                                          fontFamily: "Quicksand",
+                                        ),
                                       ),
-                                      Text(
-                                          'unpaid: ${soldProduct.unPaidAmount}',
-                                          textAlign: TextAlign.left,
-                                          style: const TextStyle(
+                                      title: Text(
+                                        'Paid:  ${soldProduct.paidAmount}',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontFamily: "Quicksand",
+                                        ),
+                                      ),
+                                      trailing: Text(
+                                        'Unpaid: ${soldProduct.unPaidAmount}',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontFamily: "Quicksand",
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      EditSales(
+                                                          soldProduct:
+                                                              soldProduct));
+                                            },
+                                            icon: const Icon(
+                                              Icons.edit,
                                               color: Colors.grey,
-                                              fontFamily: "Quicksand",
-                                              fontSize: 16)),
-                                      Text(
-                                          soldProduct.createdAt
-                                              .toString()
-                                              .substring(0, 10),
-                                          textAlign: TextAlign.left,
-                                          style: const TextStyle(
-                                              color: Colors.grey))
-                                    ],
-                                  ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) => EditSales(
-                                                    soldProduct: soldProduct));
-                                          },
-                                          icon: const Icon(
-                                            Icons.edit,
-                                            color: Colors.green,
-                                          )),
-                                      IconButton(
-                                          onPressed: () {
-                                            alertDelete(soldProduct);
-                                          },
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
-                                          )),
-                                    ],
-                                  ),
+                                            )),
+                                        IconButton(
+                                            onPressed: () {
+                                              alertDelete(soldProduct);
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.grey,
+                                            )),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               );
                             },

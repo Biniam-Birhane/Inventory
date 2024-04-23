@@ -29,7 +29,10 @@ class RemoteSalesDataSourceImpl implements RemoteSalesDatasource {
         'amount': productSale.amount,
         'totalCost': productSale.totalCost,
         'paidAmount': productSale.paidAmount,
-        'unPaidAmount': productSale.unPaidAmount
+        'unPaidAmount': productSale.unPaidAmount,
+        'date': dateTime.day,
+        'month': dateTime.month,
+        'year': dateTime.year
       };
       data['createdAt'] = timestamp;
       await salesRef.doc(id).set(data);
@@ -53,6 +56,7 @@ class RemoteSalesDataSourceImpl implements RemoteSalesDatasource {
   Future<void> updateSale({required ProductSale productSale}) async {
     try {
       final String id = productSale.id;
+      DateTime dateTime = DateTime.now();
       final data = {
         'id': productSale.id,
         'buyerName': productSale.buyerName,
@@ -60,9 +64,12 @@ class RemoteSalesDataSourceImpl implements RemoteSalesDatasource {
         'amount': productSale.amount,
         'totalCost': productSale.totalCost,
         'paidAmount': productSale.paidAmount,
-        'unPaidAmount': productSale.unPaidAmount
+        'unPaidAmount': productSale.unPaidAmount,
+        'date': productSale.date ?? dateTime.day,
+        'month': productSale.month ?? dateTime.month,
+        'year': productSale.year ?? dateTime.year
       };
-      DateTime dateTime = DateTime.now();
+
       Timestamp timestamp = Timestamp.fromDate(dateTime);
       print('DateTime $dateTime TimeStamp $timestamp');
 

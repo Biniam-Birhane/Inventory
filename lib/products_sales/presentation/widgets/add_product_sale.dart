@@ -55,7 +55,7 @@ class _AddSaleScreen extends State<AddProductSale> {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(5),
@@ -374,9 +374,7 @@ class _AddSaleScreen extends State<AddProductSale> {
                 context
                     .read<ProductsSalesBloc>()
                     .add(AddSalesEvent(productSale: productSale));
-                if (state.getSalesStatus.isSuccess &&
-                    state.errorMessage.isEmpty &&
-                    state.addSalesStatus.isInitial) {
+                if (state.addSalesStatus.isSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       backgroundColor: Colors.green,
                       duration: Duration(seconds: 5),

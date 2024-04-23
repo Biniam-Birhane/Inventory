@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:simple_inventory/customers/presentation/pages/add_customer.dart";
 import "package:simple_inventory/product_category/presentation/pages/product_category.dart";
 import "package:simple_inventory/products/presentation/pages/products.dart";
+import "package:simple_inventory/reports/presentation/pages/report.dart";
 
 Drawer DrawerPage(Size size, BuildContext context) {
   return Drawer(
@@ -124,7 +125,12 @@ Drawer DrawerPage(Size size, BuildContext context) {
                         fontSize: 18,
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ReportPage()));
+                    },
                   ),
                 ],
               ),

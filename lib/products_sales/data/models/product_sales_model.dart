@@ -13,6 +13,9 @@ class ProductSalesModel extends ProductSale {
       required super.totalCost,
       required super.paidAmount,
       required super.unPaidAmount,
+      super.date,
+      super.month,
+      super.year,
       super.createdAt});
 
   factory ProductSalesModel.fromJson(String source) =>
@@ -23,10 +26,10 @@ class ProductSalesModel extends ProductSale {
             id: map['id'],
             buyerName: map['buyerName'],
             productName: map['productName'],
-            amount: double.parse(map['amount'].toString()) ,
-            totalCost:double.parse(map['totalCost'].toString()),
-            paidAmount:double.parse(map['paidAmount'].toString()),
-            unPaidAmount:double.parse(map['unPaidAmount'].toString()),
+            amount: double.parse(map['amount'].toString()),
+            totalCost: double.parse(map['totalCost'].toString()),
+            paidAmount: double.parse(map['paidAmount'].toString()),
+            unPaidAmount: double.parse(map['unPaidAmount'].toString()),
             createdAt: (map['createdAt'] as Timestamp).toDate());
 
   ProductSalesModel copyWith(
@@ -37,6 +40,9 @@ class ProductSalesModel extends ProductSale {
       double? totalCost,
       double? paidAmount,
       double? unPaidAmount,
+      double? date,
+      double? month,
+      double? year,
       DateTime? createdAt}) {
     return ProductSalesModel(
         id: id ?? this.id,
@@ -46,6 +52,9 @@ class ProductSalesModel extends ProductSale {
         totalCost: totalCost ?? this.totalCost,
         paidAmount: paidAmount ?? this.paidAmount,
         unPaidAmount: unPaidAmount ?? this.unPaidAmount,
+        date: date ?? this.date,
+        month: month ?? this.month,
+        year: year ?? this.year,
         createdAt: createdAt ?? this.createdAt);
   }
 

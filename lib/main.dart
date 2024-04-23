@@ -11,14 +11,13 @@ import 'package:simple_inventory/dashboard/dashbord.dart';
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
 import 'package:simple_inventory/products/presentation/bloc/products_bloc.dart';
-
+import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await init();
     await productCategoryInjection();
-
 
     if (kIsWeb) {
       await Firebase.initializeApp(
@@ -57,6 +56,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<ProductsSalesBloc>(
             create: (context) => sl<ProductsSalesBloc>(),
           ),
+          BlocProvider<ReportsBloc>(create: (context) => sl<ReportsBloc>()),
           BlocProvider<ProductCategoryBloc>(
               create: (context) => pr<ProductCategoryBloc>()),
           BlocProvider<ProductsBloc>(create: (context) => pr<ProductsBloc>())
