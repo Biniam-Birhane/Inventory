@@ -16,6 +16,7 @@ class ProductSales extends StatefulWidget {
 
 class _ProductSaleScreen extends State<ProductSales> {
   final List<String> sections = ["A", "B", "C"];
+  TextEditingController searchController = TextEditingController();
   void getProductSale() {
     context.read<ProductsSalesBloc>().add(GetSalesEvent());
   }
@@ -55,145 +56,118 @@ class _ProductSaleScreen extends State<ProductSales> {
             ),
             iconTheme: const IconThemeData(color: Colors.white),
           ),
-          body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: state.getSalesStatus.isInProgress
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ))
-                  : Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: size.width * 0.2,
-                              child: const Text('Buyer',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
+          body: state.getSalesStatus.isInProgress
+              ? const Center(
+                  child: CircularProgressIndicator(
+                  color: Colors.white,
+                ))
+              : Column(
+                  children: [
+                    searchField(size),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: state.sales.length,
+                        itemBuilder: (context, index) {
+                          final soldProduct = state.sales[index];
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey)),
+                              child: ExpansionTile(
+                                iconColor: Colors.white,
+                                dense: false,
+                                leading: Container(
+                                  width: size.width * 0.2,
+                                  child: Text(soldProduct.buyerName,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Quicksand",
+                                          fontSize: 16)),
+                                ),
+                                title: Text(
+                                  soldProduct.productName,
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontFamily: "Quicksand",
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16)),
-                            ),
-                            const Text('Product',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Quicksand",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16)),
-                            const Text('Action',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Quicksand",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16))
-                          ],
-                        ),
-                        const Divider(
-                          height: 10,
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: state.sales.length,
-                            itemBuilder: (context, index) {
-                              final soldProduct = state.sales[index];
-                              return Container(
-                                child: ExpansionTile(
-                                  iconColor: Colors.white,
-                                  dense: false,
-                                  leading: Container(
-                                    width: size.width * 0.2,
-                                    child: Text(soldProduct.buyerName,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: "Quicksand",
-                                            fontSize: 16)),
-                                  ),
-                                  title: Text(
-                                    soldProduct.productName,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "Quicksand",
-                                        fontSize: 20),
-                                  ),
-                                  subtitle: Text(
-                                    '${soldProduct.amount} ',
+                                      fontSize: 20),
+                                ),
+                                subtitle: Text(
+                                  '${soldProduct.amount} ',
+                                  style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontFamily: "Quicksand",
+                                      fontSize: 16),
+                                ),
+                                children: [
+                                  Text(
+                                    soldProduct.createdAt.toString(),
+                                    textAlign: TextAlign.center,
                                     style: const TextStyle(
                                         color: Colors.grey,
                                         fontFamily: "Quicksand",
                                         fontSize: 16),
                                   ),
-                                  children: [
-                                    Text(
-                                      soldProduct.createdAt.toString(),
+                                  ListTile(
+                                    leading: Text(
+                                      'Total Cost:   ${soldProduct.totalCost}',
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontFamily: "Quicksand",
-                                          fontSize: 16),
-                                    ),
-                                    ListTile(
-                                      leading: Text(
-                                        'Total Cost:   ${soldProduct.totalCost}',
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontFamily: "Quicksand",
-                                        ),
-                                      ),
-                                      title: Text(
-                                        'Paid:  ${soldProduct.paidAmount}',
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontFamily: "Quicksand",
-                                        ),
-                                      ),
-                                      trailing: Text(
-                                        'Unpaid: ${soldProduct.unPaidAmount}',
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontFamily: "Quicksand",
-                                        ),
+                                        color: Colors.grey,
+                                        fontFamily: "Quicksand",
                                       ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      EditSales(
-                                                          soldProduct:
-                                                              soldProduct));
-                                            },
-                                            icon: const Icon(
-                                              Icons.edit,
-                                              color: Colors.grey,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              alertDelete(soldProduct);
-                                            },
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.grey,
-                                            )),
-                                      ],
+                                    title: Text(
+                                      'Paid:  ${soldProduct.paidAmount}',
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: "Quicksand",
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    )),
+                                    trailing: Text(
+                                      'Unpaid: ${soldProduct.unPaidAmount}',
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: "Quicksand",
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    EditSales(
+                                                        soldProduct:
+                                                            soldProduct));
+                                          },
+                                          icon: const Icon(
+                                            Icons.edit,
+                                            color: Colors.grey,
+                                          )),
+                                      IconButton(
+                                          onPressed: () {
+                                            alertDelete(soldProduct);
+                                          },
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.grey,
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => {
               Navigator.push(
@@ -248,5 +222,51 @@ class _ProductSaleScreen extends State<ProductSales> {
             ],
           );
         });
+  }
+
+  Padding searchField(Size size) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              width: size.width * 0.78,
+              child: TextFormField(
+                controller: searchController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    hintText: "Search product",
+                    prefixIcon: Icon(Icons.search),
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Icon(
+                Icons.search,
+                color: Colors.black,
+              ),
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(20),
+                  backgroundColor: const Color(0xFFFE8A00),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+            )
+          ]),
+    );
   }
 }

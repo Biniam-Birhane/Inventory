@@ -95,6 +95,8 @@ class _ReportScreen extends State<ReportPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -307,8 +309,9 @@ class _ReportScreen extends State<ReportPage> {
               },
               builder: ((context, state) {
                 return state.gettingReportStatus.isSuccess
-                    ? Expanded(
+                    ? Flexible(
                         child: ListView.builder(
+                          shrinkWrap: true,
                             itemCount: state.salesReport.length,
                             itemBuilder: ((context, index) {
                               final ProductSale productSale =

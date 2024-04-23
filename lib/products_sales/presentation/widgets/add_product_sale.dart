@@ -59,9 +59,7 @@ class _AddSaleScreen extends State<AddProductSale> {
         child: Container(
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.5),
-              borderRadius: const BorderRadius.all(Radius.circular(10))),
+          
           child: Container(
             padding: const EdgeInsets.all(10),
             child: Column(
