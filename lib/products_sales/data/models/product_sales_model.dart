@@ -23,10 +23,10 @@ class ProductSalesModel extends ProductSale {
             id: map['id'],
             buyerName: map['buyerName'],
             productName: map['productName'],
-            amount: map['amount'],
-            totalCost: map['totalCost'],
-            paidAmount: map['paidAmount'],
-            unPaidAmount: map['unPaidAmount'],
+            amount: double.parse(map['amount'].toString()) ,
+            totalCost:double.parse(map['totalCost'].toString()),
+            paidAmount:double.parse(map['paidAmount'].toString()),
+            unPaidAmount:double.parse(map['unPaidAmount'].toString()),
             createdAt: (map['createdAt'] as Timestamp).toDate());
 
   ProductSalesModel copyWith(

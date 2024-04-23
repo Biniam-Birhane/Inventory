@@ -10,19 +10,19 @@ Drawer DrawerPage(Size size, BuildContext context) {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Padding(
+         const Padding(
               padding: const EdgeInsets.fromLTRB(10.0, 30.0, 30.0, 10.0),
               child: Row(
                 children: [
-                  const CircleAvatar(
+                   CircleAvatar(
                     backgroundColor: Color(0xFF151D26),
                     foregroundImage: AssetImage('assets/images/logo.png'),
                     radius: 30,
                   ),
                   SizedBox(
-                    width: size.width * 0.06,
+                    width: 10,
                   ),
-                  const Text(
+                   Text(
                     "Board Inventory",
                     style: TextStyle(
                         color: Colors.white,
@@ -42,7 +42,7 @@ Drawer DrawerPage(Size size, BuildContext context) {
                 children: [
                   Container(
                     child: ListTile(
-                      horizontalTitleGap: size.width * 0.06,
+                      horizontalTitleGap: size.width * 0.04,
                       leading:
                           const Icon(Icons.shopping_cart, color: Colors.white),
                       title: const Text(
@@ -66,7 +66,7 @@ Drawer DrawerPage(Size size, BuildContext context) {
                   ),
                   Container(
                     child: ListTile(
-                      horizontalTitleGap: size.width * 0.06,
+                      horizontalTitleGap: size.width * 0.04,
                       leading: const Icon(Icons.category, color: Colors.white),
                       title: const Text(
                         "Product Categories ",
@@ -86,7 +86,7 @@ Drawer DrawerPage(Size size, BuildContext context) {
                   ),
                   Container(
                     child: ListTile(
-                      horizontalTitleGap: size.width * 0.06,
+                      horizontalTitleGap: size.width * 0.04,
                       leading: const Icon(
                         Icons.person,
                         color: Colors.white,
@@ -110,23 +110,21 @@ Drawer DrawerPage(Size size, BuildContext context) {
                   SizedBox(
                     height: size.height * 0.01,
                   ),
-                  Container(
-                    child: ListTile(
-                      horizontalTitleGap: size.width * 0.06,
-                      leading: const Icon(
-                        Icons.payment,
-                        color: Colors.white,
-                      ),
-                      title: const Text(
-                        "Payment",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Quicksand",
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {},
+                  ListTile(
+                    horizontalTitleGap: size.width * 0.04,
+                    leading: const Icon(
+                      Icons.payment,
+                      color: Colors.white,
                     ),
+                    title: const Text(
+                      "Payment",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 243, 243, 243),
+                        fontFamily: "Quicksand",
+                        fontSize: 18,
+                      ),
+                    ),
+                    onTap: () {},
                   ),
                 ],
               ),
