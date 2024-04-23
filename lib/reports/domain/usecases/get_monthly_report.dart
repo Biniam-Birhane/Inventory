@@ -19,8 +19,8 @@ class GetMonthlyReports
 class GetMonthlyReportsParams extends Equatable {
   const GetMonthlyReportsParams({required this.month, required this.year});
 
-  final double month;
-  final double year;
+  final int month;
+  final int year;
 
   @override
   List<Object> get props => [month, year];

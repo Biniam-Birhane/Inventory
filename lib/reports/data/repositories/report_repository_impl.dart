@@ -13,9 +13,9 @@ class ReportRepositoryImpl implements ReportRepository {
 
   @override
   ResultFuture<List<ProductSale>> getDailyReports(
-      {required double date,
-      required double month,
-      required double year}) async {
+      {required int date,
+      required int month,
+      required int year}) async {
     try {
       final sales =
           await _remoteReportDatasource.getDailyReports(date, month, year);
@@ -27,7 +27,7 @@ class ReportRepositoryImpl implements ReportRepository {
 
   @override
   ResultFuture<List<ProductSale>> getYearlyReports(
-      {required double year}) async {
+      {required int year}) async {
     try {
       final sales = await _remoteReportDatasource.getyearlyReports(year);
       return Right(sales);
@@ -38,7 +38,7 @@ class ReportRepositoryImpl implements ReportRepository {
 
   @override
   ResultFuture<List<ProductSale>> getMonthlyReports(
-      {required double month, required double year}) async {
+      {required int month, required int year}) async {
     try {
       final sales =
           await _remoteReportDatasource.getMonthlyReports(month, year);

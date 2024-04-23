@@ -7,9 +7,9 @@ import 'package:simple_inventory/products_sales/domain/entities/product_sales.da
 abstract class RemoteReportDatasource {
   const RemoteReportDatasource();
   Future<List<ProductSale>> getDailyReports(
-      double date, double month, double year);
-  Future<List<ProductSale>> getMonthlyReports(double month, double year);
-  Future<List<ProductSale>> getyearlyReports(double year);
+      int date, int month, int year);
+  Future<List<ProductSale>> getMonthlyReports(int month, int year);
+  Future<List<ProductSale>> getyearlyReports(int year);
 }
 
 class RemoteReportDatasourceImpl implements RemoteReportDatasource {
@@ -18,7 +18,7 @@ class RemoteReportDatasourceImpl implements RemoteReportDatasource {
 
   @override
   Future<List<ProductSale>> getDailyReports(
-      double date, double month, double year) async {
+      int date, int month, int year) async {
     try {
       QuerySnapshot querySnapshot = await salesRef
           .where('date', isEqualTo: date)
@@ -39,7 +39,7 @@ class RemoteReportDatasourceImpl implements RemoteReportDatasource {
   }
 
   @override
-  Future<List<ProductSale>> getMonthlyReports(double month, double year) async {
+  Future<List<ProductSale>> getMonthlyReports(int month, int year) async {
     try {
       QuerySnapshot querySnapshot = await salesRef
           .where('month', isEqualTo: month)
@@ -58,7 +58,7 @@ class RemoteReportDatasourceImpl implements RemoteReportDatasource {
   }
 
   @override
-  Future<List<ProductSale>> getyearlyReports(double year) async {
+  Future<List<ProductSale>> getyearlyReports(int year) async {
     try {
       QuerySnapshot querySnapshot = await salesRef
           .where('year', isEqualTo: year)

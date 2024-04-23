@@ -10,9 +10,9 @@ abstract class ReportsEvent extends Equatable {
 class GetDailyReportsEvent extends ReportsEvent {
   const GetDailyReportsEvent(
       {required this.date, required this.month, required this.year});
-  final double date;
-  final double month;
-  final double year;
+  final int date;
+  final int month;
+  final int year;
 
   @override
   List<Object> get props => [date, month, year];
@@ -20,8 +20,8 @@ class GetDailyReportsEvent extends ReportsEvent {
 
 class GetMonthlyReportsEvent extends ReportsEvent {
   const GetMonthlyReportsEvent({required this.month, required this.year});
-  final double month;
-  final double year;
+  final int month;
+  final int year;
   @override
   List<Object> get props => [month, year];
 }
@@ -29,7 +29,7 @@ class GetMonthlyReportsEvent extends ReportsEvent {
 class GetYearlyReportsEvent extends ReportsEvent {
   const GetYearlyReportsEvent({required this.year});
 
-  final double year;
+  final int year;
   @override
   List<Object> get props => [year];
 }

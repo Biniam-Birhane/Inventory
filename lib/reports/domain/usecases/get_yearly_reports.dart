@@ -17,7 +17,7 @@ class GetYearlyReports extends UsecaseWithParams<void, GetYearlyReportsParams> {
 class GetYearlyReportsParams extends Equatable {
   const GetYearlyReportsParams({required this.year});
 
-  final double year;
+  final int year;
 
   @override
   List<Object> get props => [year];

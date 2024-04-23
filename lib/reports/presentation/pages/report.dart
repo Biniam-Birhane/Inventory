@@ -15,14 +15,14 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportScreen extends State<ReportPage> {
-  double? selectedDate;
-  double? selectedMonth;
-  double? selectedYear;
+  int? selectedDate;
+  int? selectedMonth;
+  int? selectedYear;
   String? reportType;
   int selectedIndex = 1;
-  List<double> years = [2023, 2024];
-  List<double> months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  List<double> days = [
+  List<int> years = [2023, 2024];
+  List<int> months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  List<int> days = [
     1,
     2,
     3,
@@ -68,9 +68,9 @@ class _ReportScreen extends State<ReportPage> {
   void initState() {
     super.initState();
     reportType = 'Daily';
-    // selectedDate = double.tryParse(currentDate.day.toString());
-    // selectedMonth = double.tryParse(currentDate.month.toString());
-    // selectedYear = double.tryParse(currentDate.year.toString());
+    // selectedDate = int.tryParse(currentDate.day.toString());
+    // selectedMonth = int.tryParse(currentDate.month.toString());
+    // selectedYear = int.tryParse(currentDate.year.toString());
   }
 
   @override

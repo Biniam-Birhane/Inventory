@@ -19,9 +19,9 @@ class GetDailyReportsParams extends Equatable {
   const GetDailyReportsParams(
       {required this.date, required this.month, required this.year});
 
-  final double date;
-  final double month;
-  final double year;
+  final int date;
+  final int month;
+  final int year;
 
   @override
   List<Object> get props => [date, month, year];

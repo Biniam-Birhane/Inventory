@@ -5,9 +5,9 @@ abstract class ReportRepository {
   const ReportRepository();
 
   ResultFuture<List<ProductSale>> getDailyReports(
-      {required double date, required double month, required double year});
+      {required int date, required int month, required int year});
 
-  ResultFuture<List<ProductSale>> getMonthlyReports({ required double month,required double year});
+  ResultFuture<List<ProductSale>> getMonthlyReports({ required int month,required int year});
 
-  ResultFuture<List<ProductSale>> getYearlyReports({required double year});
+  ResultFuture<List<ProductSale>> getYearlyReports({required int year});
 }
