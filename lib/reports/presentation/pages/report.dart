@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:simple_inventory/bottomPage/bottom_items_list.dart';
+import 'package:simple_inventory/bottomPage/bottom_logic.dart';
+import 'package:simple_inventory/bottomPage/common_bottom_bar.dart';
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
 
@@ -16,6 +19,7 @@ class _ReportScreen extends State<ReportPage> {
   double? selectedMonth;
   double? selectedYear;
   String? reportType;
+  int selectedIndex = 1;
   List<double> years = [2023, 2024];
   List<double> months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   List<double> days = [
@@ -52,9 +56,18 @@ class _ReportScreen extends State<ReportPage> {
     31
   ];
   final DateTime currentDate = DateTime.now();
+
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+    bottomLogic(selectedIndex, context);
+  }
+
   @override
   void initState() {
     super.initState();
+    reportType = 'Daily';
     // selectedDate = double.tryParse(currentDate.day.toString());
     // selectedMonth = double.tryParse(currentDate.month.toString());
     // selectedYear = double.tryParse(currentDate.year.toString());
@@ -74,6 +87,11 @@ class _ReportScreen extends State<ReportPage> {
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      bottomNavigationBar: CommonBottomBar(
+        items: bottomBarItems,
+        currentIndex: selectedIndex,
+        onTap: _onItemTapped,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -133,7 +151,7 @@ class _ReportScreen extends State<ReportPage> {
                       DropdownButton(
                           dropdownColor: const Color.fromARGB(255, 29, 66, 97),
                           hint: const Text(
-                            "Select day :",
+                            "Day :",
                             style: TextStyle(color: Colors.white),
                           ),
                           value: selectedDate,
@@ -154,7 +172,7 @@ class _ReportScreen extends State<ReportPage> {
                       DropdownButton(
                           dropdownColor: const Color.fromARGB(255, 29, 66, 97),
                           hint: const Text(
-                            "Select month :",
+                            "Month",
                             style: TextStyle(color: Colors.white),
                           ),
                           value: selectedMonth,
@@ -173,7 +191,7 @@ class _ReportScreen extends State<ReportPage> {
                       DropdownButton(
                           dropdownColor: const Color.fromARGB(255, 29, 66, 97),
                           hint: const Text(
-                            "Select day :",
+                            "Year :",
                             style: TextStyle(color: Colors.white),
                           ),
                           icon: const Icon(Icons.arrow_drop_down),
@@ -282,10 +300,6 @@ class _ReportScreen extends State<ReportPage> {
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
-            Text(
-              reportType ?? '',
-              style: const TextStyle(color: Colors.white),
-            ),
             BlocConsumer<ReportsBloc, ReportsState>(
               listener: (context, state) {
                 print(state.gettingReportStatus);
@@ -358,19 +372,15 @@ class _ReportScreen extends State<ReportPage> {
                         ),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    child: state.gettingReportStatus.isInProgress
-                        ? const Center(
-                            child:
-                                CircularProgressIndicator(color: Colors.white))
-                        : const Text(
-                            "Get Report",
-                            style: TextStyle(
-                              fontFamily: "Quicksand",
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
+                    child: const Text(
+                      "Get Report",
+                      style: TextStyle(
+                        fontFamily: "Quicksand",
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                   );
                 })
           ],

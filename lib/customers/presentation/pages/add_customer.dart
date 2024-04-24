@@ -57,7 +57,8 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                       itemBuilder: (context, index) {
                         final customer = state.customers[index];
                         return Container(
-                          child: ListTile(
+                          child: ExpansionTile(
+                            iconColor: Colors.white,
                             dense: false,
                             leading: Container(
                               width: size.width * 0.2,
@@ -74,37 +75,39 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
                                   fontFamily: "Quicksand",
                                   fontSize: 20),
                             ),
-                            subtitle: Text(
-                              customer.phoneNumber,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Quicksand",
-                                  fontSize: 20),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              EditCustomer(customer: customer));
-                                    },
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      color: Colors.green,
-                                    )),
-                                IconButton(
-                                    onPressed: () {
-                                      alertDelete(customer);
-                                    },
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    )),
-                              ],
-                            ),
+                            children: [
+                              Text(
+                                'phone: ${customer.phoneNumber}',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "Quicksand",
+                                    fontSize: 16),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => EditCustomer(
+                                                customer: customer));
+                                      },
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Colors.green,
+                                      )),
+                                  IconButton(
+                                      onPressed: () {
+                                        alertDelete(customer);
+                                      },
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      )),
+                                ],
+                              ),
+                            ],
                           ),
                         );
                       },
