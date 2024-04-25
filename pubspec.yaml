@@ -42,6 +42,7 @@ dependencies:
   equatable: ^2.0.5
   formz: ^0.7.0
   select_field: ^1.1.0
+  pdf: ^3.10.8
 
 dev_dependencies:
   flutter_test:

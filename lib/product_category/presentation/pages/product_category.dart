@@ -19,6 +19,7 @@ class _ProductCategoryState extends State<ProductCategory> {
   late BuildContext dialogContext;
   TextEditingController _productName = TextEditingController();
   TextEditingController searchController = TextEditingController();
+  List<ProductCategoryEntity> searchedProductCategories = [];
   void getProductCategories() {
     context.read<ProductCategoryBloc>().add(GetProductCategoryEvent());
   }
@@ -29,12 +30,35 @@ class _ProductCategoryState extends State<ProductCategory> {
     super.initState();
   }
 
+  void searchProductCategory(
+      String name, List<ProductCategoryEntity> productCategories) {
+    if (name.isEmpty) {
+      setState(() {
+        searchedProductCategories = productCategories;
+      });
+    } else {
+      final List<ProductCategoryEntity> result = productCategories
+          .where((category) =>
+              category.productName.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+
+      setState(() {
+        searchedProductCategories = result;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<ProductCategoryBloc, ProductCategoryState>(
         listener: (context, state) {
       print(state.getProductCategoryStatus);
+      if (state.getProductCategoryStatus.isSuccess) {
+        setState(() {
+          searchedProductCategories = state.productCategories;
+        });
+      }
       if (state.addProductCategoryStatus.isSuccess ||
           state.updateProductCategoryStatus.isSuccess ||
           state.deleteProductCategoryStatus.isSuccess) {
@@ -56,13 +80,13 @@ class _ProductCategoryState extends State<ProductCategory> {
               iconTheme: IconThemeData(color: Colors.white)),
           body: state.getProductCategoryStatus.isSuccess
               ? Column(children: [
-                  searchField(size),
+                  searchField(size, state),
                   Expanded(
                       child: ListView.builder(
-                          itemCount: state.productCategories.length,
+                          itemCount: searchedProductCategories.length,
                           itemBuilder: ((context, index) {
                             final productCategory =
-                                state.productCategories[index];
+                                searchedProductCategories[index];
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 5.0),
@@ -225,7 +249,7 @@ class _ProductCategoryState extends State<ProductCategory> {
         });
   }
 
-  Padding searchField(Size size) {
+  Padding searchField(Size size, ProductCategoryState state) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -236,10 +260,13 @@ class _ProductCategoryState extends State<ProductCategory> {
               width: size.width * 0.78,
               child: TextFormField(
                 controller: searchController,
-                style: TextStyle(color: Colors.white),
+                onChanged: (value) {
+                  searchProductCategory(value, state.productCategories);
+                },
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     hintText: "Search product category",
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: const Icon(Icons.search),
                     hintStyle: const TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -258,16 +285,16 @@ class _ProductCategoryState extends State<ProductCategory> {
             ),
             ElevatedButton(
               onPressed: () {},
-              child: Icon(
-                Icons.search,
-                color: Colors.black,
-              ),
               style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   backgroundColor: const Color(0xFFFE8A00),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
-            )
+              child: const Icon(
+                Icons.search,
+                color: Colors.black,
+              ),
+            ),
           ]),
     );
   }

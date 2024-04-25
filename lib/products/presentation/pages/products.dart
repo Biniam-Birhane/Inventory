@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:simple_inventory/products/domain/entities/product_entitiy.dart';
 import 'package:simple_inventory/products/presentation/bloc/products_bloc.dart';
 import 'package:simple_inventory/products/presentation/widgets/add_products.dart';
 import 'package:simple_inventory/products/presentation/widgets/update_products.dart';
@@ -16,7 +17,7 @@ class ProductsScreenState extends State<Products> {
   TextEditingController unitPrice = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController searchController = TextEditingController();
-
+  List<ProductEntity> searchedProducts = [];
   @override
   void initState() {
     getProducts();
@@ -27,11 +28,32 @@ class ProductsScreenState extends State<Products> {
     context.read<ProductsBloc>().add(const GetProductsEvent());
   }
 
+  void searchProducts(String name, List<ProductEntity> products) {
+    if (name.isEmpty) {
+      setState(() {
+        searchedProducts = products;
+      });
+    } else {
+      final List<ProductEntity> result = products
+          .where((product) =>
+              product.productName.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+      setState(() {
+        searchedProducts = result;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<ProductsBloc, ProductsState>(
         listener: (context, state) {
+      if (state.getProductsStatus.isSuccess) {
+        setState(() {
+          searchedProducts = state.products;
+        });
+      }
       if (state.addProductStatus.isSuccess ||
           state.updateProductStatus.isSuccess ||
           state.deleteProductStatus.isSuccess) {
@@ -53,12 +75,12 @@ class ProductsScreenState extends State<Products> {
               iconTheme: const IconThemeData(color: Colors.white)),
           body: state.getProductsStatus.isSuccess
               ? Column(children: [
-                  searchField(size),
+                  searchField(size, state),
                   Expanded(
                       child: ListView.builder(
-                          itemCount: state.products.length,
+                          itemCount: searchedProducts.length,
                           itemBuilder: ((context, index) {
-                            final product = state.products[index];
+                            final product = searchedProducts[index];
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5.0),
@@ -171,43 +193,53 @@ class ProductsScreenState extends State<Products> {
     });
   }
 
-  Padding searchField(Size size) {
+  Padding searchField(Size size, ProductsState state) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,mainAxisSize: MainAxisSize.max, children: [
-        Container(
-          width: size.width * 0.78,
-          child: TextFormField(
-            controller: searchController,
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-                hintText: "Search product",
-                prefixIcon: Icon(Icons.search),
-                hintStyle: const TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.grey.withOpacity(0.5),
-                    width: 1.5,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.green, width: 2),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.always),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {},
-          child: Icon(Icons.search,color: Colors.black,),
-          style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.all(20),
-              backgroundColor: const Color(0xFFFE8A00),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10))),
-        )
-      ]),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              width: size.width * 0.78,
+              child: TextFormField(
+                controller: searchController,
+                onChanged: (value) {
+                  searchProducts(value, state.products);
+                },
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    hintText: "Search product",
+                    prefixIcon: Icon(Icons.search),
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.green, width: 2),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Icon(
+                Icons.search,
+                color: Colors.black,
+              ),
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(20),
+                  backgroundColor: const Color(0xFFFE8A00),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+            )
+          ]),
     );
   }
 

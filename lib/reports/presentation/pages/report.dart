@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'dart:typed_data';
+import 'dart:html' as html;
+import 'dart:async';
 import 'package:simple_inventory/bottomPage/bottom_items_list.dart';
 import 'package:simple_inventory/bottomPage/bottom_logic.dart';
 import 'package:simple_inventory/bottomPage/common_bottom_bar.dart';
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class ReportPage extends StatefulWidget {
   const ReportPage({super.key});
@@ -64,6 +69,35 @@ class _ReportScreen extends State<ReportPage> {
     bottomLogic(selectedIndex, context);
   }
 
+  Future<void> generatePDF() async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Center(
+            child: pw.Text('Hello World', style: pw.TextStyle(fontSize: 40)),
+          );
+        },
+      ),
+    );
+
+    // Save the PDF as bytes
+    final Uint8List pdfBytes = await pdf.save();
+
+    // Create a blob URL from the PDF bytes
+    final blob = html.Blob([pdfBytes], 'application/pdf');
+    final url = html.Url.createObjectUrlFromBlob(blob);
+
+    // Trigger download
+    html.AnchorElement(href: url)
+      ..setAttribute('download', 'example.pdf')
+      ..click();
+
+    // Revoke the object URL to free up memory
+    html.Url.revokeObjectUrl(url);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -96,8 +130,14 @@ class _ReportScreen extends State<ReportPage> {
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          
           children: [
+            ElevatedButton(
+              onPressed: generatePDF,
+              child: const Text(
+                'Generate PDF',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -311,17 +351,72 @@ class _ReportScreen extends State<ReportPage> {
                 return state.gettingReportStatus.isSuccess
                     ? Flexible(
                         child: ListView.builder(
-                          shrinkWrap: true,
+                            shrinkWrap: true,
                             itemCount: state.salesReport.length,
                             itemBuilder: ((context, index) {
                               final ProductSale productSale =
                                   state.salesReport[index];
                               return ExpansionTile(
-                                title: Text(
-                                  productSale.buyerName,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              );
+                                  leading: Text(
+                                    index.toString(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  title: Text(
+                                    productSale.buyerName,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  children: [
+                                    Text(
+                                      '${productSale.createdAt}',
+                                      textAlign: TextAlign.center,
+                                      style:
+                                          const TextStyle(color: Colors.grey),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          'Item type: ${productSale.productName}',
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          'Amount: ${productSale.amount}',
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                    const Text(
+                                      'Payment status',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    ListTile(
+                                      leading: Text(
+                                        'total cost: ${productSale.totalCost}',
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                      title: Text(
+                                        'paid amount: ${productSale.paidAmount}',
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                      trailing: Text(
+                                        'unpaid amount: ${productSale.unPaidAmount}',
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    )
+                                  ]);
                             })),
                       )
                     : state.gettingReportStatus.isInProgress
