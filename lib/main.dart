@@ -12,6 +12,7 @@ import 'package:simple_inventory/product_category/presentation/bloc/product_cate
 import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
 import 'package:simple_inventory/products/presentation/bloc/products_bloc.dart';
 import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
+import 'package:simple_inventory/reports/presentation/pages/report_generating_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,11 +36,11 @@ void main() async {
               appId: '1:554272763565:android:50434184d201cf01802024',
               messagingSenderId: '554272763565',
               projectId: 'simpleinventory-88d20'));
-      
     }
   } catch (e) {
     print('Error initializing Firebase: $e');
   }
+ 
   runApp(const MyApp());
 }
 

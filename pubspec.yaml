@@ -42,6 +42,10 @@ dependencies:
   equatable: ^2.0.5
   formz: ^0.7.0
   select_field: ^1.1.0
+  pdf: ^3.10.8
+  android_path_provider: ^0.3.0
+  open_document: ^1.0.7
+  path_provider: ^2.1.3
 
 dev_dependencies:
   flutter_test:

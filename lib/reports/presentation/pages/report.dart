@@ -1,11 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:simple_inventory/bottomPage/bottom_items_list.dart';
 import 'package:simple_inventory/bottomPage/bottom_logic.dart';
 import 'package:simple_inventory/bottomPage/common_bottom_bar.dart';
+import 'package:simple_inventory/core/utils/typedef.dart';
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
+
+//pdf
 
 class ReportPage extends StatefulWidget {
   const ReportPage({super.key});
@@ -57,6 +62,9 @@ class _ReportScreen extends State<ReportPage> {
   ];
   final DateTime currentDate = DateTime.now();
 
+  int number = 0;
+  List<ProductSale> sales = [];
+
   void _onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
@@ -96,56 +104,62 @@ class _ReportScreen extends State<ReportPage> {
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      reportType = 'Daily';
-                    });
-                  },
-                  child: const Text(
-                    'Daily ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "Quicksand",
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        reportType = 'Daily';
+                      });
+                    },
+                    child: const Text(
+                      'Daily ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Quicksand",
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      reportType = 'Monthly';
-                    });
-                  },
-                  child: const Text(
-                    'Monthly ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "Quicksand",
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        reportType = 'Monthly';
+                      });
+                    },
+                    child: const Text(
+                      'Monthly ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Quicksand",
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      reportType = 'Yearly';
-                    });
-                  },
-                  child: const Text(
-                    'Yearly',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "Quicksand",
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        reportType = 'Yearly';
+                      });
+                    },
+                    child: const Text(
+                      'Yearly',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Quicksand",
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const Text('select date', style: TextStyle(color: Colors.white)),
+            const Text('Select date',
+                style: TextStyle(color: Colors.white, fontSize: 20)),
+            SizedBox(
+              height: 10,
+            ),
             reportType == 'Daily'
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -278,7 +292,7 @@ class _ReportScreen extends State<ReportPage> {
                                 ),
                                 icon: const Icon(Icons.arrow_drop_down),
                                 iconSize: 36,
-                                isExpanded: true,
+                                isExpanded: false,
                                 underline: const SizedBox(),
                                 style: const TextStyle(
                                     color: Colors.black, fontSize: 18),
@@ -298,7 +312,7 @@ class _ReportScreen extends State<ReportPage> {
                           )
                         : const Center(
                             child: Text(
-                              'please chose how do you want the reports to display',
+                              'please choose how do you want the reports to display',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -311,9 +325,10 @@ class _ReportScreen extends State<ReportPage> {
                 return state.gettingReportStatus.isSuccess
                     ? Flexible(
                         child: ListView.builder(
-                          shrinkWrap: true,
+                            shrinkWrap: true,
                             itemCount: state.salesReport.length,
                             itemBuilder: ((context, index) {
+                              sales = state.salesReport;
                               final ProductSale productSale =
                                   state.salesReport[index];
                               return ExpansionTile(
@@ -337,55 +352,71 @@ class _ReportScreen extends State<ReportPage> {
             BlocConsumer<ReportsBloc, ReportsState>(
                 listener: (context, state) {},
                 builder: (context, state) {
-                  return ElevatedButton(
-                    onPressed: () {
-                      if (reportType == 'Monthly' &&
-                          selectedMonth != null &&
-                          selectedYear != null) {
-                        context.read<ReportsBloc>().add(GetMonthlyReportsEvent(
-                            month: selectedMonth ?? 10,
-                            year: selectedYear ?? 2024));
-                      } else if (reportType == 'Yearly' &&
-                          selectedYear != null) {
-                        context.read<ReportsBloc>().add(
-                            GetYearlyReportsEvent(year: selectedYear ?? 2024));
-                      } else if (reportType == 'Daily' &&
-                          selectedMonth != null &&
-                          selectedYear != null &&
-                          selectedDate != null) {
-                        context.read<ReportsBloc>().add(GetDailyReportsEvent(
-                            date: selectedDate ?? 1,
-                            month: selectedMonth ?? 12,
-                            year: selectedYear ?? 2024));
-                      } else if (reportType == '' || selectedYear == null) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  'please choose the correct report format',
-                                  style: TextStyle(color: Colors.white),
-                                )));
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFE8A00),
-                        padding: const EdgeInsetsDirectional.symmetric(
-                          vertical: 10,
-                          horizontal: 60,
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (reportType == 'Monthly' &&
+                            selectedMonth != null &&
+                            selectedYear != null) {
+                          context.read<ReportsBloc>().add(
+                              GetMonthlyReportsEvent(
+                                  month: selectedMonth ?? 10,
+                                  year: selectedYear ?? 2024));
+                        } else if (reportType == 'Yearly' &&
+                            selectedYear != null) {
+                          context.read<ReportsBloc>().add(GetYearlyReportsEvent(
+                              year: selectedYear ?? 2024));
+                        } else if (reportType == 'Daily' &&
+                            selectedMonth != null &&
+                            selectedYear != null &&
+                            selectedDate != null) {
+                          context.read<ReportsBloc>().add(GetDailyReportsEvent(
+                              date: selectedDate ?? 1,
+                              month: selectedMonth ?? 12,
+                              year: selectedYear ?? 2024));
+                        } else if (reportType == '' || selectedYear == null) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text(
+                                    'please choose the correct report format',
+                                    style: TextStyle(color: Colors.white),
+                                  )));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFE8A00),
+                          padding: const EdgeInsetsDirectional.symmetric(
+                            vertical: 10,
+                            horizontal: 60,
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: const Text(
+                        "Get Report",
+                        style: TextStyle(
+                          fontFamily: "Quicksand",
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    child: const Text(
-                      "Get Report",
-                      style: TextStyle(
-                        fontFamily: "Quicksand",
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
                       ),
                     ),
                   );
-                })
+                }),
+            ElevatedButton(
+                onPressed: () async {
+                  final data = await service.createPdf(sales);
+                  print("the data is $data");
+                  service.savePdfFile("sales_data_$number", data);
+                  number++;
+                  // final data = await service.createHelloWorld();
+                  // print("The data is $data");
+                  // service.savePdfFile("invoice_$number", data);
+                  // number++;
+                },
+                child: Text("Generate pdf"))
           ],
         ),
       ),
