@@ -22,6 +22,17 @@ class LoginRepositoryImpl implements LoginRepository {
     }
   }
 
+  @override
+  ResultVoid addUser(
+      {required String username, required String password}) async {
+    try {
+      await _remoteLoginDS.addUser(username: username, password: password);
+      return const Right(null);
+    } on APIException catch (e) {
+      return Left(APIFailure.fromException(e));
+    }
+  }
+
   ResultVoid logout() async {
     try {
       final response = await _remoteLoginDS.logout();

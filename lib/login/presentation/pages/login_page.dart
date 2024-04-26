@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:simple_inventory/dashboard/dashbord.dart';
 import 'package:simple_inventory/login/presentation/bloc/login_bloc.dart';
 
@@ -114,7 +115,7 @@ class LoginPage extends StatelessWidget {
                                   username: username.text,
                                   password: password.text));
 
-                              if (state is LoginError) {
+                              if (state.loginStatus.isFailure) {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,
@@ -125,7 +126,7 @@ class LoginPage extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ));
-                              } else if (state is LoggedIn) {
+                              } else if (state.loginStatus.isSuccess) {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(

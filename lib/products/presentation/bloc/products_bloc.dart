@@ -1,5 +1,4 @@
-
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:simple_inventory/products/domain/entities/product_entitiy.dart';
