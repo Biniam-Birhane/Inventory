@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
+import 'package:simple_inventory/product_category/presentation/pages/product_category.dart';
 import 'package:uuid/uuid.dart';
 
 class AddProductCategory extends StatelessWidget {
@@ -54,6 +55,8 @@ class AddProductCategory extends StatelessWidget {
       listener: (context, state) {
         if (state.addProductCategoryStatus.isSuccess) {
           productName.text = '';
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => ProductCategory()));
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: Colors.green,
               duration: Duration(seconds: 2),
@@ -78,14 +81,16 @@ class AddProductCategory extends StatelessWidget {
             : ElevatedButton(
                 onPressed: () {
                   String id = uuid.v4();
-                  double availableAmount = 0.0;
-                  double unitPrice = 0.0;
-                  context.read<ProductCategoryBloc>().add(
-                      AddProductCategoryEvent(
-                          id: id,
-                          productName: productName.text,
-                          availableAmount: availableAmount,
-                          unitPrice: unitPrice));
+                  // double availableAmount = 0.0;
+                  // double unitPrice = 0.0;
+                  context
+                      .read<ProductCategoryBloc>()
+                      .add(AddProductCategoryEvent(
+                        id: id,
+                        productName: productName.text,
+                        // availableAmount: availableAmount,
+                        // unitPrice: unitPrice
+                      ));
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFE8A00),

@@ -7,6 +7,11 @@ import 'package:simple_inventory/customers/domain/usecases/delete_customer.dart'
 import 'package:simple_inventory/customers/domain/usecases/get_customers.dart';
 import 'package:simple_inventory/customers/domain/usecases/update_customer.dart';
 import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
+import 'package:simple_inventory/login/data/datasources/remote_data_source.dart';
+import 'package:simple_inventory/login/data/repositories/login_repository_impl.dart';
+import 'package:simple_inventory/login/domain/repositories/login_repository.dart';
+import 'package:simple_inventory/login/domain/usecases/login_usecase.dart';
+import 'package:simple_inventory/login/presentation/bloc/login_bloc.dart';
 import 'package:simple_inventory/products_sales/data/datasources/remote_sales_datasource.dart';
 import 'package:simple_inventory/products_sales/data/repositories/sales_repository_impl.dart';
 import 'package:simple_inventory/products_sales/domain/repositories/sales_repository.dart';
@@ -18,8 +23,11 @@ import 'package:simple_inventory/products_sales/presentation/bloc/products_sales
 import 'package:simple_inventory/reports/data/datasources/remote_report_datasource.dart';
 import 'package:simple_inventory/reports/data/repositories/report_repository_impl.dart';
 import 'package:simple_inventory/reports/domain/repositories/report_repository.dart';
+import 'package:simple_inventory/reports/domain/usecases/get_daily_product_reports.dart';
 import 'package:simple_inventory/reports/domain/usecases/get_daily_report.dart';
+import 'package:simple_inventory/reports/domain/usecases/get_monthly_product_reports.dart';
 import 'package:simple_inventory/reports/domain/usecases/get_monthly_report.dart';
+import 'package:simple_inventory/reports/domain/usecases/get_yearly_product_reports.dart';
 import 'package:simple_inventory/reports/domain/usecases/get_yearly_reports.dart';
 import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
 
@@ -51,13 +59,27 @@ Future<void> init() async {
     ..registerLazySingleton<CustomerRepository>(
         () => CustomerRepositoryImpl(sl()))
     ..registerLazySingleton<RemoteDataSource>(() => RemoteCustomerDatasource());
+  sl
+    ..registerFactory(() => LoginBloc(loginUsecase: sl()))
+    ..registerLazySingleton(() => LoginUsecase(sl()))
+    ..registerLazySingleton<LoginRepository>(() => LoginRepositoryImpl(sl()))
+    ..registerLazySingleton<RemoteLoginDataSource>(
+        () => const RemoteLoginDSImpl());
 
   sl
     ..registerFactory(() => ReportsBloc(
-        dailyReports: sl(), monthlyReports: sl(), yearlyReports: sl()))
+        dailyReports: sl(),
+        monthlyReports: sl(),
+        yearlyReports: sl(),
+        dailyProductReports: sl(),
+        monthlyProductReports: sl(),
+        yearlyProductReports: sl()))
     ..registerLazySingleton(() => GetDailyReports(sl()))
     ..registerLazySingleton(() => GetMonthlyReports(sl()))
     ..registerLazySingleton(() => GetYearlyReports(sl()))
+    ..registerLazySingleton(() => GetDailyProductReports(sl()))
+    ..registerLazySingleton(() => GetMonthlyProductReports(sl()))
+    ..registerLazySingleton(() => GetYearlyProductReports(sl()))
     ..registerLazySingleton<ReportRepository>(() => ReportRepositoryImpl(sl()))
     ..registerLazySingleton<RemoteReportDatasource>(
         () => RemoteReportDatasourceImpl());

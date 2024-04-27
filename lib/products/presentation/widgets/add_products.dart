@@ -29,6 +29,7 @@ class _AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: const Color(0xFF151D26),
       appBar: AppBar(
           backgroundColor: const Color(0xFF151D26),
           title: const Text(
@@ -61,13 +62,26 @@ class _AddProductState extends State<AddProduct> {
                             border: Border.all(color: Colors.grey, width: 1),
                             borderRadius: BorderRadius.circular(10)),
                         child: DropdownButton(
-                            hint: const Text("Select product :"),
+                            hint: const Text(
+                              "Select product :",
+                              style: TextStyle(
+                                fontFamily: "Quicksand",
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
                             icon: const Icon(Icons.arrow_drop_down),
                             iconSize: 36,
+                            dropdownColor: Colors.black,
                             isExpanded: true,
                             underline: const SizedBox(),
                             style: const TextStyle(
-                                color: Colors.black, fontSize: 18),
+                              fontFamily: "Quicksand",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                             value: valueChoose,
                             onChanged: (newValue) {
                               setState(() {
@@ -76,7 +90,11 @@ class _AddProductState extends State<AddProduct> {
                             },
                             items: listItem.map((valueItem) {
                               return DropdownMenuItem(
-                                  value: valueItem, child: Text(valueItem));
+                                  value: valueItem,
+                                  child: Text(
+                                    valueItem,
+                                    style: TextStyle(color: Colors.white),
+                                  ));
                             }).toList()),
                       )
                     : const CircularProgressIndicator();
@@ -104,25 +122,38 @@ class _AddProductState extends State<AddProduct> {
   TextFormField productNameField(controllerName, hintText, labelText) {
     return TextFormField(
       controller: controllerName,
-      style: const TextStyle(color: Colors.black),
+      style: const TextStyle(
+        fontFamily: "Quicksand",
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
       decoration: InputDecoration(
-          hintText: hintText,
-          labelText: labelText,
-          hintStyle: const TextStyle(color: Colors.grey),
-          labelStyle: const TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(
-              color: Colors.grey.withOpacity(0.5),
-              width: 1.5,
-            ),
+        hintText: hintText,
+        labelText: labelText,
+        hintStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(
+            color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(
+            color: Colors.grey.withOpacity(0.5),
+            width: 1.5,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.green, width: 2),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          floatingLabelBehavior: FloatingLabelBehavior.always),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.green, width: 2),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          print("please enter value");
+          return 'Please enter value';
+        }
+        return null;
+      },
     );
   }
 
@@ -164,13 +195,17 @@ class _AddProductState extends State<AddProduct> {
                   if (amount != null &&
                       unitPrice != null &&
                       productName != null) {
+                    DateTime dateTime = DateTime.now();
                     ProductEntity product = ProductEntity(
-                      id: id,
-                      productId: id,
-                      productName: productName,
-                      unitPrice: unitPrice,
-                      amount: amount,
-                    );
+                        id: id,
+                        productId: id,
+                        productName: productName,
+                        unitPrice: unitPrice,
+                        amount: amount,
+                        date: dateTime.day,
+                        month: dateTime.month,
+                        year: dateTime.year,
+                        createdAt: dateTime);
 
                     context
                         .read<ProductsBloc>()

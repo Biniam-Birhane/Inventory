@@ -59,7 +59,6 @@ class _AddSaleScreen extends State<AddProductSale> {
         child: Container(
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(5),
-          
           child: Container(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -167,62 +166,6 @@ class _AddSaleScreen extends State<AddProductSale> {
                 const SizedBox(
                   height: 20,
                 ),
-                // TextField(
-                //   controller: buyerNameController,
-                //   style: const TextStyle(color: Colors.white),
-                //   decoration: InputDecoration(
-                //       hintText: "Enter buyer name",
-                //       labelText: "Buyer Name",
-                //       hintStyle: const TextStyle(color: Colors.grey),
-                //       labelStyle: const TextStyle(
-                //           color: Colors.white,
-                //           fontSize: 18,
-                //           fontWeight: FontWeight.bold),
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(10.0),
-                //         borderSide: BorderSide(
-                //           color: Colors.grey.withOpacity(0.5),
-                //           width: 1.5,
-                //         ),
-                //       ),
-                //       focusedBorder: OutlineInputBorder(
-                //         borderSide:
-                //             const BorderSide(color: Colors.green, width: 2),
-                //         borderRadius: BorderRadius.circular(10.0),
-                //       ),
-                //       floatingLabelBehavior: FloatingLabelBehavior.always),
-                // ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // TextField(
-                //   controller: productNameController,
-                //   style: const TextStyle(color: Colors.white),
-                //   decoration: InputDecoration(
-                //       hintText: "Enter product name",
-                //       labelText: "product name",
-                //       hintStyle: const TextStyle(color: Colors.grey),
-                //       labelStyle: const TextStyle(
-                //           color: Colors.white,
-                //           fontSize: 18,
-                //           fontWeight: FontWeight.bold),
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(10.0),
-                //         borderSide: BorderSide(
-                //           color: Colors.grey.withOpacity(0.5),
-                //           width: 1.5,
-                //         ),
-                //       ),
-                //       focusedBorder: OutlineInputBorder(
-                //         borderSide:
-                //             const BorderSide(color: Colors.green, width: 2),
-                //         borderRadius: BorderRadius.circular(10.0),
-                //       ),
-                //       floatingLabelBehavior: FloatingLabelBehavior.always),
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
                 TextField(
                   controller: amountController,
                   keyboardType: TextInputType.number,

@@ -8,13 +8,13 @@ class UpdateProductCategory extends StatelessWidget {
   UpdateProductCategory(
       {required this.id,
       required this.productName,
-      required this.availableAmount,
-      required this.unitPrice,
+      // required this.availableAmount,
+      // required this.unitPrice,
       super.key});
   final String productName;
   final String id;
-  final double availableAmount;
-  final double unitPrice;
+  // final double availableAmount;
+  // final double unitPrice;
 
   final TextEditingController productNameController = TextEditingController();
   @override
@@ -94,8 +94,9 @@ class UpdateProductCategory extends StatelessWidget {
                       UpdateProductCategoryEvent(
                           id: id,
                           productName: productNameController2,
-                          availableAmount: availableAmount,
-                          unitPrice: unitPrice));
+                          // availableAmount: availableAmount,
+                          // unitPrice: unitPrice
+                          ));
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(254, 138, 0, 1),

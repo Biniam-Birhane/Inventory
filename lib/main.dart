@@ -8,6 +8,8 @@ import 'package:simple_inventory/core/services/customer_injection_container.dart
 import 'package:simple_inventory/core/services/product_category_injection_container.dart';
 import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
 import 'package:simple_inventory/dashboard/dashbord.dart';
+import 'package:simple_inventory/login/presentation/bloc/login_bloc.dart';
+import 'package:simple_inventory/login/presentation/pages/login_page.dart';
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
 import 'package:simple_inventory/products/presentation/bloc/products_bloc.dart';
@@ -58,6 +60,7 @@ class MyApp extends StatelessWidget {
             create: (context) => sl<ProductsSalesBloc>(),
           ),
           BlocProvider<ReportsBloc>(create: (context) => sl<ReportsBloc>()),
+          BlocProvider<LoginBloc>(create: (context) => sl<LoginBloc>()),
           BlocProvider<ProductCategoryBloc>(
               create: (context) => pr<ProductCategoryBloc>()),
           BlocProvider<ProductsBloc>(create: (context) => pr<ProductsBloc>())
@@ -69,6 +72,6 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               useMaterial3: true,
             ),
-            home: Dashboard()));
+            home: const Dashboard()));
   }
 }

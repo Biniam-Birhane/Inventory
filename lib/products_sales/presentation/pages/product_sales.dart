@@ -16,6 +16,9 @@ class ProductSales extends StatefulWidget {
 
 class _ProductSaleScreen extends State<ProductSales> {
   final List<String> sections = ["A", "B", "C"];
+  List<ProductSale> searchedSales = [];
+  String? searchingAttribute;
+
   TextEditingController searchController = TextEditingController();
   void getProductSale() {
     context.read<ProductsSalesBloc>().add(GetSalesEvent());
@@ -32,7 +35,36 @@ class _ProductSaleScreen extends State<ProductSales> {
   @override
   void initState() {
     super.initState();
+    searchingAttribute = 'buyerName';
     getProductSale();
+  }
+
+  void searchSales(String name, List<ProductSale> sales) {
+    if (name.isNotEmpty) {
+      if (searchingAttribute == 'buyerName') {
+        List<ProductSale> foundSales = sales
+            .where((sale) =>
+                sale.buyerName.toLowerCase().contains(name.toLowerCase()))
+            .toList();
+        setState(() {
+          searchedSales = foundSales;
+        });
+      } else if (searchingAttribute == 'productName') {
+        if (name.isNotEmpty) {
+          List<ProductSale> foundSales = sales
+              .where((sale) =>
+                  sale.productName.toLowerCase().contains(name.toLowerCase()))
+              .toList();
+          setState(() {
+            searchedSales = foundSales;
+          });
+        }
+      }
+    } else {
+      setState(() {
+        searchedSales = sales;
+      });
+    }
   }
 
   @override
@@ -40,6 +72,11 @@ class _ProductSaleScreen extends State<ProductSales> {
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<ProductsSalesBloc, ProductsSalesState>(
         listener: (context, state) {
+      if (state.getSalesStatus.isSuccess) {
+        setState(() {
+          searchedSales = state.sales;
+        });
+      }
       if (state.updateSalesStatus.isSuccess ||
           state.deleteSalesStatus.isSuccess) {
         getProductSale();
@@ -63,12 +100,86 @@ class _ProductSaleScreen extends State<ProductSales> {
                 ))
               : Column(
                   children: [
-                    searchField(size),
+                    // searchField(size),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            width: size.width * 0.60,
+                            child: TextField(
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                                decoration: InputDecoration(
+                                    hintText: "Search product",
+                                    prefixIcon: const Icon(Icons.search,
+                                        color: Colors.white),
+                                    hintStyle:
+                                        const TextStyle(color: Colors.grey),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.green, width: 2),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always),
+                                onChanged: (value) {
+                                  searchSales(value, state.sales);
+                                }),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            width : size.width*0.32,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(10))),
+                            child: DropdownButton(
+                                dropdownColor:
+                                    const Color.fromARGB(255, 49, 72, 101),
+                                icon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
+                                iconSize: 36,
+                                isExpanded: true,
+                                underline: const SizedBox(),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                                value: searchingAttribute,
+                                items: const [
+                                  DropdownMenuItem(
+                                      value: 'buyerName',
+                                      child: Text("buyer name")),
+                                  DropdownMenuItem(
+                                      value: 'productName',
+                                      child: Text('product name'))
+                                ],
+                                onChanged: ((value) {
+                                  setState(() {
+                                    searchingAttribute = value;
+                                  });
+                                })),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: state.sales.length,
+                        itemCount: searchedSales.length,
                         itemBuilder: (context, index) {
-                          final soldProduct = state.sales[index];
+                          final soldProduct = searchedSales[index];
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
@@ -127,6 +238,7 @@ class _ProductSaleScreen extends State<ProductSales> {
                                     ),
                                     trailing: Text(
                                       'Unpaid: ${soldProduct.unPaidAmount}',
+                                      textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         color: Colors.grey,
                                         fontFamily: "Quicksand",
@@ -140,10 +252,8 @@ class _ProductSaleScreen extends State<ProductSales> {
                                           onPressed: () {
                                             showDialog(
                                                 context: context,
-                                                builder: (context) =>
-                                                    EditSales(
-                                                        soldProduct:
-                                                            soldProduct));
+                                                builder: (context) => EditSales(
+                                                    soldProduct: soldProduct));
                                           },
                                           icon: const Icon(
                                             Icons.edit,
@@ -224,49 +334,50 @@ class _ProductSaleScreen extends State<ProductSales> {
         });
   }
 
-  Padding searchField(Size size) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              width: size.width * 0.78,
-              child: TextFormField(
-                controller: searchController,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                    hintText: "Search product",
-                    prefixIcon: Icon(Icons.search),
-                    hintStyle: const TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
-                        color: Colors.grey.withOpacity(0.5),
-                        width: 1.5,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.green, width: 2),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Icon(
-                Icons.search,
-                color: Colors.black,
-              ),
-              style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(20),
-                  backgroundColor: const Color(0xFFFE8A00),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10))),
-            )
-          ]),
-    );
-  }
+  // Padding searchField(Size size) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(8.0),
+  //     child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         mainAxisSize: MainAxisSize.max,
+  //         children: [
+  //           Container(
+  //             width: size.width * 0.78,
+  //             child: TextFormField(
+  //               controller: searchController,
+  //               style: TextStyle(color: Colors.white),
+  //               decoration: InputDecoration(
+  //                   hintText: "Search product",
+  //                   prefixIcon: Icon(Icons.search),
+  //                   hintStyle: const TextStyle(color: Colors.grey),
+  //                   border: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(10.0),
+  //                     borderSide: BorderSide(
+  //                       color: Colors.grey.withOpacity(0.5),
+  //                       width: 1.5,
+  //                     ),
+  //                   ),
+  //                   focusedBorder: OutlineInputBorder(
+  //                     borderSide:
+  //                         const BorderSide(color: Colors.green, width: 2),
+  //                     borderRadius: BorderRadius.circular(10.0),
+  //                   ),
+  //                   floatingLabelBehavior: FloatingLabelBehavior.always),
+  //             ),
+  //           ),
+  //           ElevatedButton(
+  //             onPressed: () {},
+  //             child: Icon(
+  //               Icons.search,
+  //               color: Colors.black,
+  //             ),
+  //             style: ElevatedButton.styleFrom(
+  //                 padding: EdgeInsets.all(20),
+  //                 backgroundColor: const Color(0xFFFE8A00),
+  //                 shape: RoundedRectangleBorder(
+  //                     borderRadius: BorderRadius.circular(10))),
+  //           )
+  //         ]),
+  //   );
+  // }
 }

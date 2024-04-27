@@ -6,11 +6,13 @@ abstract class ProductCategoryRepository {
   ResultVoid addProductCategory(
       {required String id,
       required String productName,
-      required double availableAmount,required double unitPrice});
+      // required double availableAmount,required double unitPrice
+      });
   ResultVoid updateProductCategory(
       {required String id,
       required String productName,
-      required double availableAmount,required double unitPrice});
+      // required double availableAmount,required double unitPrice
+      });
   ResultVoid deleteProductCategory({required String id});
   ResultFuture<List<ProductCategoryEntity>> getProductCategory();
 }

@@ -9,13 +9,15 @@ abstract class ProductCategoryRemoteDataSource {
   Future<void> addProductCategory(
       {required String id,
       required String productName,
-      required double availableAmount,
-      required double unitPrice});
+      // required double availableAmount,
+      // required double unitPrice
+      });
   Future<void> updateProductCategory(
       {required String id,
       required String productName,
-      required double availableAmount,
-      required double unitPrice});
+      // required double availableAmount,
+      // required double unitPrice
+      });
   Future<void> deleteProductCategory({
     required String id,
   });
@@ -30,13 +32,14 @@ class ProductCategoryRemoteDataSourceImp
   Future<void> addProductCategory(
       {required String id,
       required String productName,
-      required double availableAmount,required double unitPrice}) async {
+      // required double availableAmount,required double unitPrice
+      }) async {
     try {
       final data = {
         'id': id,
         'productName': productName,
-        'availableAmount': availableAmount,
-        'unitPrice':unitPrice
+        // 'availableAmount': availableAmount,
+        // 'unitPrice':unitPrice
       };
       await customerRef.doc(id).set(data);
     } on APIException catch (e) {
@@ -48,13 +51,14 @@ class ProductCategoryRemoteDataSourceImp
   Future<void> updateProductCategory(
       {required String id,
       required String productName,
-      required double availableAmount,required double unitPrice}) async {
+      // required double availableAmount,required double unitPrice
+      }) async {
     try {
       final data = {
         'id': id,
         'productName': productName,
-        'availableAmount': availableAmount,
-        'unitPrice':unitPrice
+        // 'availableAmount': availableAmount,
+        // 'unitPrice':unitPrice
       };
       await customerRef.doc(id).update(data);
     } on APIException catch (e) {

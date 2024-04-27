@@ -25,6 +25,10 @@ class ProductRemoteDatasourceImp implements ProductRemoteDatasource {
         'productName': product.productName,
         'amount': product.amount,
         'unitPrice': product.unitPrice,
+        'createdAt':product.createdAt,
+        'date':product.date,
+        'month':product.month,
+        'year':product.year
       };
       await productRef.doc(id).set(data);
     } on APIException catch (e) {
@@ -42,7 +46,11 @@ class ProductRemoteDatasourceImp implements ProductRemoteDatasource {
         "productId": product.productId,
         "productName": product.productName,
         "amount": product.amount,
-        "unitPrice": product.unitPrice
+        "unitPrice": product.unitPrice,
+        "createdAt":product.createdAt,
+        "date":product.date,
+        "month":product.month,
+        "year":product.year
       };
       await productRef.doc(id).update(data);
     } on APIException catch (e) {

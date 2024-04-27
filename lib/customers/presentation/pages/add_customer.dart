@@ -13,6 +13,7 @@ class Customers extends StatefulWidget {
 }
 
 class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
+  List<CustomerEntity> searchedCustomers = [];
   void getCustomers() {
     context.read<CustomersBloc>().add(GetCustomersEvent());
   }
@@ -23,6 +24,22 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
     getCustomers();
   }
 
+  void searchCustomers(String name, List<CustomerEntity> customers) {
+    if (name.isEmpty) {
+      setState(() {
+        searchedCustomers = customers;
+      });
+    } else {
+      final List<CustomerEntity> result = customers
+          .where((customer) =>
+              customer.name.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+      setState(() {
+        searchedCustomers = result;
+      });
+    }
+  }
+
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController companyNameController = TextEditingController();
@@ -31,6 +48,12 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<CustomersBloc, CustomersState>(
         listener: (context, state) {
+      if (state.getCustomerStatus.isSuccess) {
+        setState(() {
+          searchedCustomers = state.customers;
+        });
+      }
+
       print(state.getCustomerStatus);
       if (state.addCustomerstatus.isSuccess ||
           state.updateCustomerstatus.isSuccess ||
@@ -52,65 +75,74 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
           body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: state.getCustomerStatus.isSuccess
-                  ? ListView.builder(
-                      itemCount: state.customers.length,
-                      itemBuilder: (context, index) {
-                        final customer = state.customers[index];
-                        return Container(
-                          child: ExpansionTile(
-                            iconColor: Colors.white,
-                            dense: false,
-                            leading: Container(
-                              width: size.width * 0.2,
-                              child: Text((1 + index).toString(),
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Quicksand",
-                                      fontSize: 20)),
-                            ),
-                            title: Text(
-                              customer.name,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Quicksand",
-                                  fontSize: 20),
-                            ),
-                            children: [
-                              Text(
-                                'phone: ${customer.phoneNumber}',
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Quicksand",
-                                    fontSize: 16),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => EditCustomer(
-                                                customer: customer));
-                                      },
-                                      icon: const Icon(
-                                        Icons.edit,
-                                        color: Colors.green,
-                                      )),
-                                  IconButton(
-                                      onPressed: () {
-                                        alertDelete(customer);
-                                      },
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      )),
-                                ],
-                              ),
-                            ],
+                  ? Column(
+                      children: [
+                        searchBar(size, state),
+                        const SizedBox(height: 10),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: searchedCustomers.length,
+                            itemBuilder: (context, index) {
+                              final customer = searchedCustomers[index];
+                              return Container(
+                                child: ExpansionTile(
+                                  iconColor: Colors.white,
+                                  dense: false,
+                                  leading: Container(
+                                    width: size.width * 0.2,
+                                    child: Text((1 + index).toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: "Quicksand",
+                                            fontSize: 20)),
+                                  ),
+                                  title: Text(
+                                    customer.name,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Quicksand",
+                                        fontSize: 20),
+                                  ),
+                                  children: [
+                                    Text(
+                                      'phone: ${customer.phoneNumber}',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Quicksand",
+                                          fontSize: 16),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      EditCustomer(
+                                                          customer: customer));
+                                            },
+                                            icon: const Icon(
+                                              Icons.edit,
+                                              color: Colors.green,
+                                            )),
+                                        IconButton(
+                                            onPressed: () {
+                                              alertDelete(customer);
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            )),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
+                        ),
+                      ],
                     )
                   : const Center(
                       child: CircularProgressIndicator(
@@ -127,6 +159,35 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
             ),
           ));
     });
+  }
+
+  Container searchBar(Size size, CustomersState state) {
+    return Container(
+      width: size.width * 0.55,
+      child: TextField(
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+          decoration: InputDecoration(
+              hintText: "Search customer",
+              prefixIcon: const Icon(Icons.search, color: Colors.white),
+              hintStyle: const TextStyle(color: Colors.grey),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.grey.withOpacity(0.5),
+                  width: 1.5,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.green, width: 2),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              floatingLabelBehavior: FloatingLabelBehavior.always),
+          onChanged: (value) {
+            searchCustomers(value, state.customers);
+          }),
+    );
   }
 
   Material addCustomer() {

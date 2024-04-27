@@ -19,6 +19,7 @@ class _ProductCategoryState extends State<ProductCategory> {
   late BuildContext dialogContext;
   TextEditingController _productName = TextEditingController();
   TextEditingController searchController = TextEditingController();
+  List<ProductCategoryEntity> searchedProductCategories = [];
   void getProductCategories() {
     context.read<ProductCategoryBloc>().add(GetProductCategoryEvent());
   }
@@ -29,12 +30,34 @@ class _ProductCategoryState extends State<ProductCategory> {
     super.initState();
   }
 
+  void searchProductCategory(
+      String name, List<ProductCategoryEntity> productCategories) {
+    if (name.isEmpty) {
+      setState(() {
+        searchedProductCategories = productCategories;
+      });
+    } else {
+      final List<ProductCategoryEntity> result = productCategories
+          .where((category) =>
+              category.productName.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+
+      setState(() {
+        searchedProductCategories = result;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<ProductCategoryBloc, ProductCategoryState>(
         listener: (context, state) {
-      print(state.getProductCategoryStatus);
+      if (state.getProductCategoryStatus.isSuccess) {
+        setState(() {
+          searchedProductCategories = state.productCategories;
+        });
+      }
       if (state.addProductCategoryStatus.isSuccess ||
           state.updateProductCategoryStatus.isSuccess ||
           state.deleteProductCategoryStatus.isSuccess) {
@@ -46,7 +69,7 @@ class _ProductCategoryState extends State<ProductCategory> {
           appBar: AppBar(
               backgroundColor: Color(0xFF151D26),
               title: const Text(
-                "List of Product Categories",
+                "Product Categories",
                 style: TextStyle(
                   color: Colors.white,
                   fontFamily: "Quicksand",
@@ -56,13 +79,13 @@ class _ProductCategoryState extends State<ProductCategory> {
               iconTheme: IconThemeData(color: Colors.white)),
           body: state.getProductCategoryStatus.isSuccess
               ? Column(children: [
-                  searchField(size),
+                  searchField(size, state),
                   Expanded(
                       child: ListView.builder(
-                          itemCount: state.productCategories.length,
+                          itemCount: searchedProductCategories.length,
                           itemBuilder: ((context, index) {
                             final productCategory =
-                                state.productCategories[index];
+                                searchedProductCategories[index];
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 5.0),
@@ -109,15 +132,6 @@ class _ProductCategoryState extends State<ProductCategory> {
                                         ],
                                       ),
                                     ),
-                                    ListTile(
-                                      title: Text(
-                                        'Unit Price:  ${productCategory.unitPrice}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "Quicksand",
-                                        ),
-                                      ),
-                                    ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -128,20 +142,15 @@ class _ProductCategoryState extends State<ProductCategory> {
                                                       builder: (BuildContext
                                                           context) {
                                                         return UpdateProductCategory(
-                                                            id: productCategory
-                                                                .id,
-                                                            productName:
-                                                                productCategory
-                                                                    .productName,
-                                                            availableAmount:
-                                                                productCategory
-                                                                    .availableAmount,
-                                                            unitPrice:
-                                                                productCategory
-                                                                    .unitPrice);
+                                                          id: productCategory
+                                                              .id,
+                                                          productName:
+                                                              productCategory
+                                                                  .productName,
+                                                        );
                                                       })
                                                 },
-                                            color: Colors.green,
+                                            color: Colors.grey,
                                             icon: Icon(Icons.edit)),
                                         IconButton(
                                             onPressed: () {
@@ -150,7 +159,7 @@ class _ProductCategoryState extends State<ProductCategory> {
                                             },
                                             icon: const Icon(
                                               Icons.delete,
-                                              color: Colors.red,
+                                              color: Colors.grey,
                                             )),
                                       ],
                                     ),
@@ -225,21 +234,24 @@ class _ProductCategoryState extends State<ProductCategory> {
         });
   }
 
-  Padding searchField(Size size) {
+  Padding searchField(Size size, ProductCategoryState state) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(10.0),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
-              width: size.width * 0.78,
+              width: size.width * 0.76,
               child: TextFormField(
                 controller: searchController,
-                style: TextStyle(color: Colors.white),
+                onChanged: (value) {
+                  searchProductCategory(value, state.productCategories);
+                },
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     hintText: "Search product category",
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: const Icon(Icons.search),
                     hintStyle: const TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -256,18 +268,23 @@ class _ProductCategoryState extends State<ProductCategory> {
                     floatingLabelBehavior: FloatingLabelBehavior.always),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Icon(
-                Icons.search,
-                color: Colors.black,
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 25),
+                    backgroundColor: const Color(0xFFFE8A00),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                child: const Icon(
+                  Icons.search,
+                  color: Colors.black,
+                ),
               ),
-              style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(20),
-                  backgroundColor: const Color(0xFFFE8A00),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10))),
-            )
+            ),
           ]),
     );
   }

@@ -12,20 +12,22 @@ class UpdateProductCategoryUsecase
       await repository.updateProductCategory(
           id: params.id,
           productName: params.productName,
-          availableAmount: params.availableAmount,
-          unitPrice: params.unitPrice);
+          // availableAmount: params.availableAmount,
+          // unitPrice: params.unitPrice
+          );
 }
 
 class UpdateProductCategoryParam extends Equatable {
   const UpdateProductCategoryParam(
       {required this.id,
       required this.productName,
-      required this.availableAmount,
-      required this.unitPrice});
+      // required this.availableAmount,
+      // required this.unitPrice
+      });
   final String id;
   final String productName;
-  final double availableAmount;
-  final double unitPrice;
+  // final double availableAmount;
+  // final double unitPrice;
   @override
-  List<Object> get props => [id, productName, availableAmount];
+  List<Object> get props => [id, productName, ];
 }

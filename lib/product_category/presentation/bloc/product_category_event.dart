@@ -19,24 +19,26 @@ class AddProductCategoryEvent extends ProductCategoryEvent {
   const AddProductCategoryEvent(
       {required this.id,
       required this.productName,
-      required this.availableAmount,
-      required this.unitPrice});
+      // required this.availableAmount,
+      // required this.unitPrice
+      });
   final String id;
   final String productName;
-  final double availableAmount;
-  final double unitPrice;
+  // final double availableAmount;
+  // final double unitPrice;
 }
 
 class UpdateProductCategoryEvent extends ProductCategoryEvent {
   const UpdateProductCategoryEvent(
       {required this.id,
       required this.productName,
-      required this.availableAmount,
-      required this.unitPrice});
+      // required this.availableAmount,
+      // required this.unitPrice
+      });
   final String id;
   final String productName;
-  final double availableAmount;
-  final double unitPrice;
+  // final double availableAmount;
+  // final double unitPrice;
 }
 
 class DeleteProductCategoryEvent extends ProductCategoryEvent {

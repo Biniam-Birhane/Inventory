@@ -11,19 +11,21 @@ class AddProductCategoryUsecase
       await repository.addProductCategory(
           id: params.id,
           productName: params.productName,
-          availableAmount: params.availableAmount,
-          unitPrice:params.unitPrice);
+          // availableAmount: params.availableAmount,
+          // unitPrice:params.unitPrice
+          );
 }
 
 class AddProductCategoryParams extends Equatable {
   AddProductCategoryParams(
       {required this.id,
       required this.productName,
-      required this.availableAmount,required this.unitPrice});
+      // required this.availableAmount,required this.unitPrice
+      });
   final String id;
   final String productName;
-  final double availableAmount;
-  final double unitPrice;
+  // final double availableAmount;
+  // final double unitPrice;
 
-  List<Object> get props => [id, productName, availableAmount];
+  List<Object> get props => [id, productName, ];
 }

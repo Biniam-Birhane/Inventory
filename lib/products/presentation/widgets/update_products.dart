@@ -8,18 +8,25 @@ import 'package:simple_inventory/products/presentation/pages/products.dart';
 
 class UpdateProduct extends StatefulWidget {
   @override
-  const UpdateProduct({
-    required this.id,
-    required this.productId,
-    required this.productName,
-    required this.amount,
-    required this.unitPrice,
-  });
+  const UpdateProduct(
+      {required this.id,
+      required this.productId,
+      required this.productName,
+      required this.amount,
+      required this.unitPrice,
+      required this.createdAt,
+      required this.date,
+      required this.month,
+      required this.year});
   final String id;
   final String productId;
   final String productName;
   final double amount;
   final double unitPrice;
+  final DateTime? createdAt;
+  final int? date;
+  final int? month;
+  final int? year;
 
   State<UpdateProduct> createState() => _UpdateProductState();
 }
@@ -44,6 +51,7 @@ class _UpdateProductState extends State<UpdateProduct> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: const Color(0xFF151D26),
       appBar: AppBar(
           backgroundColor: const Color(0xFF151D26),
           title: const Text(
@@ -88,6 +96,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                             style: const TextStyle(
                                 color: Colors.black, fontSize: 18),
                             value: valueChoose,
+                            dropdownColor: Colors.black,
                             onChanged: (newValue) {
                               setState(() {
                                 valueChoose = newValue;
@@ -95,7 +104,14 @@ class _UpdateProductState extends State<UpdateProduct> {
                             },
                             items: listItem.map((valueItem) {
                               return DropdownMenuItem(
-                                  value: valueItem, child: Text(valueItem));
+                                  value: valueItem,
+                                  child: Text(valueItem,
+                                      style: const TextStyle(
+                                        fontFamily: "Quicksand",
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      )));
                             }).toList()),
                       )
                     : const CircularProgressIndicator();
@@ -124,13 +140,18 @@ class _UpdateProductState extends State<UpdateProduct> {
       TextEditingController controllerName, hintText, labelText) {
     return TextFormField(
       controller: controllerName,
-      style: TextStyle(color: Colors.black),
+      style:const TextStyle(
+        fontFamily: "Quicksand",
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
       decoration: InputDecoration(
           hintText: hintText,
           labelText: labelText,
           hintStyle: const TextStyle(color: Colors.grey),
           labelStyle: const TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide(
@@ -185,12 +206,15 @@ class _UpdateProductState extends State<UpdateProduct> {
                       unitPrice != null &&
                       productName != null) {
                     ProductEntity product = ProductEntity(
-                      id: id,
-                      productId: id,
-                      productName: productName,
-                      unitPrice: unitPrice,
-                      amount: amount,
-                    );
+                        id: id,
+                        productId: id,
+                        productName: productName,
+                        unitPrice: unitPrice,
+                        amount: amount,
+                        createdAt: widget.createdAt,
+                        date: widget.date,
+                        month: widget.month,
+                        year: widget.year);
                     print(product);
                     context
                         .read<ProductsBloc>()
