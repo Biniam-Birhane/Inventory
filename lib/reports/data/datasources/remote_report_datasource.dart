@@ -58,6 +58,7 @@ class RemoteReportDatasourceImpl implements RemoteReportDatasource {
       List<ProductEntity> products = querySnapshot.docs.map((doc) {
         return ProductModel.fromMap(doc.data() as DataMap);
       }).toList();
+      print(products);
       return products;
     } on APIException {
       rethrow;
@@ -98,6 +99,7 @@ class RemoteReportDatasourceImpl implements RemoteReportDatasource {
       List<ProductEntity> products = querySnapshot.docs.map((doc) {
         return ProductModel.fromMap(doc.data() as DataMap);
       }).toList();
+      print(products);
       return products;
     } on APIException {
       rethrow;
@@ -127,13 +129,17 @@ class RemoteReportDatasourceImpl implements RemoteReportDatasource {
   @override
   Future<List<ProductEntity>> getyearlyProductReports(int year) async {
     try {
+      print(year);
       QuerySnapshot querySnapshot = await salesRef
           .where('year', isEqualTo: year)
           .orderBy('createdAt', descending: true)
           .get();
+      print(querySnapshot.docs.map((e) => print(e)));
+
       List<ProductEntity> sales = querySnapshot.docs.map((doc) {
         return ProductModel.fromMap(doc.data() as DataMap);
       }).toList();
+      print(sales);
       return sales;
     } on APIException {
       rethrow;

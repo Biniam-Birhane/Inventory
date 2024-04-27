@@ -5,5 +5,6 @@ abstract class LoginRepository {
 
   ResultFuture<String> login(
       {required String username, required String password});
+  ResultVoid addUser({required String username, required String password});
   ResultVoid logout();
 }

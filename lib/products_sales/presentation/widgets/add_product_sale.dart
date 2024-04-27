@@ -65,104 +65,119 @@ class _AddSaleScreen extends State<AddProductSale> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                BlocConsumer<ProductCategoryBloc, ProductCategoryState>(
-                  listener: (context, state) {
-                    if (state.getProductCategoryStatus.isSuccess) {
-                      for (var i = 0; i < state.productCategories.length; i++) {
-                        String productName =
-                            state.productCategories[i].productName;
-                        products.add(productName);
-                      }
-                    }
-                  },
-                  builder: (context, state) {
-                    return state.getProductCategoryStatus.isSuccess
-                        ? Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: DropdownButton(
-                                dropdownColor:
-                                    const Color.fromARGB(255, 49, 72, 101),
-                                hint: const Text(
-                                  "Select product :",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                icon: const Icon(Icons.arrow_drop_down),
-                                iconSize: 36,
-                                isExpanded: true,
-                                underline: const SizedBox(),
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 18),
-                                value: selectedProduct,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    selectedProduct = newValue;
-                                  });
-                                },
-                                items: products.map((product) {
-                                  return DropdownMenuItem(
-                                      value: product,
-                                      child: Text(product,
-                                          style: const TextStyle(
-                                              color: Colors.white)));
-                                }).toList()),
-                          )
-                        : const CircularProgressIndicator();
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                BlocConsumer<CustomersBloc, CustomersState>(
-                  listener: (context, state) {
-                    if (state.getCustomerStatus.isSuccess) {
-                      for (var i = 0; i < state.customers.length; i++) {
-                        String customerName = state.customers[i].name;
-                        customers.add(customerName);
-                      }
-                    }
-                  },
-                  builder: (context, state) {
-                    return state.getCustomerStatus.isSuccess
-                        ? Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: DropdownButton(
-                                dropdownColor:
-                                    const Color.fromARGB(255, 49, 72, 101),
-                                hint: const Text("Select Customer :",
-                                    style: TextStyle(color: Colors.white)),
-                                icon: const Icon(Icons.arrow_drop_down),
-                                iconSize: 36,
-                                isExpanded: true,
-                                underline: const SizedBox(),
-                                style: const TextStyle(
-                                    color: Colors.white10, fontSize: 18),
-                                value: selectedCustomer,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    selectedCustomer = newValue;
-                                  });
-                                },
-                                items: customers.map((customer) {
-                                  return DropdownMenuItem(
-                                      value: customer,
-                                      child: Text(
-                                        customer,
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: BlocConsumer<ProductCategoryBloc,
+                            ProductCategoryState>(
+                          listener: (context, state) {
+                            if (state.getProductCategoryStatus.isSuccess) {
+                              for (var i = 0;
+                                  i < state.productCategories.length;
+                                  i++) {
+                                String productName =
+                                    state.productCategories[i].productName;
+                                products.add(productName);
+                              }
+                            }
+                          },
+                          builder: (context, state) {
+                            return state.getProductCategoryStatus.isSuccess
+                                ? Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey, width: 1),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: DropdownButton(
+                                        dropdownColor: const Color.fromARGB(
+                                            255, 49, 72, 101),
+                                        hint: const Text(
+                                          "Product :",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        icon: const Icon(Icons.arrow_drop_down),
+                                        iconSize: 36,
+                                        isExpanded: true,
+                                        underline: const SizedBox(),
                                         style: const TextStyle(
-                                            color: Colors.white),
-                                      ));
-                                }).toList()),
-                          )
-                        : const CircularProgressIndicator();
-                  },
-                ),
+                                            color: Colors.black, fontSize: 18),
+                                        value: selectedProduct,
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            selectedProduct = newValue;
+                                          });
+                                        },
+                                        items: products.map((product) {
+                                          return DropdownMenuItem(
+                                              value: product,
+                                              child: Text(product,
+                                                  style: const TextStyle(
+                                                      color: Colors.white)));
+                                        }).toList()),
+                                  )
+                                : const CircularProgressIndicator();
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: BlocConsumer<CustomersBloc, CustomersState>(
+                          listener: (context, state) {
+                            if (state.getCustomerStatus.isSuccess) {
+                              for (var i = 0; i < state.customers.length; i++) {
+                                String customerName = state.customers[i].name;
+                                customers.add(customerName);
+                              }
+                            }
+                          },
+                          builder: (context, state) {
+                            return state.getCustomerStatus.isSuccess
+                                ? Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey, width: 1),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: DropdownButton(
+                                        dropdownColor: const Color.fromARGB(
+                                            255, 49, 72, 101),
+                                        hint: const Text("Customer :",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        icon: const Icon(Icons.arrow_drop_down),
+                                        iconSize: 36,
+                                        isExpanded: true,
+                                        underline: const SizedBox(),
+                                        style: const TextStyle(
+                                            color: Colors.white10,
+                                            fontSize: 18),
+                                        value: selectedCustomer,
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            selectedCustomer = newValue;
+                                          });
+                                        },
+                                        items: customers.map((customer) {
+                                          return DropdownMenuItem(
+                                              value: customer,
+                                              child: Text(
+                                                customer,
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                              ));
+                                        }).toList()),
+                                  )
+                                : const CircularProgressIndicator();
+                          },
+                        ),
+                      ),
+                    ]),
+
                 const SizedBox(
                   height: 20,
                 ),

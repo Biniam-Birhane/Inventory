@@ -1,31 +1,45 @@
 part of 'login_bloc.dart';
 
-abstract class LoginState extends Equatable {
-  const LoginState();
+class LoginState extends Equatable {
+  const LoginState(
+      {this.loginStatus = FormzSubmissionStatus.initial,
+      this.addUserStatus = FormzSubmissionStatus.initial,
+      this.logoutStatus = FormzSubmissionStatus.initial,
+      this.loggedInUsername = '',
+      this.token = '',
+      this.errorMessage = ''});
 
-  @override
-  List<Object> get props => [];
-}
-
-class LoginInitial extends LoginState {}
-
-class LoggedIn extends LoginState {
-  const LoggedIn({required this.username, required this.token});
-  final String username;
+  final FormzSubmissionStatus loginStatus;
+  final FormzSubmissionStatus addUserStatus;
+  final FormzSubmissionStatus logoutStatus;
+  final String loggedInUsername;
   final String token;
-  @override
-  List<Object> get props => [username, token];
-}
-
-class LoginRequesting extends LoginState {}
-
-class LoggedOut extends LoginState {}
-
-class LoggingOut extends LoginState {}
-
-class LoginError extends LoginState {
-  const LoginError({required this.errorMessage});
   final String errorMessage;
+
+  LoginState copyWith({
+    FormzSubmissionStatus? loginStatus,
+    FormzSubmissionStatus? addUserStatus,
+    FormzSubmissionStatus? logoutStatus,
+    String? loggedInUsername,
+    String? token,
+    String? errorMessage,
+  }) {
+    return LoginState(
+        loginStatus: loginStatus ?? this.loginStatus,
+        addUserStatus: addUserStatus ?? this.addUserStatus,
+        logoutStatus: logoutStatus ?? this.logoutStatus,
+        loggedInUsername: loggedInUsername ?? this.loggedInUsername,
+        token: token ?? this.token,
+        errorMessage: errorMessage ?? this.errorMessage);
+  }
+
   @override
-  List<Object> get props => [errorMessage];
+  List<Object> get props => [
+        loginStatus,
+        addUserStatus,
+        logoutStatus,
+        loggedInUsername,
+        token,
+        errorMessage
+      ];
 }

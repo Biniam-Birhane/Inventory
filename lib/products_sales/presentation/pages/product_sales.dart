@@ -17,7 +17,6 @@ class ProductSales extends StatefulWidget {
 class _ProductSaleScreen extends State<ProductSales> {
   final List<String> sections = ["A", "B", "C"];
   List<ProductSale> searchedSales = [];
-  String? searchingAttribute;
 
   TextEditingController searchController = TextEditingController();
   void getProductSale() {
@@ -35,31 +34,19 @@ class _ProductSaleScreen extends State<ProductSales> {
   @override
   void initState() {
     super.initState();
-    searchingAttribute = 'buyerName';
     getProductSale();
   }
 
   void searchSales(String name, List<ProductSale> sales) {
     if (name.isNotEmpty) {
-      if (searchingAttribute == 'buyerName') {
-        List<ProductSale> foundSales = sales
-            .where((sale) =>
-                sale.buyerName.toLowerCase().contains(name.toLowerCase()))
-            .toList();
-        setState(() {
-          searchedSales = foundSales;
-        });
-      } else if (searchingAttribute == 'productName') {
-        if (name.isNotEmpty) {
-          List<ProductSale> foundSales = sales
-              .where((sale) =>
-                  sale.productName.toLowerCase().contains(name.toLowerCase()))
-              .toList();
-          setState(() {
-            searchedSales = foundSales;
-          });
-        }
-      }
+      List<ProductSale> foundSales = sales
+          .where((sale) =>
+              sale.productName.toLowerCase().contains(name.toLowerCase()) ||
+              sale.buyerName.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+      setState(() {
+        searchedSales = foundSales;
+      });
     } else {
       setState(() {
         searchedSales = sales;
@@ -69,6 +56,7 @@ class _ProductSaleScreen extends State<ProductSales> {
 
   @override
   Widget build(BuildContext context) {
+    String? searchingAttribute = 'productName';
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<ProductsSalesBloc, ProductsSalesState>(
         listener: (context, state) {
