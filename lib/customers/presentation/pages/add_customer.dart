@@ -161,32 +161,49 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
     });
   }
 
-  Container searchBar(Size size, CustomersState state) {
-    return Container(
-      width: size.width * 0.55,
-      child: TextField(
-          style: const TextStyle(
-            color: Colors.white,
+  Row searchBar(Size size, CustomersState state) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Container(
+          width: size.width * 0.75,
+          child: TextField(
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+              decoration: InputDecoration(
+                  hintText: "Search customer",
+                  prefixIcon: const Icon(Icons.search, color: Colors.white),
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey.withOpacity(0.5),
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.green, width: 2),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.always),
+              onChanged: (value) {
+                searchCustomers(value, state.customers);
+              }),
+        ),
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.all(20),
+              backgroundColor: const Color(0xFFFE8A00),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10))),
+          child: const Icon(
+            Icons.search,
+            color: Colors.black,
           ),
-          decoration: InputDecoration(
-              hintText: "Search customer",
-              prefixIcon: const Icon(Icons.search, color: Colors.white),
-              hintStyle: const TextStyle(color: Colors.grey),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                  color: Colors.grey.withOpacity(0.5),
-                  width: 1.5,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.green, width: 2),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              floatingLabelBehavior: FloatingLabelBehavior.always),
-          onChanged: (value) {
-            searchCustomers(value, state.customers);
-          }),
+        )
+      ],
     );
   }
 
@@ -198,7 +215,7 @@ class _CustomersScreen extends State<Customers> with TickerProviderStateMixin {
           margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(5),
           decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 86, 111, 140),
+              color: Color(0xFF151D26),
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Container(
             padding: const EdgeInsets.all(10),

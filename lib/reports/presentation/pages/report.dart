@@ -90,10 +90,11 @@ class _ReportScreen extends State<ReportPage> {
         title: const Text(
           'Reports',
           style: TextStyle(
-            color: Colors.grey,
+            color: Colors.white,
             fontFamily: "Quicksand",
           ),
         ),
+        centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       bottomNavigationBar: CommonBottomBar(
@@ -105,91 +106,107 @@ class _ReportScreen extends State<ReportPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  color: const Color(0xFF151D26),
-                  width: deviceWidth * 0.4,
-                  child: RadioListTile(
-                    activeColor: Colors.green,
-                    title: const Text('sales',
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              Expanded(
+                  child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 1),
+                    borderRadius: BorderRadius.circular(10)),
+                child: DropdownButton(
+                  dropdownColor: const Color.fromARGB(255, 49, 72, 101),
+                  hint: const Text("Collection:",
+                      style: TextStyle(color: Colors.white)),
+                  icon: const Icon(Icons.arrow_drop_down),
+                  iconSize: 36,
+                  isExpanded: true,
+                  underline: const SizedBox(),
+                  style: const TextStyle(color: Colors.white10, fontSize: 18),
+                  value: _selectedOption,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedOption = value;
+                    });
+                  },
+                  items: const [
+                    DropdownMenuItem(
+                        value: 'sales',
+                        child: Text(
+                          'Sales',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    DropdownMenuItem(
+                        value: 'products',
+                        child: Text(
+                          'products',
+                          style: TextStyle(color: Colors.white),
+                        ))
+                  ],
+                ),
+              )),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: DropdownButton(
+                    dropdownColor: const Color.fromARGB(255, 49, 72, 101),
+                    hint: const Text("Report Type :",
                         style: TextStyle(color: Colors.white)),
-                    value: 'sales',
-                    groupValue: _selectedOption,
+                    icon: const Icon(Icons.arrow_drop_down),
+                    iconSize: 36,
+                    isExpanded: true,
+                    underline: const SizedBox(),
+                    style: const TextStyle(color: Colors.white10, fontSize: 18),
+                    value: reportType,
                     onChanged: (value) {
                       setState(() {
-                        _selectedOption = value;
+                        reportType = value;
                       });
                     },
+                    items: const [
+                      DropdownMenuItem(
+                          value: 'Today',
+                          child: Text(
+                            'Today',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      DropdownMenuItem(
+                          value: 'thisMonth',
+                          child: Text(
+                            'This month',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      DropdownMenuItem(
+                          value: 'thisYear',
+                          child: Text(
+                            'This year',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      DropdownMenuItem(
+                          value: 'Daily',
+                          child: Text(
+                            'Daily',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      DropdownMenuItem(
+                          value: 'Monthly',
+                          child: Text(
+                            'Monthly',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      DropdownMenuItem(
+                          value: 'Yearly',
+                          child: Text(
+                            'Yearly',
+                            style: TextStyle(color: Colors.white),
+                          ))
+                    ],
                   ),
                 ),
-                Container(
-                  color: const Color(0xFF151D26),
-                  width: deviceWidth * 0.5,
-                  child: RadioListTile(
-                    activeColor: Colors.green,
-                    tileColor: Colors.white,
-                    title: const Text('products',
-                        style: TextStyle(color: Colors.white)),
-                    value: 'products',
-                    groupValue: _selectedOption,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedOption = value;
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      reportType = 'Daily';
-                    });
-                  },
-                  child: const Text(
-                    'Daily ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "Quicksand",
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      reportType = 'Monthly';
-                    });
-                  },
-                  child: const Text(
-                    'Monthly ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "Quicksand",
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      reportType = 'Yearly';
-                    });
-                  },
-                  child: const Text(
-                    'Yearly',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "Quicksand",
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              )
+            ]),
             _selectedOption == 'sales'
                 ? Container(
                     height: 300,
@@ -201,12 +218,17 @@ class _ReportScreen extends State<ReportPage> {
                                 ? monthlyReportFormat()
                                 : reportType == 'Yearly'
                                     ? yearlyReportFormat()
-                                    : const Center(
-                                        child: Text(
-                                          'please chose how do you want the reports to display',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
+                                    : reportType == 'Today' ||
+                                            reportType == "thisMonth" ||
+                                            reportType == "thisYear"
+                                        ? const SizedBox()
+                                        : const Center(
+                                            child: Text(
+                                              'please chose how do you want the reports to display',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
                         BlocConsumer<ReportsBloc, ReportsState>(
                           listener: (context, state) {
                             print(state.gettingReportStatus);
@@ -314,13 +336,17 @@ class _ReportScreen extends State<ReportPage> {
                                     ? monthlyReportFormat()
                                     : reportType == 'Yearly'
                                         ? yearlyReportFormat()
-                                        : const Center(
-                                            child: Text(
-                                              'please chose how do you want the reports to display',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
+                                        : reportType == 'Today' ||
+                                                reportType == "thisMonth" ||
+                                                reportType == "thisYear"
+                                            ? const SizedBox()
+                                            : const Center(
+                                                child: Text(
+                                                  'please chose how do you want the reports to display',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
                             BlocConsumer<ReportsBloc, ReportsState>(
                               listener: (context, state) {
                                 print(state.gettingProductReportStatus);
@@ -437,6 +463,22 @@ class _ReportScreen extends State<ReportPage> {
                               date: selectedDate ?? 1,
                               month: selectedMonth ?? 12,
                               year: selectedYear ?? 2024));
+                        } else if (reportType == "Today") {
+                          final DateTime today = DateTime.now();
+                          context.read<ReportsBloc>().add(GetDailyReportsEvent(
+                              date: today.day,
+                              month: today.month,
+                              year: today.year));
+                        } else if (reportType == 'thisMonth') {
+                          final DateTime currentDate = DateTime.now();
+                          context.read<ReportsBloc>().add(
+                              GetMonthlyReportsEvent(
+                                  month: currentDate.month,
+                                  year: currentDate.year));
+                        } else if (reportType == 'thisYear') {
+                          final DateTime currentDate = DateTime.now();
+                          context.read<ReportsBloc>().add(
+                              GetYearlyReportsEvent(year: currentDate.year));
                         } else if (reportType == '' || selectedYear == null) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(

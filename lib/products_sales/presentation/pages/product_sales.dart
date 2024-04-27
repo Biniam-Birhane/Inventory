@@ -17,7 +17,6 @@ class ProductSales extends StatefulWidget {
 class _ProductSaleScreen extends State<ProductSales> {
   final List<String> sections = ["A", "B", "C"];
   List<ProductSale> searchedSales = [];
-  String? searchingAttribute;
 
   TextEditingController searchController = TextEditingController();
   void getProductSale() {
@@ -35,31 +34,19 @@ class _ProductSaleScreen extends State<ProductSales> {
   @override
   void initState() {
     super.initState();
-    searchingAttribute = 'buyerName';
     getProductSale();
   }
 
   void searchSales(String name, List<ProductSale> sales) {
     if (name.isNotEmpty) {
-      if (searchingAttribute == 'buyerName') {
-        List<ProductSale> foundSales = sales
-            .where((sale) =>
-                sale.buyerName.toLowerCase().contains(name.toLowerCase()))
-            .toList();
-        setState(() {
-          searchedSales = foundSales;
-        });
-      } else if (searchingAttribute == 'productName') {
-        if (name.isNotEmpty) {
-          List<ProductSale> foundSales = sales
-              .where((sale) =>
-                  sale.productName.toLowerCase().contains(name.toLowerCase()))
-              .toList();
-          setState(() {
-            searchedSales = foundSales;
-          });
-        }
-      }
+      List<ProductSale> foundSales = sales
+          .where((sale) =>
+              sale.productName.toLowerCase().contains(name.toLowerCase()) ||
+              sale.buyerName.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+      setState(() {
+        searchedSales = foundSales;
+      });
     } else {
       setState(() {
         searchedSales = sales;
@@ -108,7 +95,7 @@ class _ProductSaleScreen extends State<ProductSales> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Container(
-                            width: size.width * 0.55,
+                            width: size.width * 0.75,
                             child: TextField(
                                 style: const TextStyle(
                                   color: Colors.white,
@@ -137,38 +124,17 @@ class _ProductSaleScreen extends State<ProductSales> {
                                   searchSales(value, state.sales);
                                 }),
                           ),
-                          Container(
-                            width: size.width * 0.4,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10))),
-                            child: DropdownButton(
-                                dropdownColor:
-                                    const Color.fromARGB(255, 49, 72, 101),
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.white,
-                                ),
-                                iconSize: 36,
-                                isExpanded: true,
-                                underline: const SizedBox(),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                                value: searchingAttribute,
-                                items: const [
-                                  DropdownMenuItem(
-                                      value: 'buyerName',
-                                      child: Text("buyer name")),
-                                  DropdownMenuItem(
-                                      value: 'productName',
-                                      child: Text('product name'))
-                                ],
-                                onChanged: ((value) {
-                                  setState(() {
-                                    searchingAttribute = value;
-                                  });
-                                })),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(20),
+                                backgroundColor: const Color(0xFFFE8A00),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            child: const Icon(
+                              Icons.search,
+                              color: Colors.black,
+                            ),
                           )
                         ],
                       ),

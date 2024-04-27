@@ -11,6 +11,7 @@ import 'package:simple_inventory/login/data/datasources/remote_data_source.dart'
 import 'package:simple_inventory/login/data/repositories/login_repository_impl.dart';
 import 'package:simple_inventory/login/domain/repositories/login_repository.dart';
 import 'package:simple_inventory/login/domain/usecases/login_usecase.dart';
+import 'package:simple_inventory/login/domain/usecases/add_user.dart';
 import 'package:simple_inventory/login/presentation/bloc/login_bloc.dart';
 import 'package:simple_inventory/products_sales/data/datasources/remote_sales_datasource.dart';
 import 'package:simple_inventory/products_sales/data/repositories/sales_repository_impl.dart';
@@ -60,8 +61,9 @@ Future<void> init() async {
         () => CustomerRepositoryImpl(sl()))
     ..registerLazySingleton<RemoteDataSource>(() => RemoteCustomerDatasource());
   sl
-    ..registerFactory(() => LoginBloc(loginUsecase: sl()))
+    ..registerFactory(() => LoginBloc(loginUsecase: sl(), addUser: sl()))
     ..registerLazySingleton(() => LoginUsecase(sl()))
+    ..registerLazySingleton(() => AddUser(sl()))
     ..registerLazySingleton<LoginRepository>(() => LoginRepositoryImpl(sl()))
     ..registerLazySingleton<RemoteLoginDataSource>(
         () => const RemoteLoginDSImpl());

@@ -53,7 +53,7 @@ class LoginPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: const BoxDecoration(
-                        color: Colors.white,
+                        // color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(25))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
