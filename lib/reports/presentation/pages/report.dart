@@ -509,6 +509,24 @@ class _ReportScreen extends State<ReportPage> {
                               GetMonthlyProductReportsEvent(
                                   month: selectedMonth ?? 10,
                                   year: selectedYear ?? 2024));
+                        } else if (reportType == "Today") {
+                          final DateTime today = DateTime.now();
+                          context.read<ReportsBloc>().add(
+                              GetDailyProductReportsEvent(
+                                  date: today.day,
+                                  month: today.month,
+                                  year: today.year));
+                        } else if (reportType == 'thisMonth') {
+                          final DateTime currentDate = DateTime.now();
+                          context.read<ReportsBloc>().add(
+                              GetMonthlyProductReportsEvent(
+                                  month: currentDate.month,
+                                  year: currentDate.year));
+                        } else if (reportType == 'thisYear') {
+                          final DateTime currentDate = DateTime.now();
+                          context.read<ReportsBloc>().add(
+                              GetYearlyProductReportsEvent(
+                                  year: currentDate.year));
                         } else if (reportType == 'Yearly' &&
                             selectedYear != null) {
                           context.read<ReportsBloc>().add(

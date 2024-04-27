@@ -13,6 +13,7 @@ import 'package:simple_inventory/login/presentation/pages/login_page.dart';
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
 import 'package:simple_inventory/products/presentation/bloc/products_bloc.dart';
+import 'package:simple_inventory/profile/profile.dart';
 import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
 import 'package:simple_inventory/reports/presentation/pages/report_generating_service.dart';
 
@@ -42,7 +43,7 @@ void main() async {
   } catch (e) {
     print('Error initializing Firebase: $e');
   }
- 
+
   runApp(const MyApp());
 }
 

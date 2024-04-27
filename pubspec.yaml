@@ -87,6 +87,7 @@ flutter:
   # example:
   assets:
     - assets/images/logo.png
+    - assets/images/background.jpg
   fonts:
     - family: Lato
       fonts:
