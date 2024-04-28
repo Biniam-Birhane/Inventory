@@ -378,9 +378,11 @@ class _ReportScreen extends State<ReportPage> {
                                                   ),
                                                   title: Text(
                                                     product.productName,
+                                                    textAlign: TextAlign.center,
                                                     style: const TextStyle(
                                                         color: Colors.white),
                                                   ),
+                                                  
                                                   children: [
                                                     Text(
                                                       '${product.amount}',

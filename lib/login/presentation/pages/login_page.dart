@@ -31,19 +31,20 @@ class LoginPage extends StatelessWidget {
         child: Builder(builder: (context) {
           return BlocConsumer<LoginBloc, LoginState>(
               listener: (context, state) {
-            // if (state is LoggedIn) {
-            //   Navigator.pushReplacement(context,
-            //       MaterialPageRoute(builder: (context) => const Dashboard()));
-            // } else if (state is LoginError) {
-            //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            //     backgroundColor: Colors.red,
-            //     content: Text(
-            //       state.errorMessage,
-            //       style: const TextStyle(
-            //           color: Colors.white, fontWeight: FontWeight.bold),
-            //     ),
-            //   ));
-            // }
+            print(state.loginStatus);
+            if (state.loginStatus.isFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(
+                  state.errorMessage,
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ));
+            } else if (state.loginStatus.isSuccess) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const Dashboard()));
+            }
           }, builder: (context, state) {
             return Column(
                 mainAxisSize: MainAxisSize.min,
@@ -53,13 +54,13 @@ class LoginPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: const BoxDecoration(
-                        // color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(25))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextFormField(
                           controller: username,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               prefixIcon:
                                   const Icon(Icons.person, color: Colors.blue),
@@ -83,6 +84,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         TextFormField(
                           controller: password,
+                          style: const TextStyle(color: Colors.white),
                           obscureText: true,
                           decoration: InputDecoration(
                               prefixIcon: const Icon(Icons.security,
@@ -114,25 +116,6 @@ class LoginPage extends StatelessWidget {
                               context.read<LoginBloc>().add(LoginRequestedEvent(
                                   username: username.text,
                                   password: password.text));
-
-                              if (state.loginStatus.isFailure) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  backgroundColor: Colors.red,
-                                  content: Text(
-                                    state.errorMessage,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ));
-                              } else if (state.loginStatus.isSuccess) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Dashboard()));
-                              }
                             },
                             child: const Text('login',
                                 style: TextStyle(

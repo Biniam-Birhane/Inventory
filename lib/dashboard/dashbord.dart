@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_inventory/bottomPage/bottom_items_list.dart';
 import 'package:simple_inventory/bottomPage/bottom_logic.dart';
@@ -12,6 +13,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class DashboardState extends State<Dashboard> {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
   int selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
