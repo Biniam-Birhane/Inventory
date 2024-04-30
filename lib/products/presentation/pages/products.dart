@@ -111,21 +111,20 @@ class ProductsScreenState extends State<Products> {
                                   ),
                                   children: [
                                     Text(
-                                        "CreatedAt: ${product.createdAt} ",
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "Quicksand",
-                                          fontSize: 18,
-                                        ),
+                                      product.createdAt!.toLocal().toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Quicksand",
+                                        fontSize: 18,
                                       ),
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          15.0, 0, 0, 0),
+                                          15.0, 10, 0, 0),
                                       child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          
                                           Container(
                                             child: const Text(
                                               "Amount: ",
@@ -155,7 +154,6 @@ class ProductsScreenState extends State<Products> {
                                           fontFamily: "Quicksand",
                                         ),
                                       ),
-                                      
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,

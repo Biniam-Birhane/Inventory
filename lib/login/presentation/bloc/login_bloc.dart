@@ -30,7 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print(failure);
       emit(state.copyWith(
           loginStatus: FormzSubmissionStatus.failure,
-          errorMessage: "Invalid user credentials"));
+          errorMessage: "Incorect username or password "));
     },
         (token) => emit(state.copyWith(
             loginStatus: FormzSubmissionStatus.success,

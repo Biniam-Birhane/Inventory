@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -30,6 +28,7 @@ class _ReportScreen extends State<ReportPage> {
   int selectedIndex = 1;
   List<int> years = [2023, 2024];
   List<int> months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
   List<int> days = [
     1,
     2,
@@ -67,6 +66,8 @@ class _ReportScreen extends State<ReportPage> {
 
   int number = 0;
   List<ProductSale> sales = [];
+
+  
 
   void _onItemTapped(int index) {
     setState(() {
@@ -112,107 +113,12 @@ class _ReportScreen extends State<ReportPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              Expanded(
-                  child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 1),
-                    borderRadius: BorderRadius.circular(10)),
-                child: DropdownButton(
-                  dropdownColor: const Color.fromARGB(255, 49, 72, 101),
-                  hint: const Text("Collection:",
-                      style: TextStyle(color: Colors.white)),
-                  icon: const Icon(Icons.arrow_drop_down),
-                  iconSize: 36,
-                  isExpanded: true,
-                  underline: const SizedBox(),
-                  style: const TextStyle(color: Colors.white10, fontSize: 18),
-                  value: _selectedOption,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedOption = value;
-                    });
-                  },
-                  items: const [
-                    DropdownMenuItem(
-                        value: 'sales',
-                        child: Text(
-                          'Sales',
-                          style: TextStyle(color: Colors.white),
-                        )),
-                    DropdownMenuItem(
-                        value: 'products',
-                        child: Text(
-                          'products',
-                          style: TextStyle(color: Colors.white),
-                        ))
-                  ],
-                ),
-              )),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: DropdownButton(
-                    dropdownColor: const Color.fromARGB(255, 49, 72, 101),
-                    hint: const Text("Report Type :",
-                        style: TextStyle(color: Colors.white)),
-                    icon: const Icon(Icons.arrow_drop_down),
-                    iconSize: 36,
-                    isExpanded: true,
-                    underline: const SizedBox(),
-                    style: const TextStyle(color: Colors.white10, fontSize: 18),
-                    value: reportType,
-                    onChanged: (value) {
-                      setState(() {
-                        reportType = value;
-                      });
-                    },
-                    items: const [
-                      DropdownMenuItem(
-                          value: 'Today',
-                          child: Text(
-                            'Today',
-                            style: TextStyle(color: Colors.white),
-                          )),
-                      DropdownMenuItem(
-                          value: 'thisMonth',
-                          child: Text(
-                            'This month',
-                            style: TextStyle(color: Colors.white),
-                          )),
-                      DropdownMenuItem(
-                          value: 'thisYear',
-                          child: Text(
-                            'This year',
-                            style: TextStyle(color: Colors.white),
-                          )),
-                      DropdownMenuItem(
-                          value: 'Daily',
-                          child: Text(
-                            'Daily',
-                            style: TextStyle(color: Colors.white),
-                          )),
-                      DropdownMenuItem(
-                          value: 'Monthly',
-                          child: Text(
-                            'Monthly',
-                            style: TextStyle(color: Colors.white),
-                          )),
-                      DropdownMenuItem(
-                          value: 'Yearly',
-                          child: Text(
-                            'Yearly',
-                            style: TextStyle(color: Colors.white),
-                          ))
-                    ],
-                  ),
-                ),
-              )
-            ]),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [operationSelection(),SizedBox(width: deviceWidth*0.02,) ,reportTypeIndate()]),
+            ),
             _selectedOption == 'sales'
                 ? Container(
                     height: 300,
@@ -382,7 +288,6 @@ class _ReportScreen extends State<ReportPage> {
                                                     style: const TextStyle(
                                                         color: Colors.white),
                                                   ),
-                                                  
                                                   children: [
                                                     Text(
                                                       '${product.amount}',
@@ -446,13 +351,9 @@ class _ReportScreen extends State<ReportPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-            
-           
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            
-            
             BlocConsumer<ReportsBloc, ReportsState>(
                 listener: (context, state) {},
                 builder: (context, state) {
@@ -572,11 +473,116 @@ class _ReportScreen extends State<ReportPage> {
                       ),
                     ),
                   );
-                })
+                }),
+            
           ],
         ),
       ),
     );
+  }
+
+  Expanded reportTypeIndate() {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey, width: 1),
+            borderRadius: BorderRadius.circular(10)),
+        child: DropdownButton(
+          dropdownColor: const Color.fromARGB(255, 49, 72, 101),
+          hint: const Text("Report Type :",
+              style: TextStyle(color: Colors.white)),
+          icon: const Icon(Icons.arrow_drop_down),
+          iconSize: 36,
+          isExpanded: true,
+          underline: const SizedBox(),
+          style: const TextStyle(color: Colors.white10, fontSize: 18),
+          value: reportType,
+          onChanged: (value) {
+            setState(() {
+              reportType = value;
+            });
+          },
+          items: const [
+            DropdownMenuItem(
+                value: 'Today',
+                child: Text(
+                  'Today',
+                  style: TextStyle(color: Colors.white),
+                )),
+            DropdownMenuItem(
+                value: 'thisMonth',
+                child: Text(
+                  'This month',
+                  style: TextStyle(color: Colors.white),
+                )),
+            DropdownMenuItem(
+                value: 'thisYear',
+                child: Text(
+                  'This year',
+                  style: TextStyle(color: Colors.white),
+                )),
+            DropdownMenuItem(
+                value: 'Daily',
+                child: Text(
+                  'Daily',
+                  style: TextStyle(color: Colors.white),
+                )),
+            DropdownMenuItem(
+                value: 'Monthly',
+                child: Text(
+                  'Monthly',
+                  style: TextStyle(color: Colors.white),
+                )),
+            DropdownMenuItem(
+                value: 'Yearly',
+                child: Text(
+                  'Yearly',
+                  style: TextStyle(color: Colors.white),
+                ))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Expanded operationSelection() {
+    return Expanded(
+        child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey, width: 1),
+          borderRadius: BorderRadius.circular(10)),
+      child: DropdownButton(
+        dropdownColor: const Color.fromARGB(255, 49, 72, 101),
+        hint: const Text("Collection:", style: TextStyle(color: Colors.white)),
+        icon: const Icon(Icons.arrow_drop_down),
+        iconSize: 36,
+        isExpanded: true,
+        underline: const SizedBox(),
+        style: const TextStyle(color: Colors.white10, fontSize: 18),
+        value: _selectedOption,
+        onChanged: (value) {
+          setState(() {
+            _selectedOption = value;
+          });
+        },
+        items: const [
+          DropdownMenuItem(
+              value: 'sales',
+              child: Text(
+                'Sales',
+                style: TextStyle(color: Colors.white),
+              )),
+          DropdownMenuItem(
+              value: 'products',
+              child: Text(
+                'Products',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
+      ),
+    ));
   }
 
   Center yearlyReportFormat() {

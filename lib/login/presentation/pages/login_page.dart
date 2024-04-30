@@ -3,9 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:simple_inventory/dashboard/dashbord.dart';
 import 'package:simple_inventory/login/presentation/bloc/login_bloc.dart';
+import 'package:simple_inventory/login/presentation/widgets/password_field.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool obsecure = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,14 +24,11 @@ class LoginPage extends StatelessWidget {
               textAlign: TextAlign.center,
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-          centerTitle: true,
         ),
-        body: Container(
-          child: loginBox(context),
-        ));
+        body: Center(child: loginBox()));
   }
 
-  Material loginBox(BuildContext context) {
+  Material loginBox() {
     TextEditingController username = TextEditingController();
     TextEditingController password = TextEditingController();
     return Material(
@@ -51,6 +56,12 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 //
                 children: [
+                  const Text("Login Page",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Quicksand",
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold)),
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: const BoxDecoration(
@@ -62,65 +73,65 @@ class LoginPage extends StatelessWidget {
                           controller: username,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                              prefixIcon:
-                                  const Icon(Icons.person, color: Colors.blue),
-                              labelText: 'Username',
-                              hintText: "username or email",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              labelStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  width: 1.5,
-                                ),
-                              )),
+                            prefixIcon:
+                                const Icon(Icons.person, color: Colors.blue),
+                            labelText: "Username",
+                            hintText: "Enter username or email",
+                            hintStyle: const TextStyle(color: Colors.grey),
+                            labelStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.grey.withOpacity(0.5),
+                                width: 1.5,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.green, width: 2),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                          ),
                         ),
                         const SizedBox(
-                          height: 30,
+                          height: 25,
                         ),
-                        TextFormField(
+                        PasswordFormField(
                           controller: password,
-                          style: const TextStyle(color: Colors.white),
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.security,
-                                  color: Colors.blue),
-                              labelText: 'Password',
-                              hintText: "Enter username",
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              labelStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  width: 1.5,
-                                ),
-                              )),
+                          obscure: obsecure,
                         ),
                         const SizedBox(
-                          height: 50,
+                          height: 20,
                         ),
                         ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              elevation: 8.0,
+                          onPressed: () {
+                            context.read<LoginBloc>().add(LoginRequestedEvent(
+                                username: username.text,
+                                password: password.text));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            
+                              backgroundColor: const Color(0xFFFE8A00),
+                              padding: const EdgeInsetsDirectional.symmetric(
+                                vertical: 10,
+                                horizontal: 50,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              fontFamily: "Quicksand",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
-                            onPressed: () {
-                              context.read<LoginBloc>().add(LoginRequestedEvent(
-                                  username: username.text,
-                                  password: password.text));
-                            },
-                            child: const Text('login',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold))),
+                          ),
+                        ),
                       ],
                     ),
                   ),
