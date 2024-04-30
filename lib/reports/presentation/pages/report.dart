@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -8,9 +6,10 @@ import 'package:simple_inventory/bottomPage/bottom_items_list.dart';
 import 'package:simple_inventory/bottomPage/bottom_logic.dart';
 import 'package:simple_inventory/bottomPage/common_bottom_bar.dart';
 import 'package:simple_inventory/products/domain/entities/product_entitiy.dart';
-import 'package:simple_inventory/core/utils/typedef.dart';
+
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
+// import 'package:date_cupertino_bottom_sheet_picker/date_cupertino_bottom_sheet_picker.dart';
 
 //pdf
 
@@ -88,7 +87,7 @@ class _ReportScreen extends State<ReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
+    // double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xFF151D26),
       appBar: AppBar(
@@ -382,10 +381,9 @@ class _ReportScreen extends State<ReportPage> {
                                                     style: const TextStyle(
                                                         color: Colors.white),
                                                   ),
-                                                  
                                                   children: [
                                                     Text(
-                                                      '${product.amount}',
+                                                      'Amount: ${product.amount}',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: const TextStyle(
@@ -397,14 +395,14 @@ class _ReportScreen extends State<ReportPage> {
                                                               .spaceEvenly,
                                                       children: [
                                                         Text(
-                                                          'Amount: ${product.unitPrice}',
+                                                          'unit Price: ${product.unitPrice}',
                                                           textAlign:
                                                               TextAlign.center,
                                                           style:
                                                               const TextStyle(
                                                                   color: Colors
                                                                       .white),
-                                                        )
+                                                        ),
                                                       ],
                                                     ),
                                                     const Text(
@@ -446,13 +444,9 @@ class _ReportScreen extends State<ReportPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-            
-           
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            
-            
             BlocConsumer<ReportsBloc, ReportsState>(
                 listener: (context, state) {},
                 builder: (context, state) {
@@ -655,71 +649,38 @@ class _ReportScreen extends State<ReportPage> {
     );
   }
 
-  Row dailyReportFormat() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        DropdownButton(
-            dropdownColor: const Color.fromARGB(255, 29, 66, 97),
-            hint: const Text(
-              "Day :",
-              style: TextStyle(color: Colors.white),
-            ),
-            value: selectedDate,
-            onChanged: (value) {
-              setState(() {
-                selectedDate = value;
-                print(selectedMonth);
-                print(reportType);
-              });
-            },
-            items: days.map((day) {
-              return DropdownMenuItem(
-                  value: day,
-                  child: Text(day.toString(),
-                      style: const TextStyle(color: Colors.white)));
-            }).toList()),
-        DropdownButton(
-            dropdownColor: const Color.fromARGB(255, 29, 66, 97),
-            hint: const Text(
-              "Month",
-              style: TextStyle(color: Colors.white),
-            ),
-            value: selectedMonth,
-            onChanged: (value) {
-              setState(() {
-                selectedMonth = value;
-              });
-            },
-            items: months.map((month) {
-              return DropdownMenuItem(
-                  value: month,
-                  child: Text(month.toString(),
-                      style: const TextStyle(color: Colors.white)));
-            }).toList()),
-        DropdownButton(
-            dropdownColor: const Color.fromARGB(255, 29, 66, 97),
-            hint: const Text(
-              "Year :",
-              style: TextStyle(color: Colors.white),
-            ),
-            icon: const Icon(Icons.arrow_drop_down),
-            iconSize: 36,
-            underline: const SizedBox(),
-            style: const TextStyle(color: Colors.white, fontSize: 18),
-            value: selectedYear,
-            onChanged: (value) {
-              setState(() {
-                selectedYear = value;
-              });
-            },
-            items: years.map((year) {
-              return DropdownMenuItem(
-                  value: year,
-                  child: Text(year.toString(),
-                      style: const TextStyle(color: Colors.white)));
-            }).toList()),
-      ],
+  Container dailyReportFormat() {
+    return Container(
+      alignment: Alignment.centerRight,
+      color: const Color(0xFFFE8A00),
+      child: TextButton(
+          onPressed: () async {
+            DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2020),
+              lastDate: DateTime(2050),
+            );
+            setState(() {
+              selectedDate = pickedDate!.day;
+              selectedMonth = pickedDate.month;
+              selectedYear = pickedDate.year;
+            });
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Text('Select Date:', style: TextStyle(color: Colors.black)),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.calendar_month_outlined,
+                      color: Colors.black)),
+              selectedDate == null
+                  ? const SizedBox()
+                  : Text('Date: $selectedDate/$selectedMonth/$selectedYear',
+                      style: const TextStyle(color: Colors.black)),
+            ],
+          )),
     );
   }
 }

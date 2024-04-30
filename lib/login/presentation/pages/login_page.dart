@@ -109,18 +109,26 @@ class LoginPage extends StatelessWidget {
                         ),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              elevation: 8.0,
-                            ),
+                                backgroundColor: const Color(0xFFFE8A00),
+                                padding: const EdgeInsetsDirectional.symmetric(
+                                  vertical: 10,
+                                  horizontal: 60,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
                             onPressed: () {
                               context.read<LoginBloc>().add(LoginRequestedEvent(
                                   username: username.text,
                                   password: password.text));
                             },
-                            child: const Text('login',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold))),
+                            child: state.loginStatus.isInProgress
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text('login',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold))),
                       ],
                     ),
                   ),

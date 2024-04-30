@@ -32,7 +32,7 @@ class RemoteLoginDSImpl implements RemoteLoginDataSource {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     try {
       await firebaseAuth.createUserWithEmailAndPassword(
-          email: "kb@gmail.com", password: "pasadmin");
+          email: username, password: password);
       print('registered');
     } on APIException catch (e) {
       throw APIException(message: e.message, statusCode: e.statusCode);

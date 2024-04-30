@@ -153,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.10.1"
+  date_cupertino_bottom_sheet_picker:
+    dependency: "direct main"
+    description:
+      name: date_cupertino_bottom_sheet_picker
+      sha256: "4c983e5ea1b72916ede8becbefba95ab0f45ce5b7196bab5bbc3247db4e7a163"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   equatable:
     dependency: "direct main"
     description:

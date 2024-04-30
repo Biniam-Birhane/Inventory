@@ -16,7 +16,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         super(const LoginState()) {
     on<LoginRequestedEvent>(_loginHandler);
     on<AddUserEvent>(_addUserHandler);
-    on<LogOut>(_logOutHandler);
+    on<LogOutEvent>(_logOutHandler);
   }
   final LoginUsecase _loginUsecase;
   final AddUser _addUser;
@@ -53,7 +53,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             addUserStatus: FormzSubmissionStatus.success, errorMessage: '')));
   }
 
-  Future<void> _logOutHandler(LogOut event, Emitter<LoginState> emit) async {
+  Future<void> _logOutHandler(
+      LogOutEvent event, Emitter<LoginState> emit) async {
     // emit(LoggingOut());
     emit(state.copyWith(
         logoutStatus: FormzSubmissionStatus.success,
