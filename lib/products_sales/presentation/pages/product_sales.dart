@@ -96,7 +96,7 @@ class _ProductSaleScreen extends State<ProductSales> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Container(
-                            width: size.width * 0.60,
+                            width: size.width * 0.78,
                             child: TextField(
                                 style: const TextStyle(
                                   color: Colors.white,
@@ -125,39 +125,20 @@ class _ProductSaleScreen extends State<ProductSales> {
                                   searchSales(value, state.sales);
                                 }),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            width : size.width*0.32,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10))),
-                            child: DropdownButton(
-                                dropdownColor:
-                                    const Color.fromARGB(255, 49, 72, 101),
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.white,
-                                ),
-                                iconSize: 36,
-                                isExpanded: true,
-                                underline: const SizedBox(),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                                value: searchingAttribute,
-                                items: const [
-                                  DropdownMenuItem(
-                                      value: 'buyerName',
-                                      child: Text("buyer name")),
-                                  DropdownMenuItem(
-                                      value: 'productName',
-                                      child: Text('product name'))
-                                ],
-                                onChanged: ((value) {
-                                  setState(() {
-                                    searchingAttribute = value;
-                                  });
-                                })),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 25),
+                                  backgroundColor: const Color(0xFFFE8A00),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                              child: const Icon(
+                                Icons.search,
+                                color: Color.fromARGB(255, 233, 180, 180),
+                              ),
+                            ),
                           )
                         ],
                       ),

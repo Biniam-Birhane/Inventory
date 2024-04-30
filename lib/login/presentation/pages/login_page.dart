@@ -108,30 +108,27 @@ class _LoginPageState extends State<LoginPage> {
                           height: 20,
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            context.read<LoginBloc>().add(LoginRequestedEvent(
-                                username: username.text,
-                                password: password.text));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            
-                              backgroundColor: const Color(0xFFFE8A00),
-                              padding: const EdgeInsetsDirectional.symmetric(
-                                vertical: 10,
-                                horizontal: 50,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(
-                              fontFamily: "Quicksand",
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFFE8A00),
+                                padding: const EdgeInsetsDirectional.symmetric(
+                                  vertical: 10,
+                                  horizontal: 60,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            onPressed: () {
+                              context.read<LoginBloc>().add(LoginRequestedEvent(
+                                  username: username.text,
+                                  password: password.text));
+                            },
+                            child: state.loginStatus.isInProgress
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text('login',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold))),
                       ],
                     ),
                   ),
