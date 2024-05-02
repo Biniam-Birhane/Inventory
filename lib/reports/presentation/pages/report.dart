@@ -90,7 +90,7 @@ class _ReportScreen extends State<ReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    // double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xFF151D26),
       appBar: AppBar(

@@ -75,25 +75,24 @@ class _ProfileState extends State<Profile> {
                 child: Container(
                   child: ListTile(
                     horizontalTitleGap: 30,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return addUser(context, state);
+                        },
+                      );
+                    },
                     leading: const CircleAvatar(
                       child: Icon(Icons.person),
                     ),
-                    title: TextButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return addUser(context, state);
-                            },
-                          );
-                        },
-                        child: Text(
-                          "Add User",
-                          style: TextStyle(
-                              fontFamily: 'Quicksand',
-                              color: Colors.white,
-                              fontSize: size.width * 0.05),
-                        )),
+                    title: Text(
+                      "Add User",
+                      style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          color: Colors.white,
+                          fontSize: size.width * 0.05),
+                    ),
                     trailing: const Icon(
                       Icons.forward,
                       color: Colors.white,
@@ -127,33 +126,28 @@ class _ProfileState extends State<Profile> {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   child: ListTile(
-                      horizontalTitleGap: 30,
-                      leading: const CircleAvatar(
-                        child: Icon(
-                          Icons.logout,
-                          color: Colors.red,
-                        ),
+                    horizontalTitleGap: 30,
+                    leading: const CircleAvatar(
+                      child: Icon(
+                        Icons.logout,
+                        color: Colors.red,
                       ),
-                      title: TextButton(
-                          onPressed: () {
-                            context.read<LoginBloc>().add(LogOutEvent());
-                          },
-                          child: state.logoutStatus.isInProgress
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white)
-                              : Row(children: [
-                                  Text(
-                                    "Logout ",
-                                    style: TextStyle(
-                                        fontFamily: 'Quicksand',
-                                        color: Colors.red,
-                                        fontSize: size.width * 0.05),
-                                  ),
-                                  const Icon(
-                                    Icons.logout,
-                                    color: Colors.red,
-                                  ),
-                                ]))),
+                    ),
+                    title: Text(
+                      "Logout ",
+                      style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          color: Colors.red,
+                          fontSize: size.width * 0.05),
+                    ),
+                    trailing: const Icon(
+                      Icons.logout,
+                      color: Colors.red,
+                    ),
+                    onTap: () {
+                      context.read<LoginBloc>().add(LogOutEvent());
+                    },
+                  ),
                 ),
               )
             ],

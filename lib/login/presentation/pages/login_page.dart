@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFFFE8A00),
                                 padding: const EdgeInsetsDirectional.symmetric(
-                                  vertical: 10,
+                                  vertical: 15,
                                   horizontal: 60,
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -125,9 +125,10 @@ class _LoginPageState extends State<LoginPage> {
                                 ? const CircularProgressIndicator(
                                     color: Colors.white,
                                   )
-                                : const Text('login',
+                                : const Text('Login',
                                     style: TextStyle(
                                         color: Colors.black,
+                                        fontFamily: "Quicksand",
                                         fontWeight: FontWeight.bold))),
                       ],
                     ),
