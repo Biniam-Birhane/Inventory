@@ -8,6 +8,7 @@ import 'package:simple_inventory/core/services/customer_injection_container.dart
 import 'package:simple_inventory/core/services/product_category_injection_container.dart';
 import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart';
 import 'package:simple_inventory/dashboard/dashbord.dart';
+import 'package:simple_inventory/dashboard/totalProduct/total_product.dart';
 import 'package:simple_inventory/login/presentation/bloc/login_bloc.dart';
 import 'package:simple_inventory/login/presentation/pages/login_page.dart';
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:simple_inventory/products_sales/presentation/bloc/products_sales
 import 'package:simple_inventory/products/presentation/bloc/products_bloc.dart';
 import 'package:simple_inventory/profile/profile.dart';
 import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
+import 'package:simple_inventory/reports/presentation/pages/report.dart';
 import 'package:simple_inventory/reports/presentation/pages/report_generating_service.dart';
 
 void main() async {

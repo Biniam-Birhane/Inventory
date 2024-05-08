@@ -89,6 +89,7 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/images/background.jpg
+    - assets/images/lock1.png
   fonts:
     - family: Lato
       fonts:

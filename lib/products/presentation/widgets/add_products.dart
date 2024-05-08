@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -8,17 +9,25 @@ import 'package:simple_inventory/products/presentation/pages/products.dart';
 import 'package:uuid/uuid.dart';
 
 class AddProduct extends StatefulWidget {
-  const AddProduct({required this.amount, required this.unitPrice, super.key});
+  const AddProduct({Key? key, required this.amount, required this.unitPrice})
+      : super(key: key);
+
   final TextEditingController amount;
   final TextEditingController unitPrice;
+
   @override
   State<AddProduct> createState() => _AddProductState();
 }
 
 class _AddProductState extends State<AddProduct> {
   String? valueChoose;
+  String? selectedProductId;
   List<String> listItem = [];
+  final TextEditingController productNameController = TextEditingController();
+  final TextEditingController productIdController = TextEditingController();
   var uuid = const Uuid();
+  late  Map<String, String> productNameMap ={} ;
+
   @override
   void initState() {
     context.read<ProductCategoryBloc>().add(const GetProductCategoryEvent());
@@ -50,7 +59,10 @@ class _AddProductState extends State<AddProduct> {
                 if (state.getProductCategoryStatus.isSuccess) {
                   for (var i = 0; i < state.productCategories.length; i++) {
                     String productName = state.productCategories[i].productName;
+                    String productId = state.productCategories[i].id;
                     listItem.add(productName);
+                    // Store product id along with product name
+                    productNameMap[productName] = productId;
                   }
                 }
               },
@@ -80,12 +92,19 @@ class _AddProductState extends State<AddProduct> {
                               fontFamily: "Quicksand",
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Color.fromARGB(255, 228, 205, 205),
                             ),
                             value: valueChoose,
                             onChanged: (newValue) {
                               setState(() {
                                 valueChoose = newValue;
+                                // Update selected product id based on selected product name
+                                selectedProductId = productNameMap[newValue];
+                                print(selectedProductId);
+                                // Set the selected product name to the controller
+                                productNameController.text = newValue!;
+                                // Set the selected product id to the controller
+                                productIdController.text = selectedProductId!;
                               });
                             },
                             items: listItem.map((valueItem) {
@@ -168,8 +187,8 @@ class _AddProductState extends State<AddProduct> {
                 "Added successfuly",
                 style: TextStyle(color: Colors.white),
               )));
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const Products()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Products()));
         } else if (state.addProductStatus.isFailure) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
@@ -188,17 +207,19 @@ class _AddProductState extends State<AddProduct> {
                 onPressed: () {
                   String id = uuid.v4();
                   String? productName = valueChoose ?? '';
+                  String? productId = selectedProductId;
                   double amount = double.tryParse(widget.amount.text) ?? 0.0;
                   double unitPrice =
                       double.tryParse(widget.unitPrice.text) ?? 0.0;
 
                   if (amount != null &&
                       unitPrice != null &&
-                      productName != null) {
+                      productName != null &&
+                      productId != null) {
                     DateTime dateTime = DateTime.now();
                     ProductEntity product = ProductEntity(
                         id: id,
-                        productId: id,
+                        productId: productId,
                         productName: productName,
                         unitPrice: unitPrice,
                         amount: amount,

@@ -46,6 +46,7 @@ class _ProfileState extends State<Profile> {
                 'user created successfuly',
                 style: TextStyle(color: Colors.white),
               )));
+          Navigator.pop(context);
         } else if (state.addUserStatus.isFailure) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.red,
@@ -53,23 +54,20 @@ class _ProfileState extends State<Profile> {
                 state.errorMessage,
                 style: const TextStyle(color: Colors.white),
               )));
-        } else if (state.logoutStatus.isSuccess) {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const LoginPage()));
         }
       }, builder: (context, state) {
         return SingleChildScrollView(
           child: Column(
             children: [
-              backgroundImage(size),
+              backgroundImage(size,state.loggedInUsername),
               SizedBox(
                 height: size.height * 0.02,
               ),
-              Text(state.loggedInUsername,
-                  style: const TextStyle(
-                      color: Colors.green,
-                      fontFamily: 'Quicksand',
-                      fontSize: 20)),
+              // Text(state.loggedInUsername,
+              //     style: const TextStyle(
+              //         color: Colors.green,
+              //         fontFamily: 'Quicksand',
+              //         fontSize: 20)),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
@@ -127,6 +125,13 @@ class _ProfileState extends State<Profile> {
                 child: Container(
                   child: ListTile(
                     horizontalTitleGap: 30,
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()));
+                      // context.read<LoginBloc>().add(LogOutEvent());
+                    },
                     leading: const CircleAvatar(
                       child: Icon(
                         Icons.logout,
@@ -144,9 +149,6 @@ class _ProfileState extends State<Profile> {
                       Icons.logout,
                       color: Colors.red,
                     ),
-                    onTap: () {
-                      context.read<LoginBloc>().add(LogOutEvent());
-                    },
                   ),
                 ),
               )
@@ -276,7 +278,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Stack backgroundImage(Size size) {
+  Stack backgroundImage(Size size, String loggedInUsername) {
     return Stack(
       children: [
         Image.asset(
@@ -299,7 +301,7 @@ class _ProfileState extends State<Profile> {
             left: 100,
             child: ListTile(
               title: Text(
-                "Board Inventory",
+                loggedInUsername,
                 style: TextStyle(
                     fontFamily: 'Quicksand',
                     color: Colors.white,

@@ -113,7 +113,7 @@ class ProductsScreenState extends State<Products> {
                                     Text(
                                       product.createdAt!.toLocal().toString(),
                                       style: const TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.grey,
                                         fontFamily: "Quicksand",
                                         fontSize: 18,
                                       ),
@@ -129,7 +129,7 @@ class ProductsScreenState extends State<Products> {
                                             child: const Text(
                                               "Amount: ",
                                               style: TextStyle(
-                                                  color: Colors.white,
+                                                  color: Colors.grey,
                                                   fontFamily: "Quicksand",
                                                   fontSize: 16),
                                             ),
@@ -138,7 +138,7 @@ class ProductsScreenState extends State<Products> {
                                             child: Text(
                                               product.amount.toString(),
                                               style: const TextStyle(
-                                                  color: Colors.white,
+                                                  color: Colors.grey,
                                                   fontFamily: "Quicksand",
                                                   fontSize: 16),
                                             ),
@@ -150,7 +150,7 @@ class ProductsScreenState extends State<Products> {
                                       title: Text(
                                         'Unit Price:  ${product.unitPrice}',
                                         style: const TextStyle(
-                                          color: Colors.white,
+                                          color: Colors.grey,
                                           fontFamily: "Quicksand",
                                         ),
                                       ),
@@ -229,7 +229,7 @@ class ProductsScreenState extends State<Products> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
-              width: size.width * 0.78,
+              width: size.width * 0.75,
               child: TextFormField(
                 controller: searchController,
                 onChanged: (value) {
@@ -255,21 +255,21 @@ class ProductsScreenState extends State<Products> {
                     floatingLabelBehavior: FloatingLabelBehavior.always),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Expanded(
               child: ElevatedButton(
                 onPressed: () {},
-                child: Icon(
-                  Icons.search,
-                  color: Colors.black,
-                ),
                 style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 25),
+                    padding:const EdgeInsets.symmetric(vertical: 20),
                     backgroundColor: const Color(0xFFFE8A00),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
+                child: const Icon(
+                  color: Colors.black,
+                  Icons.search,
+                ),
               ),
             )
           ]),

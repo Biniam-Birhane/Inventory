@@ -4,6 +4,8 @@ import 'package:simple_inventory/bottomPage/bottom_items_list.dart';
 import 'package:simple_inventory/bottomPage/bottom_logic.dart';
 import 'package:simple_inventory/bottomPage/common_bottom_bar.dart';
 import 'package:simple_inventory/dashboard/drawer.dart';
+import 'package:simple_inventory/dashboard/totalProduct/total_product.dart';
+import 'package:simple_inventory/dashboard/unpaid_amount.dart';
 import 'package:simple_inventory/products_sales/presentation/pages/product_sales.dart';
 
 class Dashboard extends StatefulWidget {
@@ -61,7 +63,7 @@ class DashboardState extends State<Dashboard> {
                 height: size.height * 0.02,
               ),
               totalProduct(size, "Total Product", 300),
-              totalProduct(size, "Total Unpaid Amount", 8523)
+              unPaidAmount(size, "Total Unpaid Amount", 8523)
             ],
           ),
         ),
@@ -78,7 +80,10 @@ class DashboardState extends State<Dashboard> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () => {},
+        onTap: () => {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => TotalProduct()))
+        },
         child: Material(
           elevation: 4,
           borderRadius: BorderRadius.circular(25),
@@ -130,7 +135,65 @@ class DashboardState extends State<Dashboard> {
       ),
     );
   }
-
+  Padding unPaidAmount(Size size, String category, int amount) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GestureDetector(
+        onTap: () => {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) =>const UnpaidAmount()))
+        },
+        child: Material(
+          elevation: 4,
+          borderRadius: BorderRadius.circular(25),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            alignment: Alignment.topLeft,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: const Color.fromARGB(255, 27, 63, 92)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.shopping_cart,
+                          color: Colors.grey,
+                          size: size.width * 0.06,
+                        ),
+                        SizedBox(
+                          width: size.width * 0.03,
+                        ),
+                        Text(
+                          category,
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontFamily: "Quicksand",
+                              fontSize: size.width * 0.06,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                    Text(
+                      amount.toString(),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Colors.white, fontSize: size.width * 0.06),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
   Row sellProduct(Size size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

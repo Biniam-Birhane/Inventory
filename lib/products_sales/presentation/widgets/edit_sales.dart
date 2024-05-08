@@ -21,6 +21,7 @@ class _UpdateSaleState extends State<EditSales> {
   TextEditingController totalCostController = TextEditingController();
   TextEditingController paidAmountController = TextEditingController();
   String? selectedProduct;
+  String? selectedProductId;
   List<String> products = [];
   String? id;
   String? selectedCustomer;
@@ -38,6 +39,7 @@ class _UpdateSaleState extends State<EditSales> {
     id = widget.soldProduct.id;
     selectedCustomer = widget.soldProduct.buyerName;
     selectedProduct = widget.soldProduct.productName;
+    selectedProductId = widget.soldProduct.productId;
     amountController.text = widget.soldProduct.amount.toString();
     totalCostController.text = widget.soldProduct.totalCost.toString();
     paidAmountController.text = widget.soldProduct.paidAmount.toString();
@@ -294,6 +296,7 @@ class _UpdateSaleState extends State<EditSales> {
                     id: id ?? '',
                     buyerName: selectedCustomer ?? '',
                     productName: selectedProduct ?? '',
+                    productId: selectedProductId ?? '',
                     amount: amount,
                     totalCost: totalCost,
                     paidAmount: paidAmount,

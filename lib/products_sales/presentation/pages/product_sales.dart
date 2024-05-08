@@ -96,7 +96,7 @@ class _ProductSaleScreen extends State<ProductSales> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Container(
-                            width: size.width * 0.78,
+                            width: size.width * 0.75,
                             child: TextField(
                                 style: const TextStyle(
                                   color: Colors.white,
@@ -125,25 +125,28 @@ class _ProductSaleScreen extends State<ProductSales> {
                                   searchSales(value, state.sales);
                                 }),
                           ),
+                          SizedBox(
+                            width: 5,
+                          ),
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {},
                               style: ElevatedButton.styleFrom(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 25),
+                                      const EdgeInsets.symmetric(vertical: 20),
                                   backgroundColor: const Color(0xFFFE8A00),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10))),
                               child: const Icon(
                                 Icons.search,
-                                color: Color.fromARGB(255, 233, 180, 180),
+                                color: Colors.black,
                               ),
                             ),
                           )
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Expanded(
                       child: ListView.builder(
                         itemCount: searchedSales.length,
@@ -152,14 +155,13 @@ class _ProductSaleScreen extends State<ProductSales> {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                   border: Border.all(color: Colors.grey)),
                               child: ExpansionTile(
                                 iconColor: Colors.white,
                                 dense: false,
                                 leading: Container(
-                                  width: size.width * 0.2,
+                                  width: 100,
                                   child: Text(soldProduct.buyerName,
                                       style: const TextStyle(
                                           color: Colors.white,
@@ -249,7 +251,7 @@ class _ProductSaleScreen extends State<ProductSales> {
                 ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const AddProductSale()))

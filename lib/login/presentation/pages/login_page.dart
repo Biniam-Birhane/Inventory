@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
-        body: Center(child: loginBox()));
+        body: SingleChildScrollView(child: Center(child: loginBox())));
   }
 
   Material loginBox() {
@@ -56,6 +56,15 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 //
                 children: [
+                  Padding(
+                      padding: EdgeInsets.only(top: 80),
+                      child: Image.asset(
+                        "assets/images/lock1.png",
+                        height: 160,
+                      )),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   const Text("Login Page",
                       style: TextStyle(
                           color: Colors.white,
@@ -129,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontFamily: "Quicksand",
+                                        fontSize: 15,
                                         fontWeight: FontWeight.bold))),
                       ],
                     ),

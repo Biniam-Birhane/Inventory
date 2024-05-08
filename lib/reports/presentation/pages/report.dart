@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
@@ -9,6 +11,7 @@ import 'package:simple_inventory/products/domain/entities/product_entitiy.dart';
 
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 import 'package:simple_inventory/reports/presentation/bloc/reports_bloc.dart';
+import 'package:simple_inventory/reports/presentation/pages/report_generating_service.dart';
 // import 'package:date_cupertino_bottom_sheet_picker/date_cupertino_bottom_sheet_picker.dart';
 
 //pdf
@@ -64,12 +67,17 @@ class _ReportScreen extends State<ReportPage> {
     31
   ];
   final DateTime currentDate = DateTime.now();
-
+  bool isGetReportSelected = false;
   int number = 0;
+  DateTime today = DateTime.now();
+  int? todayDate = DateTime.now().day;
+  int? todayMonth = DateTime.now().month;
+  int? todayYear = DateTime.now().year;
   List<ProductSale> sales = [];
+  List<ProductSale> productSales = [];
+  List<ProductEntity> products = [];
 
-  
-
+  final PdfGeneratingService service = PdfGeneratingService();
   void _onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
@@ -113,16 +121,23 @@ class _ReportScreen extends State<ReportPage> {
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [operationSelection(),SizedBox(width: deviceWidth*0.02,) ,reportTypeIndate()]),
+                  children: [
+                    operationSelection(),
+                    SizedBox(
+                      width: deviceWidth * 0.02,
+                    ),
+                    reportTypeIndate()
+                  ]),
             ),
             _selectedOption == 'sales'
                 ? Container(
-                    height: 300,
+                    height: 450,
                     child: Column(
                       children: [
                         reportType == 'Daily'
@@ -148,6 +163,7 @@ class _ReportScreen extends State<ReportPage> {
                             print(state.errorMessage);
                           },
                           builder: ((context, state) {
+                            productSales = state.salesReport;
                             return state.gettingReportStatus.isSuccess
                                 ? Expanded(
                                     child: ListView.builder(
@@ -240,7 +256,7 @@ class _ReportScreen extends State<ReportPage> {
                   )
                 : _selectedOption == "products"
                     ? Container(
-                        height: 300,
+                        height: 450,
                         child: Column(
                           children: [
                             reportType == 'Daily'
@@ -266,6 +282,7 @@ class _ReportScreen extends State<ReportPage> {
                                 print(state.errorMessage);
                               },
                               builder: ((context, state) {
+                                products = state.productsReport;
                                 return state
                                         .gettingProductReportStatus.isSuccess
                                     ? Expanded(
@@ -355,127 +372,261 @@ class _ReportScreen extends State<ReportPage> {
             const SizedBox(
               height: 10,
             ),
-            BlocConsumer<ReportsBloc, ReportsState>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  return ElevatedButton(
-                    onPressed: () {
-                      if (_selectedOption == 'sales') {
-                        if (reportType == 'Monthly' &&
-                            selectedMonth != null &&
-                            selectedYear != null) {
-                          context.read<ReportsBloc>().add(
-                              GetMonthlyReportsEvent(
-                                  month: selectedMonth ?? 10,
-                                  year: selectedYear ?? 2024));
-                        } else if (reportType == 'Yearly' &&
-                            selectedYear != null) {
-                          context.read<ReportsBloc>().add(GetYearlyReportsEvent(
-                              year: selectedYear ?? 2024));
-                        } else if (reportType == 'Daily' &&
-                            selectedMonth != null &&
-                            selectedYear != null &&
-                            selectedDate != null) {
-                          context.read<ReportsBloc>().add(GetDailyReportsEvent(
-                              date: selectedDate ?? 1,
-                              month: selectedMonth ?? 12,
-                              year: selectedYear ?? 2024));
-                        } else if (reportType == "Today") {
-                          final DateTime today = DateTime.now();
-                          context.read<ReportsBloc>().add(GetDailyReportsEvent(
-                              date: today.day,
-                              month: today.month,
-                              year: today.year));
-                        } else if (reportType == 'thisMonth') {
-                          final DateTime currentDate = DateTime.now();
-                          context.read<ReportsBloc>().add(
-                              GetMonthlyReportsEvent(
-                                  month: currentDate.month,
-                                  year: currentDate.year));
-                        } else if (reportType == 'thisYear') {
-                          final DateTime currentDate = DateTime.now();
-                          context.read<ReportsBloc>().add(
-                              GetYearlyReportsEvent(year: currentDate.year));
-                        } else if (reportType == '' || selectedYear == null) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                                  backgroundColor: Colors.red,
-                                  content: Text(
-                                    'please choose the correct report format',
-                                    style: TextStyle(color: Colors.white),
-                                  )));
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: BlocConsumer<ReportsBloc, ReportsState>(
+                        listener: (context, state) {},
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              if (_selectedOption == 'sales') {
+                                if (reportType == 'Monthly' &&
+                                    selectedMonth != null &&
+                                    selectedYear != null) {
+                                  context.read<ReportsBloc>().add(
+                                      GetMonthlyReportsEvent(
+                                          month: selectedMonth ?? 10,
+                                          year: selectedYear ?? 2024));
+                                } else if (reportType == 'Yearly' &&
+                                    selectedYear != null) {
+                                  context.read<ReportsBloc>().add(
+                                      GetYearlyReportsEvent(
+                                          year: selectedYear ?? 2024));
+                                } else if (reportType == 'Daily' &&
+                                    selectedMonth != null &&
+                                    selectedYear != null &&
+                                    selectedDate != null) {
+                                  context.read<ReportsBloc>().add(
+                                      GetDailyReportsEvent(
+                                          date: selectedDate ?? 1,
+                                          month: selectedMonth ?? 12,
+                                          year: selectedYear ?? 2024));
+                                } else if (reportType == "Today") {
+                                  final DateTime today = DateTime.now();
+                                  context.read<ReportsBloc>().add(
+                                      GetDailyReportsEvent(
+                                          date: today.day,
+                                          month: today.month,
+                                          year: today.year));
+                                } else if (reportType == 'thisMonth') {
+                                  final DateTime currentDate = DateTime.now();
+                                  context.read<ReportsBloc>().add(
+                                      GetMonthlyReportsEvent(
+                                          month: currentDate.month,
+                                          year: currentDate.year));
+                                } else if (reportType == 'thisYear') {
+                                  final DateTime currentDate = DateTime.now();
+                                  context.read<ReportsBloc>().add(
+                                      GetYearlyReportsEvent(
+                                          year: currentDate.year));
+                                } else if (reportType == '' ||
+                                    selectedYear == null) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                          backgroundColor: Colors.red,
+                                          content: Text(
+                                            'please choose the correct report format',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )));
+                                }
+                              } else {
+                                if (reportType == 'Monthly' &&
+                                    selectedMonth != null &&
+                                    selectedYear != null) {
+                                  context.read<ReportsBloc>().add(
+                                      GetMonthlyProductReportsEvent(
+                                          month: selectedMonth ?? 10,
+                                          year: selectedYear ?? 2024));
+                                } else if (reportType == "Today") {
+                                  final DateTime today = DateTime.now();
+                                  context.read<ReportsBloc>().add(
+                                      GetDailyProductReportsEvent(
+                                          date: today.day,
+                                          month: today.month,
+                                          year: today.year));
+                                } else if (reportType == 'thisMonth') {
+                                  final DateTime currentDate = DateTime.now();
+                                  context.read<ReportsBloc>().add(
+                                      GetMonthlyProductReportsEvent(
+                                          month: currentDate.month,
+                                          year: currentDate.year));
+                                } else if (reportType == 'thisYear') {
+                                  final DateTime currentDate = DateTime.now();
+                                  context.read<ReportsBloc>().add(
+                                      GetYearlyProductReportsEvent(
+                                          year: currentDate.year));
+                                } else if (reportType == 'Yearly' &&
+                                    selectedYear != null) {
+                                  context.read<ReportsBloc>().add(
+                                      GetYearlyProductReportsEvent(
+                                          year: selectedYear ?? 2024));
+                                } else if (reportType == 'Daily' &&
+                                    selectedMonth != null &&
+                                    selectedYear != null &&
+                                    selectedDate != null) {
+                                  context.read<ReportsBloc>().add(
+                                      GetDailyProductReportsEvent(
+                                          date: selectedDate ?? 1,
+                                          month: selectedMonth ?? 12,
+                                          year: selectedYear ?? 2024));
+                                } else if (reportType == '' ||
+                                    selectedYear == null) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                          backgroundColor: Colors.red,
+                                          content: Text(
+                                            'please choose the correct report format',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )));
+                                }
+                              }
+                              setState(() {
+                                isGetReportSelected = true;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFFE8A00),
+                                padding: const EdgeInsetsDirectional.symmetric(
+                                  vertical: 10,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            child: const Text(
+                              "Get Report",
+                              style: TextStyle(
+                                fontFamily: "Quicksand",
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          );
+                        }),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_selectedOption == 'sales') {
+                          if (reportType == 'Daily') {
+                            final data = await service.createProductSalePdf(
+                                productSales,
+                                "Product sales report of day: ",
+                                "$selectedDate/$selectedMonth/$selectedYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'Monthly') {
+                            final data = await service.createProductSalePdf(
+                                productSales,
+                                "Product sales report of month: ",
+                                "$selectedMonth/$selectedYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'Yearly') {
+                            final data = await service.createProductSalePdf(
+                                productSales,
+                                "Product sales report of year: ",
+                                "$selectedYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'Today') {
+                            print("hello today");
+                            final data = await service.createProductSalePdf(
+                                productSales,
+                                "Product sales report of today: ",
+                                "$todayDate/$todayMonth/$todayYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'thisMonth') {
+                            print("hello");
+                            final data = await service.createProductSalePdf(
+                                productSales,
+                                "Product sales report of this month: ",
+                                "$todayMonth/$todayYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'thisYear') {
+                            print("hello year");
+                            final data = await service.createProductSalePdf(
+                                productSales,
+                                "Product sales report of this year: ",
+                                "$todayYear");
+                            service.savePdfFile("date_$number", data);
+                          }
+
+                          // } else if (reportType == 'Monthly') {
+                          // } else if (reportType == 'Yearly') {
+                          // } else if (reportType == 'Today') {
+                          // } else if (reportType == 'thismonth') {
+                          // } else if (reportType == 'thisyear') {}
+
+                          number++;
+                        } else if (_selectedOption == 'products') {
+                          if (reportType == 'Daily') {
+                            final data = await service.createProductPdf(
+                                products,
+                                "Added product report of day: ",
+                                "$selectedDate/$selectedMonth/$selectedYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'Monthly') {
+                            final data = await service.createProductPdf(
+                                products,
+                                "Added product report of month: ",
+                                "$selectedMonth/$selectedYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'Yearly') {
+                            final data = await service.createProductPdf(
+                                products,
+                                "Added product report of year: ",
+                                " $selectedYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'Today') {
+                            final data = await service.createProductPdf(
+                                products,
+                                "Added product report of today: ",
+                                "$todayDate/$todayMonth/$todayYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'thisMonth') {
+                            final data = await service.createProductPdf(
+                                products,
+                                "Added product report of this month: ",
+                                "$todayMonth/$todayYear");
+                            service.savePdfFile("date_$number", data);
+                          } else if (reportType == 'thisYear') {
+                            final data = await service.createProductPdf(
+                                products,
+                                "Added product report of this year: ",
+                                "$todayYear");
+                            service.savePdfFile("date_$number", data);
+                          }
+
+                          number++;
                         }
-                      } else {
-                        if (reportType == 'Monthly' &&
-                            selectedMonth != null &&
-                            selectedYear != null) {
-                          context.read<ReportsBloc>().add(
-                              GetMonthlyProductReportsEvent(
-                                  month: selectedMonth ?? 10,
-                                  year: selectedYear ?? 2024));
-                        } else if (reportType == "Today") {
-                          final DateTime today = DateTime.now();
-                          context.read<ReportsBloc>().add(
-                              GetDailyProductReportsEvent(
-                                  date: today.day,
-                                  month: today.month,
-                                  year: today.year));
-                        } else if (reportType == 'thisMonth') {
-                          final DateTime currentDate = DateTime.now();
-                          context.read<ReportsBloc>().add(
-                              GetMonthlyProductReportsEvent(
-                                  month: currentDate.month,
-                                  year: currentDate.year));
-                        } else if (reportType == 'thisYear') {
-                          final DateTime currentDate = DateTime.now();
-                          context.read<ReportsBloc>().add(
-                              GetYearlyProductReportsEvent(
-                                  year: currentDate.year));
-                        } else if (reportType == 'Yearly' &&
-                            selectedYear != null) {
-                          context.read<ReportsBloc>().add(
-                              GetYearlyProductReportsEvent(
-                                  year: selectedYear ?? 2024));
-                        } else if (reportType == 'Daily' &&
-                            selectedMonth != null &&
-                            selectedYear != null &&
-                            selectedDate != null) {
-                          context.read<ReportsBloc>().add(
-                              GetDailyProductReportsEvent(
-                                  date: selectedDate ?? 1,
-                                  month: selectedMonth ?? 12,
-                                  year: selectedYear ?? 2024));
-                        } else if (reportType == '' || selectedYear == null) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                                  backgroundColor: Colors.red,
-                                  content: Text(
-                                    'please choose the correct report format',
-                                    style: TextStyle(color: Colors.white),
-                                  )));
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFE8A00),
-                        padding: const EdgeInsetsDirectional.symmetric(
-                          vertical: 10,
-                          horizontal: 60,
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: const EdgeInsetsDirectional.symmetric(
+                            vertical: 10,
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: const Text(
+                        "Get Pdf",
+                        style: TextStyle(
+                          fontFamily: "Quicksand",
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    child: const Text(
-                      "Get Report",
-                      style: TextStyle(
-                        fontFamily: "Quicksand",
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
                       ),
                     ),
-                  );
-                }),
-            
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -586,8 +737,9 @@ class _ReportScreen extends State<ReportPage> {
     ));
   }
 
-  Center yearlyReportFormat() {
-    return Center(
+  Container yearlyReportFormat() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
       child: DropdownButton(
           dropdownColor: const Color.fromARGB(255, 29, 66, 97),
           hint: const Text(
@@ -624,6 +776,10 @@ class _ReportScreen extends State<ReportPage> {
               "Select month :",
               style: TextStyle(color: Colors.white),
             ),
+            icon: const Icon(Icons.arrow_drop_down),
+            iconSize: 36,
+            underline: const SizedBox(),
+            style: const TextStyle(color: Colors.white, fontSize: 18),
             value: selectedMonth,
             onChanged: (value) {
               setState(() {

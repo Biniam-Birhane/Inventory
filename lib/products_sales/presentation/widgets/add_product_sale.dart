@@ -6,6 +6,7 @@ import 'package:simple_inventory/customers/presentation/bloc/customers_bloc.dart
 import 'package:simple_inventory/product_category/presentation/bloc/product_category_bloc.dart';
 import 'package:simple_inventory/products_sales/domain/entities/product_sales.dart';
 import 'package:simple_inventory/products_sales/presentation/bloc/products_sales_bloc.dart';
+import 'package:simple_inventory/products_sales/presentation/pages/product_sales.dart';
 import 'package:uuid/uuid.dart';
 
 class AddProductSale extends StatefulWidget {
@@ -16,6 +17,7 @@ class AddProductSale extends StatefulWidget {
 
 class _AddSaleScreen extends State<AddProductSale> {
   String? selectedProduct;
+  String? selectedProductId;
   List<String> products = [];
 
   String? selectedCustomer;
@@ -37,11 +39,14 @@ class _AddSaleScreen extends State<AddProductSale> {
 
   final TextEditingController buyerNameController = TextEditingController();
   final TextEditingController productNameController = TextEditingController();
+  final TextEditingController productIdController = TextEditingController();
+
   final TextEditingController amountController = TextEditingController();
 
   final TextEditingController totalCostController = TextEditingController();
   final TextEditingController paidAmountController = TextEditingController();
   final TextEditingController unPaidAmountController = TextEditingController();
+  late Map<String, String> productNameMap = {};
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +62,7 @@ class _AddSaleScreen extends State<AddProductSale> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.all(10),
+          // margin: const EdgeInsets.all(10),
           padding: const EdgeInsets.all(5),
           child: Container(
             padding: const EdgeInsets.all(10),
@@ -78,7 +83,10 @@ class _AddSaleScreen extends State<AddProductSale> {
                                   i++) {
                                 String productName =
                                     state.productCategories[i].productName;
+                                String productId =
+                                    state.productCategories[i].id;
                                 products.add(productName);
+                                productNameMap[productName] = productId;
                               }
                             }
                           },
@@ -104,11 +112,17 @@ class _AddSaleScreen extends State<AddProductSale> {
                                         isExpanded: true,
                                         underline: const SizedBox(),
                                         style: const TextStyle(
-                                            color: Colors.black, fontSize: 18),
+                                            color: Colors.black,
+                                            fontFamily: "Quicksand",
+                                            fontSize: 18),
                                         value: selectedProduct,
                                         onChanged: (newValue) {
                                           setState(() {
                                             selectedProduct = newValue;
+                                            selectedProductId =
+                                                productNameMap[newValue];
+                                            productIdController.text =
+                                                selectedProductId!;
                                           });
                                         },
                                         items: products.map((product) {
@@ -122,6 +136,9 @@ class _AddSaleScreen extends State<AddProductSale> {
                                 : const CircularProgressIndicator();
                           },
                         ),
+                      ),
+                      SizedBox(
+                        width: 10,
                       ),
                       Expanded(
                         child: BlocConsumer<CustomersBloc, CustomersState>(
@@ -155,6 +172,7 @@ class _AddSaleScreen extends State<AddProductSale> {
                                         underline: const SizedBox(),
                                         style: const TextStyle(
                                             color: Colors.white10,
+                                            fontFamily: "Quicksand",
                                             fontSize: 18),
                                         value: selectedCustomer,
                                         onChanged: (newValue) {
@@ -188,11 +206,12 @@ class _AddSaleScreen extends State<AddProductSale> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText: "Enter amount",
-                      labelText: "amount",
+                      labelText: "Amount",
                       hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
+                          fontFamily: "Quicksand",
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
@@ -224,6 +243,7 @@ class _AddSaleScreen extends State<AddProductSale> {
                       hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(
                           color: Colors.white,
+                          fontFamily: "Quicksand",
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -256,6 +276,7 @@ class _AddSaleScreen extends State<AddProductSale> {
                       hintStyle: const TextStyle(color: Colors.grey),
                       labelStyle: const TextStyle(
                           color: Colors.white,
+                          fontFamily: "Quicksand",
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(
@@ -323,6 +344,7 @@ class _AddSaleScreen extends State<AddProductSale> {
                     id: const Uuid().v4(),
                     buyerName: selectedCustomer ?? '',
                     productName: selectedProduct ?? '',
+                    productId: selectedProductId ?? '',
                     amount: double.tryParse(amountController.text) ?? 0,
                     totalCost: totalCost,
                     paidAmount: paidAmount,
@@ -331,13 +353,17 @@ class _AddSaleScreen extends State<AddProductSale> {
                     .read<ProductsSalesBloc>()
                     .add(AddSalesEvent(productSale: productSale));
                 if (state.addSalesStatus.isSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      backgroundColor: Colors.green,
-                      duration: Duration(seconds: 5),
-                      content: Text(
-                        'Registered successfuly',
-                        style: TextStyle(color: Colors.white),
-                      )));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        backgroundColor: Colors.green,
+                        duration: Duration(seconds: 5),
+                        content: Text(
+                          'Registered successfuly',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  );
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => ProductSales()));
                 } else if (state.addSalesStatus.isFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     backgroundColor: Colors.red,

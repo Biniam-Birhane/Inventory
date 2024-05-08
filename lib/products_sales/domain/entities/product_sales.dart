@@ -5,6 +5,7 @@ class ProductSale extends Equatable {
       {required this.id,
       required this.buyerName,
       required this.productName,
+      required this.productId,
       required this.amount,
       required this.totalCost,
       required this.paidAmount,
@@ -16,6 +17,7 @@ class ProductSale extends Equatable {
   final String id;
   final String buyerName;
   final String productName;
+  final String productId;
   final double amount;
   final double totalCost;
   final double paidAmount;
@@ -26,5 +28,5 @@ class ProductSale extends Equatable {
   final DateTime? createdAt;
   @override
   List<Object> get props =>
-      [id, buyerName, productName, amount, totalCost, paidAmount];
+      [id, buyerName, productName,productId, amount, totalCost, paidAmount];
 }
